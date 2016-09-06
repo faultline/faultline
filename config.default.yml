@@ -1,0 +1,14 @@
+# default.yml
+
+# AWS deploy region
+region: ap-northeast-1
+# S3 bucket name
+s3BucketName: (EDITME)
+# Dynamodb table prefix
+dynamodbTablePrefix: faultline
+# Error tracking count interval (year / month / day / hour / minute)
+timeunit: minute
+# faultline API Key for full control (!This is not API Gateway API Key!)
+apiKey: (EDITME)
+# faultline API Key for POST errors only (!This is not API Gateway API Key!)
+clientApiKey: (EDITME)

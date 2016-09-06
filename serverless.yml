@@ -1,0 +1,148 @@
+service: faultline
+custom:
+  config: ${file(./config.yml)}
+
+provider:
+  name: aws
+  runtime: nodejs4.3
+  stage: v0
+  region: ${self:custom.config.region}
+  cfLogs: true
+  apiKey: false
+  iamRoleStatements:
+    - Effect: Allow
+      Resource:
+        - { "Fn::Join" : ["", ["arn:aws:dynamodb:", "${self:custom.config.region}", ":*:*" ] ] }
+      Action:
+        - "dynamodb:*"
+    - Effect: Allow
+      Action:
+        - "s3:ListBucket"
+        - "s3:GetObject"
+        - "s3:PutObject"
+        - "s3:DeleteObject"
+      Resource:
+        - { "Fn::Join" : ["", ["arn:aws:s3:::", "${self:custom.config.s3BucketName}"] ] }
+        - Fn::Join:
+          - ""
+          - - "arn:aws:s3:::"
+            - ${self:custom.config.s3BucketName}
+            - "/*"
+
+package:
+  include:
+    - src/**
+  exclude:
+    - .git/**
+    - doc/**
+    - node_modules/aws-sdk/**
+
+functions:
+  projectsList:
+    handler: src/handlers/projects/get.list
+    events:
+      - http:
+          path: projects
+          method: get
+          cors: true
+          integration: lambda-proxy
+  projectsDelete:
+    handler: src/handlers/projects/delete.delete
+    events:
+      - http:
+          path: projects/{project}
+          method: delete
+          cors: true
+          integration: lambda-proxy
+  errorsPost:
+    handler: src/handlers/errors/post.post
+    events:
+      - http:
+          path: projects/{project}/errors
+          method: post
+          integration: lambda-proxy
+  errorsList:
+    handler: src/handlers/errors/get.list
+    events:
+      - http:
+          path: projects/{project}/errors
+          method: get
+          cors: true
+          integration: lambda-proxy
+  errorsGet:
+    handler: src/handlers/errors/get.get
+    events:
+      - http:
+          path: projects/{project}/errors/{message}
+          method: get
+          cors: true
+          integration: lambda-proxy
+  errorsPatch:
+    handler: src/handlers/errors/patch.patch
+    events:
+      - http:
+          path: projects/{project}/errors/{message}
+          method: patch
+          cors: true
+          integration: lambda-proxy
+  errorsDelete:
+    handler: src/handlers/errors/delete.delete
+    events:
+      - http:
+          path: projects/{project}/errors/{message}
+          method: delete
+          cors: true
+          integration: lambda-proxy
+
+resources:
+  Resources:
+    FaultlineBucket:
+      Type: "AWS::S3::Bucket"
+      Properties:
+        BucketName: ${self:custom.config.s3BucketName}
+    FaultlineTable:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: project
+            AttributeType: S
+          - AttributeName: message
+            AttributeType: S
+          - AttributeName: status
+            AttributeType: S
+        KeySchema:
+          - AttributeName: project
+            KeyType: HASH
+          - AttributeName: message
+            KeyType: RANGE
+        LocalSecondaryIndexes:
+          - IndexName: FaultlineProjectAndStatus
+            KeySchema:
+              - AttributeName: project
+                KeyType: HASH
+              - AttributeName: status
+                KeyType: RANGE
+            Projection:
+              ProjectionType: ALL
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.config.dynamodbTablePrefix}Error
+    FaultlineTableByTimeunit:
+      Type: "AWS::DynamoDB::Table"
+      Properties:
+        AttributeDefinitions:
+          - AttributeName: key # project##message
+            AttributeType: S
+          - AttributeName: timestamp # timestamp
+            AttributeType: S
+        KeySchema:
+          - AttributeName: key
+            KeyType: HASH
+          - AttributeName: timestamp
+            KeyType: RANGE
+
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+        TableName: ${self:custom.config.dynamodbTablePrefix}ErrorByTimeunit

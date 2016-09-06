@@ -1,0 +1,402 @@
+{
+  "$schema": "http://json-schema.org/draft-04/hyper-schema",
+  "id": "https://raw.githubusercontent.com/k1LoW/faultline/master/schema.json#",
+  "description": "faultline API JSON Hyper-Schema.",
+  "properties": {
+    "project": {
+      "title": "Project",
+      "description": "Project API.",
+      "links": [
+        {
+          "description": "List projects.",
+          "href": "/projects",
+          "method": "GET",
+          "rel": "self",
+          "readOnly": true,
+          "title": "list_projects",
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "projects": {
+                "type": "array",
+                "items": { "$ref":"#/definitions/project" }
+              }
+            }
+          }
+        },
+        {
+          "description": "Delete project.",
+          "href": "/projects/{project}",
+          "mediaType": "null",
+          "method": "DELETE",
+          "rel": "delete",
+          "readOnly": false,
+          "title": "delete_project"
+        }
+      ]
+    },
+    "error": {
+      "title": "Error",
+      "description": "Error API.",
+      "links": [
+        {
+          "description": "Get error.",
+          "href": "/projects/{project}/errors/{message}",
+          "method": "GET",
+          "rel": "self",
+          "readOnly": true,
+          "title": "get_error",
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "meta": {
+                "type": "object",
+                "example": {
+                  "project": "sample-project",
+                  "message": "Undefined index: faultline",
+                  "type": "notice",
+                  "backtrace": [
+                    {
+                      "file": "/var/www/test/test.php",
+                      "line": 15,
+                      "function": "SomeClass->__construct()"
+                    },
+                    {
+                      "file": "/var/www/test/SomeClass.class.php",
+                      "line": 36,
+                      "function": "SomeClass->callSomething()"
+                    }
+                  ],
+                  "event": {}
+                }
+              },
+              "timeline": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "example": {
+                    "project": "sample-project",
+                    "count": 3,
+                    "timestamp": "2016-12-05T11:55:00+00:00",
+                    "key": "sample-project##Undefined index: faultline",
+                    "message": "Undefined index: faultline",
+                    "type": "notice"
+                  }
+                }
+              },
+              "count": {
+                "type": "integer",
+                "example": 1
+              },
+              "scannedCount": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "List errors.",
+          "href": "/projects/{project}/errors",
+          "method": "GET",
+          "rel": "errors",
+          "readOnly": true,
+          "title": "list_errors",
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "errors": {
+                "type": "array",
+                "items": { "$ref":"#/definitions/error" }
+              },
+              "count": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          }
+        },
+        {
+          "description": "Push errors.",
+          "href": "/projects/{project}/errors",
+          "method": "POST",
+          "rel": "create",
+          "readOnly": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "notifier": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "example": "fautline-client"
+                  },
+                  "version": {
+                    "type": "string",
+                    "example": "0.0.1"
+                  },
+                  "url": {
+                    "type": "string",
+                    "example": "https://github.com/k1LoW/faultline"
+                  }
+                }
+              },
+              "errors": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": false,
+                  "properties": {
+                    "type": {
+                      "type": "string",
+                      "example": "notice"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "Undefined index: faultline"
+                    },
+                    "backtrace": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "additionalProperties": false,
+                        "properties": {
+                          "file": {
+                            "type": "string",
+                            "example": "/var/www/path/to/app/user.php"
+                          },
+                          "function": {
+                            "type": "string",
+                            "example": "SomeClass->__construct()"
+                          },
+                          "line": {
+                            "type": "number",
+                            "example": 15
+                          },
+                          "column": {
+                            "type": "number",
+                            "example": 23
+                          }
+                        }
+                      }
+                    },
+                    "timestamp": { "$ref":"#/definitions/timestamp" }
+                  }
+                }
+              },
+              "context": {
+                "type": "object",
+                "additionalProperties": true,
+                "properties": {
+                  "environment": {
+                    "type": "string",
+                    "example": "production"
+                  },
+                  "component": {
+                    "type": "string",
+                    "example": "users"
+                  },
+                  "action": {
+                    "type": "string",
+                    "example": "edit"
+                  },
+                  "os": {
+                    "type": "string",
+                    "example": "CentOS Linux release 7.2.1511"
+                  },
+                  "language": {
+                    "type": "string",
+                    "example": "php"
+                  },
+                  "version": {
+                    "type": "string",
+                    "example": "7.1.0"
+                  },
+                  "url": {
+                    "type": "string",
+                    "example": "https://example.com/users/edit"
+                  },
+                  "userAgent": {
+                    "type": "string",
+                    "example": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36"
+                  },
+                  "rootDirectory": {
+                    "type": "string",
+                    "example": "/var/www/path/to/app/"
+                  }
+                }
+              },
+              "environment": {
+                "type": "object",
+                "example": {}
+              },
+              "session": {
+                "type": "object",
+                "example": {}
+              },
+              "params": {
+                "type": "object",
+                "example": {}
+              },
+              "notifications": {
+                "type": "array",
+                "items": {
+                  "anyOf" : [
+                    { "slack": { "$ref":"#/definitions/slack" } },
+                    { "github": { "$ref":"#/definitions/github" } }
+                  ]
+                },
+                "example": [
+                  {
+                    "type": "slack",
+                    "endpoint": "https://hooks.slack.com/services/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",
+                    "channel": "#random",
+                    "username": "faultline-notify",
+                    "notifyInterval": 5,
+                    "threshold": 10
+                  }
+                ]
+              }
+            },
+            "required": ["errors"]
+          },
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "errors": {
+                "type": "integer",
+                "example": 27
+              }
+            }
+          }
+        },
+        {
+          "description": "Update error status.",
+          "href": "/projects/{project}/errors/{message}",
+          "method": "PATCH",
+          "rel": "update",
+          "readOnly": false,
+          "schema": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": ["unresolved", "resolved"],
+                "example": "resolved"
+              }
+            },
+            "required": ["status"]
+          },
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "meta": {
+                "type": "object",
+                "example": {}
+              }
+            }
+          }
+        },
+        {
+          "description": "Delete error.",
+          "href": "/projects/{project}/errors/{message}",
+          "mediaType": "null",
+          "method": "DELETE",
+          "rel": "delete",
+          "title": "delete_error"
+        }
+      ]
+    }
+  },
+  "required": [
+    "project",
+    "error"
+  ],
+  "definitions": {
+    "timestamp": {
+      "type": "string",
+      "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[+][0-9]{2}:[0-9]{2}$",
+      "example": "2016-12-07T00:00:00+09:00"
+    },
+    "status": {
+      "enum": ["success", "error"],
+      "example": "success"
+    },
+    "project": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "example": "sample-project"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "properties": {
+        "project": { "$ref":"#/definitions/project" },
+        "count": {
+          "type": "number",
+          "example": 96
+        },
+        "lastUpdated": { "$ref":"#/definitions/timestamp" },
+        "message": {
+          "type": "string",
+          "example": "Undefined index: faultline"
+        },
+        "status": {
+          "enum": ["unresolved", "resolved"],
+          "example": "resolved"
+        },
+        "type": {
+          "type": "string",
+          "example": "notice"
+        }
+      }
+    },
+    "slack": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["slack"]
+        },
+        "notifyInterval": {
+          "type": "number",
+          "minimum": 1,
+          "exclusiveMinimum": true
+        },
+        "threshold": {"type": "number"},
+        "endpoint": {"type": "string"},
+        "channel": {"type": "string"},
+        "username": {"type": "string"},
+        "icon_emoji": {"type": "string"},
+        "icon_url": {"type": "string"}
+      },
+      "required": ["type", "endpoint", "channel"]
+    },
+    "github": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["github"]
+        },
+        "notifyInterval": {
+          "type": "number",
+          "minimum": 1,
+          "exclusiveMinimum": true
+        },
+        "threshold": {"type": "number"},
+        "userToken": {"type": "string"},
+        "owner": {"type": "string"},
+        "repo": {"type": "string"}
+      },
+      "required": ["type", "userToken", "owner", "repo"]
+    }
+  },
+  "title": "faultline API JSON Hyper-Schema"
+}

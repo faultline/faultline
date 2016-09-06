@@ -1,0 +1,470 @@
+{
+  "errors": [
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-02T00:01:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline2",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-02T00:01:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-02T00:01:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-02T00:01:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline2",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-02T00:01:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline2",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-02T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-05T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-05T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-07T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-07T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-07T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-10T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-12T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-12T00:02:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-12T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-12T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-14T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-14T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-14T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-14T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-18T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-18T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-18T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "timestamp": "2016-11-18T00:04:00+00:00"
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ]
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ]
+    },
+    {
+      "type": "notice",
+      "message": "Undefined index: faultline",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ]
+    }
+  ],
+  "notifications": [
+    {
+      "type": "slack",
+      "endpoint": "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX",
+      "channel": "#faultline",
+      "username": "faultline-notify",
+      "notifyInterval": 5,
+      "threshold": 10
+    }
+  ]
+}
