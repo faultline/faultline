@@ -26,7 +26,7 @@
 
 ## Using framework
 
-- Serverless Framework = v1.3.0
+- Serverless Framework :zap: (= v1.3.0)
 
 ### AWS Resources
 
@@ -118,7 +118,7 @@ https://github.com/k1LoW/faultline-webui
 
 ## Destroy faultline
 
-1. Empty S3 bucket.
+1. Delete all projects (or Empty S3 bucket).
 2. Run following command.
 
 ```sh
