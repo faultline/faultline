@@ -51,7 +51,12 @@ module.exports.post = (event, context, cb) => {
     }
 
     const errors = body.errors;
-    const notifications = body.notifications;
+    const bodyContext = body.hasOwnProperty('context') ? body.context: {};
+    const environment = body.hasOwnProperty('environment') ? body.environment: {};
+    const session = body.hasOwnProperty('session') ? body.session: {};
+    const params = body.hasOwnProperty('params') ? body.params: {};
+    const notifications = body.hasOwnProperty('notifications') ? body.notifications: [];
+
     const now = moment().format(timestampFormat);
     const status = 'unresolved';
     let promises = [];
@@ -70,7 +75,12 @@ module.exports.post = (event, context, cb) => {
             message: message,
             type: type,
             backtrace: e.backtrace,
-            event: event, // @FIXME divide more
+            context: bodyContext,
+            environment: environment,
+            session: session,
+            params: params,
+            // notifications: notifications, @FIXME remove endpoint, userToken
+            event: event,
             timestamp: timestamp
         };
 
