@@ -19,7 +19,7 @@ module.exports.delete = (event, context, cb) => {
         }
     }
 
-    const project = event.pathParameters.project;
+    const project = decodeURIComponent(event.pathParameters.project);
 
     const recursiveDeleteDocByKey = (key) => {
         const limit = 500;
