@@ -21,7 +21,7 @@ module.exports.list = (event, context, cb) => {
         }
     }
 
-    const project = event.pathParameters.project;
+    const project = decodeURIComponent(event.pathParameters.project);
     const status = event.queryStringParameters && event.queryStringParameters.hasOwnProperty('status') ? event.queryStringParameters.status : null;
 
     let params = {

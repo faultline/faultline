@@ -44,7 +44,7 @@ module.exports.post = (event, context, cb) => {
 
     const project = decodeURIComponent(event.pathParameters.project);
 
-    if (project.match(/[\/\s]/)) {
+    if (project.match(/[\/\s\.]/)) {
         const response = resgen(400, { status: 'error', message: 'Validation error: invalid field \'project\'', data: ajv.errors });
         cb(null, response);
         return;

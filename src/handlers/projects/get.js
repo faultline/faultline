@@ -27,7 +27,7 @@ module.exports.list = (event, context, cb) => {
     storage.listObjects(params)
         .then((data) => {
             const projects = data.CommonPrefixes.map((prefix) => {
-                return { name: prefix.Prefix.replace(/projects\/([^\/]+)\//,'$1') };
+                return { name: decodeURIComponent(prefix.Prefix.replace(/projects\/([^\/]+)\//,'$1')) };
             });
             const response = resgen(200, { status: 'success', projects: projects });
             cb(null, response);
