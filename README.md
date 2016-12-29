@@ -26,7 +26,7 @@
 
 ## Using framework
 
-- Serverless Framework :zap: (= v1.3.0)
+- Serverless Framework :zap: (= v1.4.0)
 
 ### AWS Resources
 
