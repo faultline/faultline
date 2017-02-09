@@ -30,7 +30,7 @@
     "json-schema-deref-sync": "^0.3.3",
     "lodash": "^4.16.2",
     "moment": "^2.15.0",
-    "serverless": "1.4.0"
+    "serverless": "1.6.1"
   },
   "devDependencies": {
     "aws-sdk": "^2.7.7"
