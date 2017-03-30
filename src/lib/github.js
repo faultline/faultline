@@ -42,16 +42,7 @@ module.exports = (n, errorData) => {
         title: `[${errorData.type}] ${errorData.message}`
     };
 
-    let body = `## project
-${errorData.project}
-
-## type
-${errorData.type}
-
-## timestamp
-${errorData.timestamp}
-
-`;
+    let body = '';
 
     if (errorData.backtrace) {
         let backtrace = `## backtrace
@@ -62,10 +53,34 @@ ${errorData.timestamp}
             backtrace += b.file + '(' + b.line + ') ' + b.function + "\n";
         });
         backtrace += "```\n\n";
-        body = backtrace + body;
+        body += backtrace;
     }
 
-    body += '> This issue was created by [faultline](https://github.com/k1LoW/faultline).';
+    ['context', 'environment', 'session', 'params'].forEach((k) => {
+        if (errorData[k] && JSON.stringify(errorData[k], null, 2) != '{}') {
+            let content = '## ' + k;
+            content += "\n\n\n";
+            content += "```\n";
+            content += JSON.stringify(errorData[k], null, 2);
+            content += "\n";
+            content += "```\n\n";
+            body += content;
+        }
+    });
+
+    let footer = `## project
+${errorData.project}
+
+## type
+${errorData.type}
+
+## timestamp
+${errorData.timestamp}
+
+`;
+
+    footer += '> This issue was created by [faultline](https://github.com/k1LoW/faultline).';
+    body += footer;
 
     issue.body = body;
 
