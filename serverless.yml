@@ -2,6 +2,8 @@ service: faultline
 custom:
   config: ${file(./config.yml)}
 
+frameworkVersion: ">=1.10.1 <2.0.0"
+
 provider:
   name: aws
   runtime: nodejs4.3
