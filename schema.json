@@ -393,7 +393,13 @@
         "threshold": {"type": "number"},
         "userToken": {"type": "string"},
         "owner": {"type": "string"},
-        "repo": {"type": "string"}
+        "repo": {"type": "string"},
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
       },
       "required": ["type", "userToken", "owner", "repo"]
     }

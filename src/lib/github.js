@@ -42,6 +42,10 @@ module.exports = (n, errorData) => {
         title: `[${errorData.type}] ${errorData.message}`
     };
 
+    if (n.labels) {
+        issue.labels = n.labels;
+    }
+
     let body = '';
 
     if (errorData.backtrace) {

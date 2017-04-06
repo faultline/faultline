@@ -96,6 +96,9 @@ POST errors with GitHub repo config for creating issue, like following code
       "userToken": "XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX",
       "owner": "k1LoW",
       "repo": "faultline",
+      "labels": [
+        "faultline", "bug"
+      ],
       "threshold": -1
     }
   ]
