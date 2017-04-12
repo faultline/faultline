@@ -6,6 +6,7 @@ const fs = require('fs');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
+const checkApiKey = require('../../lib/check_api_key');
 const slack = require('../../lib/slack');
 const github = require('../../lib/github');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
@@ -26,8 +27,7 @@ const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
 module.exports.post = (event, context, cb) => {
     if (config.apiKey || config.clientApiKey) {
         // Check faultline API Key
-        if (!event.headers.hasOwnProperty('x-api-key')
-            || (event.headers['x-api-key'] != config.apiKey && event.headers['x-api-key'] != config.clientApiKey)) {
+        if (!checkApiKey(event, true)) {
             const response = resgen(403, { status: 'error', message: '403 Forbidden'});
             cb(null, response);
             return;
