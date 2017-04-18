@@ -1,6 +1,5 @@
 'use strict';
 
-const timestampFormat = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO8601
 const timeunits = require('./timeunits');
 const yaml = require('js-yaml');
 const fs = require('fs');
@@ -12,7 +11,7 @@ const bucketName = config.s3BucketName;
 const axios = require('axios');
 
 module.exports = (n, errorData) => {
-    const byTimeunit = moment(moment(errorData.timestamp).format(timeunitFormat), timeunitFormat).format(timestampFormat);
+    const byTimeunit = moment(moment(errorData.timestamp).format(timeunitFormat), timeunitFormat).format();
     const key = 'projects/'
               + errorData.project + '/'
               + errorData.message + '/'
@@ -52,6 +51,9 @@ module.exports = (n, errorData) => {
                         short: true
                     }
                 ],
+                footer: 'faultline',
+                footer_icon: 'https://k1low.github.io/faultline/icon.png',
+                ts: moment(errorData.timestamp).unix(),
                 color: '#E06A3B'
             }
         ]
