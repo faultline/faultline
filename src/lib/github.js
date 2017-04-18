@@ -1,31 +1,9 @@
 'use strict';
 
-const timestampFormat = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO8601
-const timeunits = require('./timeunits');
-const yaml = require('js-yaml');
-const fs = require('fs');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-const timeunitFormat = timeunits[config.timeunit];
-const moment = require('moment');
-const storage = require('./storage');
-const bucketName = config.s3BucketName;
 const github = require('github');
 
 module.exports = (n, errorData) => {
-    const byTimeunit = moment(moment(errorData.timestamp).format(timeunitFormat), timeunitFormat).format(timestampFormat);
-    const key = 'projects/'
-              + errorData.project + '/'
-              + errorData.message + '/'
-              + byTimeunit + '/'
-              + errorData.project + '-'
-              + errorData.message + '-'
-              + errorData.timestamp + '.json';
-
-    const params = {
-        Bucket: bucketName,
-        Key: key
-    };
-    const signedUrl = storage.getSignedUrl(params);
+    const title = `[${errorData.type}] ${errorData.message}`;
 
     const g = new github({
         timeout: 5000
@@ -36,43 +14,41 @@ module.exports = (n, errorData) => {
         token: n.userToken
     });
 
-    let issue = {
-        owner: n.owner,
-        repo: n.repo,
-        title: `[${errorData.type}] ${errorData.message}`
-    };
-
-    if (n.labels) {
-        issue.labels = n.labels;
+    let acitonIfExist = 'reopen-and-comment';
+    if (n.if_exist) {
+        acitonIfExist = n.if_exist;
     }
 
-    let body = '';
+    function buildBody() {
+        let body = '';
 
-    if (errorData.backtrace) {
-        let backtrace = `## backtrace
-
-`;
-        backtrace += "```\n";
-        errorData.backtrace.forEach((b) => {
-            backtrace += b.file + '(' + b.line + ') ' + b.function + "\n";
-        });
-        backtrace += "```\n\n";
-        body += backtrace;
-    }
-
-    ['context', 'environment', 'session', 'params'].forEach((k) => {
-        if (errorData[k] && JSON.stringify(errorData[k], null, 2) != '{}') {
-            let content = '## ' + k;
-            content += "\n\n\n";
-            content += "```\n";
-            content += JSON.stringify(errorData[k], null, 2);
-            content += "\n";
-            content += "```\n\n";
-            body += content;
+        if (errorData.backtrace) {
+            let backtrace = '## backtrace\n\n';
+            backtrace += '```\n';
+            errorData.backtrace.forEach((b) => {
+                backtrace += b.file + '(' + b.line + ') ' + b.function + '\n';
+            });
+            backtrace += '```\n\n';
+            body += backtrace;
         }
-    });
 
-    let footer = `## project
+        ['context', 'environment', 'session', 'params'].forEach((k) => {
+            if (errorData[k] && JSON.stringify(errorData[k], null, 2) != '{}') {
+                let content = '## ' + k;
+                content += '\n\n\n';
+                content += '```\n';
+                content += JSON.stringify(errorData[k], null, 2);
+                content += '\n';
+                content += '```\n\n';
+                body += content;
+            }
+        });
+
+        return body;
+    }
+
+    function buildFooter() {
+        let footer = `## project
 ${errorData.project}
 
 ## type
@@ -83,16 +59,95 @@ ${errorData.timestamp}
 
 `;
 
-    footer += '> This issue was created by [faultline](https://github.com/k1LoW/faultline).';
-    body += footer;
+        footer += '> This issue was created by [faultline](https://github.com/k1LoW/faultline).';
+        return footer;
+    }
 
-    issue.body = body;
+    function isReopen() {
+        return (['reopen', 'reopen-and-comment', 'reopen-and-update'].indexOf(acitonIfExist) >= 0);
+    }
 
-    g.issues.create(issue)
-        .then((res) => {
-            console.log(res);
-        })
-        .catch((err) => {
-            console.log(err);
+    function isComment() {
+        return (['comment', 'reopen-and-comment'].indexOf(acitonIfExist) >= 0);
+    }
+
+    function isUpdate() {
+        return (['reopen-and-update'].indexOf(acitonIfExist) >= 0);
+    }
+
+    function getAllIssues(arr) {
+        if (!arr) arr=[];
+        const limit = 100;
+        let page = Math.ceil(arr.length / limit) + 1;
+        let condition = {
+            owner: n.owner,
+            repo: n.repo,
+            state: 'all',
+            per_page: limit,
+            page: page
+        };
+        return g.issues.getForRepo(condition).then(function(results) {
+            if (!results.length)
+                return arr;
+            else
+                return getAllIssues(arr.concat(results));
         });
+    }
+
+    getAllIssues().then((res) => {
+        const filtered = res.filter((issue) => {
+            return issue.title == title;
+        });
+        let promises = [];
+        let labels = [];
+        if (n.labels) {
+            labels = n.labels;
+        }
+        const body = buildBody();
+        if (filtered.length == 1) {
+            if (isReopen()) {
+                if (isUpdate()) {
+                    promises.push(g.issues.edit({
+                        owner: n.owner,
+                        repo: n.repo,
+                        number: filtered[0].number,
+                        state: 'open',
+                        title: title,
+                        labels: labels,
+                        body: body + buildFooter()
+                    }));
+                } else {
+                    promises.push(g.issues.edit({
+                        owner: n.owner,
+                        repo: n.repo,
+                        number: filtered[0].number,
+                        state: 'open'
+                    }));
+                }
+            }
+            if (isComment()) {
+                promises.push(g.issues.createComment({
+                    owner: n.owner,
+                    repo: n.repo,
+                    number: filtered[0].number,
+                    body: body
+                }));
+            }
+        } else {
+            // Create issue
+            promises.push(g.issues.create({
+                owner: n.owner,
+                repo: n.repo,
+                title: title,
+                labels: labels,
+                body: body + buildFooter()
+            }));
+        }
+        return Promise.all(promises);
+    }).then((res) => {
+        //console.log(res);
+    }).catch((err) => {
+        console.log(err);
+    });
+
 };
