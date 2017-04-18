@@ -99,7 +99,9 @@ POST errors with GitHub repo config for creating issue, like following code
       "labels": [
         "faultline", "bug"
       ],
-      "threshold": -1
+      "if_exist": "reopen-and-comment",
+      "notifyInterval": 10,
+      "threshold": 1
     }
   ]
 }

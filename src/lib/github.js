@@ -14,34 +14,12 @@ module.exports = (n, errorData) => {
         token: n.userToken
     });
 
-    g.issues.getForRepo({
-        owner: n.owner,
-        repo: n.repo,
-        state: 'all',
-        per_page: 100
-    }).then((res) => {
-        const filtered = res.filter((issue) => {
-            return issue.title == title;
-        });
-        if (filtered.length == 1) {
-            return g.issues.edit({
-                owner: n.owner,
-                repo: n.repo,
-                number: filtered[0].number,
-                state: 'open'
-            });
-        }
-        return true;
-    }).then((res) => {
-        let issue = {
-            owner: n.owner,
-            repo: n.repo
-        };
+    let acitonIfExist = 'reopen-and-comment';
+    if (n.if_exist) {
+        acitonIfExist = n.if_exist;
+    }
 
-        if (n.labels) {
-            issue.labels = n.labels;
-        }
-
+    function buildBody() {
         let body = '';
 
         if (errorData.backtrace) {
@@ -66,16 +44,10 @@ module.exports = (n, errorData) => {
             }
         });
 
-        if (res.number) {
-            // create comment
-            issue.number = res.number;
-            issue.body = body;
-            return g.issues.createComment(issue);
-        }
+        return body;
+    }
 
-        // create issue
-        issue.title = title;
-
+    function buildFooter() {
         let footer = `## project
 ${errorData.project}
 
@@ -88,13 +60,92 @@ ${errorData.timestamp}
 `;
 
         footer += '> This issue was created by [faultline](https://github.com/k1LoW/faultline).';
-        body += footer;
+        return footer;
+    }
 
-        issue.body = body;
+    function isReopen() {
+        return (['reopen', 'reopen-and-comment', 'reopen-and-update'].indexOf(acitonIfExist) >= 0);
+    }
 
-        return g.issues.create(issue);
+    function isComment() {
+        return (['comment', 'reopen-and-comment'].indexOf(acitonIfExist) >= 0);
+    }
+
+    function isUpdate() {
+        return (['reopen-and-update'].indexOf(acitonIfExist) >= 0);
+    }
+
+    function getAllIssues(arr) {
+        if (!arr) arr=[];
+        const limit = 100;
+        let page = Math.ceil(arr.length / limit) + 1;
+        let condition = {
+            owner: n.owner,
+            repo: n.repo,
+            state: 'all',
+            per_page: limit,
+            page: page
+        };
+        return g.issues.getForRepo(condition).then(function(results) {
+            if (!results.length)
+                return arr;
+            else
+                return getAllIssues(arr.concat(results));
+        });
+    }
+
+    getAllIssues().then((res) => {
+        const filtered = res.filter((issue) => {
+            return issue.title == title;
+        });
+        let promises = [];
+        let labels = [];
+        if (n.labels) {
+            labels = n.labels;
+        }
+        const body = buildBody();
+        if (filtered.length == 1) {
+            if (isReopen()) {
+                if (isUpdate()) {
+                    promises.push(g.issues.edit({
+                        owner: n.owner,
+                        repo: n.repo,
+                        number: filtered[0].number,
+                        state: 'open',
+                        title: title,
+                        labels: labels,
+                        body: body + buildFooter()
+                    }));
+                } else {
+                    promises.push(g.issues.edit({
+                        owner: n.owner,
+                        repo: n.repo,
+                        number: filtered[0].number,
+                        state: 'open'
+                    }));
+                }
+            }
+            if (isComment()) {
+                promises.push(g.issues.createComment({
+                    owner: n.owner,
+                    repo: n.repo,
+                    number: filtered[0].number,
+                    body: body
+                }));
+            }
+        } else {
+            // Create issue
+            promises.push(g.issues.create({
+                owner: n.owner,
+                repo: n.repo,
+                title: title,
+                labels: labels,
+                body: body + buildFooter()
+            }));
+        }
+        return Promise.all(promises);
     }).then((res) => {
-        console.log(res);
+        //console.log(res);
     }).catch((err) => {
         console.log(err);
     });
