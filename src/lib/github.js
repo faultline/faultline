@@ -1,9 +1,13 @@
 'use strict';
 
 const github = require('github');
+const moment = require('moment-timezone');
 
 module.exports = (n, errorData) => {
     const title = `[${errorData.type}] ${errorData.message}`;
+    const timestamp = (n.timezone)
+          ? moment(errorData.timestamp, moment.ISO_8601).tz(n.timezone).format()
+          : moment(errorData.timestamp, moment.ISO_8601).format();
 
     const g = new github({
         timeout: 5000
@@ -55,7 +59,7 @@ ${errorData.project}
 ${errorData.type}
 
 ## timestamp
-${errorData.timestamp}
+${timestamp}
 
 `;
 
@@ -131,7 +135,7 @@ ${errorData.timestamp}
                     owner: n.owner,
                     repo: n.repo,
                     number: number,
-                    body: body + '## timestamp\n' + errorData.timestamp
+                    body: body + '## timestamp\n' + timestamp
                 }));
             }
         } else {

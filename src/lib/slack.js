@@ -5,7 +5,7 @@ const yaml = require('js-yaml');
 const fs = require('fs');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 const timeunitFormat = timeunits[config.timeunit];
-const moment = require('moment');
+const moment = require('moment-timezone');
 const storage = require('./storage');
 const bucketName = config.s3BucketName;
 const axios = require('axios');
@@ -19,6 +19,9 @@ module.exports = (n, errorData) => {
               + errorData.project + '-'
               + errorData.message + '-'
               + errorData.timestamp + '.json';
+    const timestamp = (n.timezone)
+          ? moment(errorData.timestamp, moment.ISO_8601).tz(n.timezone).format()
+          : moment(errorData.timestamp, moment.ISO_8601).format();
 
     const params = {
         Bucket: bucketName,
@@ -47,13 +50,13 @@ module.exports = (n, errorData) => {
                     },
                     {
                         title: 'timestamp',
-                        value: errorData.timestamp,
+                        value: timestamp,
                         short: true
                     }
                 ],
                 footer: 'faultline',
                 footer_icon: 'https://k1low.github.io/faultline/icon.png',
-                ts: moment(errorData.timestamp).unix(),
+                ts: moment(timestamp).unix(),
                 color: '#E06A3B'
             }
         ]

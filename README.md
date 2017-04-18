@@ -80,7 +80,7 @@ POST errors with slack notification config like [this](sample-errors.json).
 
 POST errors with GitHub repo config for creating issue, like following code
 
-```json
+```json5
 {
   "errors": [
 
@@ -101,7 +101,8 @@ POST errors with GitHub repo config for creating issue, like following code
       ],
       "if_exist": "reopen-and-comment",
       "notifyInterval": 10,
-      "threshold": 1
+      "threshold": 1,
+      "timezone": "Asia/Tokyo"
     }
   ]
 }
