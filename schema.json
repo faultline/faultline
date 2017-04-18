@@ -374,7 +374,8 @@
         "channel": {"type": "string"},
         "username": {"type": "string"},
         "icon_emoji": {"type": "string"},
-        "icon_url": {"type": "string"}
+        "icon_url": {"type": "string"},
+        "timezone": {"type": "string"}
       },
       "required": ["type", "endpoint", "channel"]
     },
@@ -404,7 +405,8 @@
           "type": {
             "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
           }
-        }
+        },
+        "timezone": {"type": "string"}
       },
       "required": ["type", "userToken", "owner", "repo"]
     }
