@@ -131,7 +131,7 @@ ${errorData.timestamp}
                     owner: n.owner,
                     repo: n.repo,
                     number: number,
-                    body: body
+                    body: body + '## timestamp\n' + errorData.timestamp
                 }));
             }
         } else {
