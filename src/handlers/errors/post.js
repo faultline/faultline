@@ -1,6 +1,5 @@
 'use strict';
 
-const timestampFormat = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO8601
 const yaml = require('js-yaml');
 const fs = require('fs');
 const resgen = require('../../lib/resgen');
@@ -57,7 +56,7 @@ module.exports.post = (event, context, cb) => {
     const params = body.hasOwnProperty('params') ? body.params: {};
     const notifications = body.hasOwnProperty('notifications') ? body.notifications: [];
 
-    const now = moment().format(timestampFormat);
+    const now = moment().format();
     const status = 'unresolved';
     let promises = [];
 
@@ -69,7 +68,7 @@ module.exports.post = (event, context, cb) => {
         if (e.timestamp) {
             timestamp = e.timestamp;
         }
-        const byTimeunit = moment(moment(timestamp).format(timeunitFormat), timeunitFormat).format(timestampFormat);
+        const byTimeunit = moment(moment(timestamp).format(timeunitFormat), timeunitFormat).format();
         const errorData = {
             project: project,
             message: message,

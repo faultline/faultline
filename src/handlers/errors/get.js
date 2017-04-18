@@ -1,6 +1,5 @@
 'use strict';
 
-const timestampFormat = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO8601
 const yaml = require('js-yaml');
 const fs = require('fs');
 const resgen = require('../../lib/resgen');
@@ -100,8 +99,8 @@ module.exports.get = (event, context, cb) => {
         },
         ExpressionAttributeValues: {
             ':key':key,
-            ':from':moment(start, moment.ISO_8601).format(timestampFormat),
-            ':to':moment(end, moment.ISO_8601).format(timestampFormat)
+            ':from':moment(start, moment.ISO_8601).format(),
+            ':to':moment(end, moment.ISO_8601).format()
         }
     };
 

@@ -1,6 +1,5 @@
 'use strict';
 
-const timestampFormat = 'YYYY-MM-DDTHH:mm:ssZ'; // ISO8601
 const yaml = require('js-yaml');
 const fs = require('fs');
 const resgen = require('../../lib/resgen');
@@ -39,7 +38,7 @@ module.exports.patch = (event, context, cb) => {
     const status = body.status;
     const project = decodeURIComponent(event.pathParameters.project);
     const message = decodeURIComponent(event.pathParameters.message);
-    const now = moment().format(timestampFormat);
+    const now = moment().format();
 
     const docParams = {
         TableName: errorByMessageTable,
