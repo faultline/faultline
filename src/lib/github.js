@@ -105,12 +105,13 @@ ${errorData.timestamp}
         }
         const body = buildBody();
         if (filtered.length == 1) {
+            const number = filtered[0].number;
             if (isReopen()) {
                 if (isUpdate()) {
                     promises.push(g.issues.edit({
                         owner: n.owner,
                         repo: n.repo,
-                        number: filtered[0].number,
+                        number: number,
                         state: 'open',
                         title: title,
                         labels: labels,
@@ -120,7 +121,7 @@ ${errorData.timestamp}
                     promises.push(g.issues.edit({
                         owner: n.owner,
                         repo: n.repo,
-                        number: filtered[0].number,
+                        number: number,
                         state: 'open'
                     }));
                 }
@@ -129,7 +130,7 @@ ${errorData.timestamp}
                 promises.push(g.issues.createComment({
                     owner: n.owner,
                     repo: n.repo,
-                    number: filtered[0].number,
+                    number: number,
                     body: body
                 }));
             }

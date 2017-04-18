@@ -35,7 +35,6 @@ module.exports = (n, errorData) => {
                 fallback: errorData.message,
                 title: errorData.message,
                 title_link: signedUrl,
-                // text: errorData.message,
                 fields: [
                     {
                         title: 'project',
@@ -70,7 +69,7 @@ module.exports = (n, errorData) => {
     let backtrace = '';
     if (errorData.backtrace) {
         errorData.backtrace.forEach((b) => {
-            backtrace += b.file + '(' + b.line + ') ' + b.function + "\n";
+            backtrace += b.file + '(' + b.line + ') ' + b.function + '\n';
         });
         data.attachments[0].fields.push({
             title: 'backtrace',
@@ -81,7 +80,7 @@ module.exports = (n, errorData) => {
 
     axios.post(n.endpoint, data)
         .then((res) => {
-            console.log(res);
+            //console.log(res);
         })
         .catch((err) => {
             console.log(err);
