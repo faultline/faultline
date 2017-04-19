@@ -202,7 +202,6 @@ module.exports.post = (event, context, cb) => {
                     console.log(err);
                 }
             });
-            return;
         })
         .catch((err) => {
             cb(new Error('Unable to notify error. Error JSON:', JSON.stringify(err, null, 2)));
