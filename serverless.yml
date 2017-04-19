@@ -7,9 +7,9 @@ frameworkVersion: ">=1.10.1 <2.0.0"
 provider:
   name: aws
   runtime: nodejs6.10
-  timeout: 30
   stage: v0
   region: ${self:custom.config.region}
+  timeout: 10
   cfLogs: true
   apiKey: false
   iamRoleStatements:
@@ -31,9 +31,15 @@ provider:
           - - "arn:aws:s3:::"
             - ${self:custom.config.s3BucketName}
             - "/*"
+    - Effect: Allow
+      Action:
+        - "lambda:InvokeFunction"
+        - "lambda:InvokeAsync"
+      Resource: "*"
 
 package:
   include:
+    - serverless.yml
     - src/**
   exclude:
     - .git/**
@@ -96,6 +102,10 @@ functions:
           method: delete
           cors: true
           integration: lambda-proxy
+  callNotifications:
+    handler: src/handlers/notifications.call
+    name: faultline-${self:provider.stage}-callNotifications
+    timeout: 30
 
 resources:
   Resources:

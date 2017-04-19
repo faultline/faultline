@@ -2,12 +2,11 @@
 
 const yaml = require('js-yaml');
 const fs = require('fs');
+const aws = require('aws-sdk');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
-const slack = require('../../lib/slack');
-const github = require('../../lib/github');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
 const timeunitFormat = timeunits[config.timeunit];
 const moment = require('moment');
@@ -22,6 +21,11 @@ const schema = deref(rootSchema).properties.error.links.find((l) => {
 const bucketName = config.s3BucketName;
 const errorByMessageTable = config.dynamodbTablePrefix + 'Error';
 const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
+
+const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../serverless.yml', 'utf8'));
+const lambda = new aws.Lambda({
+    region: config.region
+});
 
 module.exports.post = (event, context, cb) => {
     if (config.apiKey || config.clientApiKey) {
@@ -185,31 +189,16 @@ module.exports.post = (event, context, cb) => {
             if (!notifications) {
                 return;
             }
-            notifications.forEach((n) => {
-                let notifier = null;
-                if (n.type == 'slack') {
-                    notifier = slack;
-                } else if (n.type == 'github') {
-                    notifier = github;
-                } else {
-                    return;
-                }
-                res.forEach((e) => {
-                    const resByTimeunit = e.results[0].Attributes;
-                    const res = e.results[1].Attributes;
-                    let notifyInterval = n.notifyInterval ? n.notifyInterval : 1;
-                    let threshold = n.threshold ? n.threshold : 1;
-                    if (res.count == 1) {
-                        // first notify
-                        notifier.call(null, n, e.detail);
-                    } else if (threshold < 0) {
-                        return;
-                    } else if (resByTimeunit.count >= threshold
-                               && (resByTimeunit.count % notifyInterval) == 0) {
-                        notifier.call(null, n, e.detail);
-                    }
-                });
+            const functionName = serverlessConfig.functions.callNotifications.name.replace('${self:provider.stage}', serverlessConfig.provider.stage);
+            lambda.invoke({
+                FunctionName: functionName,
+                InvocationType: 'Event',
+                Payload: JSON.stringify({
+                    notifications: notifications,
+                    res: res
+                }, null, 2)
             });
+            return;
         })
         .catch((err) => {
             cb(new Error('Unable to notify error. Error JSON:', JSON.stringify(err, null, 2)));
