@@ -197,6 +197,10 @@ module.exports.post = (event, context, cb) => {
                     notifications: notifications,
                     res: res
                 }, null, 2)
+            }, (err, res) => {
+                if (err) {
+                    console.log(err);
+                }
             });
             return;
         })
