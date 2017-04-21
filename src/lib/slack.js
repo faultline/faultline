@@ -55,7 +55,7 @@ module.exports = (n, errorData) => {
                     }
                 ],
                 footer: 'faultline',
-                footer_icon: 'https://k1low.github.io/faultline/icon.png',
+                footer_icon: 'https://faultline.github.io/faultline/icon.png',
                 ts: moment(timestamp).unix(),
                 color: '#E06A3B'
             }
@@ -68,7 +68,7 @@ module.exports = (n, errorData) => {
     } else if(n.icon_emoji) {
         data.icon_emoji = n.icon_emoji;
     } else {
-        data.icon_url = 'https://k1low.github.io/faultline/icon.png';
+        data.icon_url = 'https://faultline.github.io/faultline/icon.png';
     }
 
     let backtrace = '';

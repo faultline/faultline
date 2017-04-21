@@ -2,7 +2,7 @@
 
 > Error tracking tool on AWS managed services.
 
-![logo](https://k1low.github.io/faultline/faultline.png)
+![logo](https://faultline.github.io/faultline/faultline.png)
 
 ## Table of Contents
 
@@ -74,7 +74,7 @@ Sample errors POST JSON file is [here](sample-errors.json).
 
 POST errors with slack notification config like [this](sample-errors.json).
 
-![slack](https://k1low.github.io/faultline/slack.png)
+![slack](https://faultline.github.io/faultline/slack.png)
 
 #### GitHub issue
 
@@ -108,7 +108,7 @@ POST errors with GitHub repo config for creating issue, like following code
 }
 ```
 
-![GitHub](https://k1low.github.io/faultline/github.png)
+![GitHub](https://faultline.github.io/faultline/github.png)
 
 ## API
 
