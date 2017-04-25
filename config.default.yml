@@ -12,3 +12,5 @@ timeunit: minute
 apiKey: (EDITME)
 # faultline API Key for POST errors only (!This is not API Gateway API Key!)
 clientApiKey: (EDITME)
+# faultline functions CloudWatchLogs Retention
+logRetentionInDays: 180
