@@ -35,7 +35,8 @@ provider:
       Action:
         - "lambda:InvokeFunction"
         - "lambda:InvokeAsync"
-      Resource: "*"
+      Resource:
+        - "arn:aws:lambda:${self:custom.config.region}:*:function:faultline-${self:provider.stage}-callNotifications"
 
 package:
   include:
