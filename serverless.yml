@@ -159,3 +159,35 @@ resources:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
         TableName: ${self:custom.config.dynamodbTablePrefix}ErrorByTimeunit
+    ProjectsListLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    ProjectsDeleteLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    ErrorsPostLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    ErrorsListLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    ErrorsGetLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    ErrorsPatchLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    ErrorsDeleteLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
+    CallNotificationsLogGroup:
+      Type: "AWS::Logs::LogGroup"
+      Properties:
+        RetentionInDays: ${self:custom.config.logRetentionInDays}
