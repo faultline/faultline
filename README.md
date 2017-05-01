@@ -120,7 +120,7 @@ JSON Hyper-Schema is [here](schema.json).
 
 Sample web UI for faultline
 
-https://github.com/k1LoW/faultline-webui
+https://github.com/faultline/faultline-webui
 
 ## Destroy faultline
 
