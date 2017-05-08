@@ -16,17 +16,17 @@ module.exports.call = (event, context, cb) => {
             return;
         }
         res.forEach((e) => {
-            const resByTimeunit = e.results[0].Attributes;
-            const res = e.results[1].Attributes;
+            const resByTimeunitCount = e.counts[0];
+            const resCount = e.counts[1];
             let notifyInterval = n.notifyInterval ? n.notifyInterval : 1;
             let threshold = n.threshold ? n.threshold : 1;
-            if (res.count == 1) {
+            if (resCount == 1) {
                 // first notify
                 notifier.call(null, n, e.detail);
             } else if (threshold < 0) {
                 return;
-            } else if (resByTimeunit.count >= threshold
-                       && (resByTimeunit.count % notifyInterval) == 0) {
+            } else if (resByTimeunitCount >= threshold
+                       && (resByTimeunitCount % notifyInterval) == 0) {
                 notifier.call(null, n, e.detail);
             }
         });

@@ -27,6 +27,30 @@ const lambda = new aws.Lambda({
     region: config.region
 });
 
+String.prototype.bytes = function(){
+    return(encodeURIComponent(this).replace(/%../g,'x').length);
+};
+
+Array.prototype.chunk = function(chunkBytes = 128000){
+    // invoke payload size limit 128kb
+    // http://docs.aws.amazon.com/lambda/latest/dg/limits.html
+    let sets = [];
+    let len = this.length;
+    let chunk = [];
+    for (let i = 0; i < len; i++) {
+        chunk.push(this[i]);
+        if (JSON.stringify(chunk).bytes() > chunkBytes) {
+            let poped = chunk.pop();
+            sets.push(chunk);
+            chunk = [poped];
+        }
+    }
+    if (chunk.length > 0) {
+        sets.push(chunk);
+    }
+    return sets;
+};
+
 module.exports.post = (event, context, cb) => {
     if (config.apiKey || config.clientApiKey) {
         // Check faultline API Key
@@ -190,17 +214,32 @@ module.exports.post = (event, context, cb) => {
                 return;
             }
             const functionName = serverlessConfig.functions.callNotifications.name.replace('${self:provider.stage}', serverlessConfig.provider.stage);
-            lambda.invoke({
-                FunctionName: functionName,
-                InvocationType: 'Event',
-                Payload: JSON.stringify({
-                    notifications: notifications,
-                    res: res
-                }, null, 2)
-            }, (err, res) => {
-                if (err) {
-                    console.log(err);
-                }
+            let slimed = res.map((e) => {
+                return {
+                    counts: [
+                        e.results[0].Attributes.count, // res
+                        e.results[1].Attributes.count, // resByTimeunit
+                    ],
+                    detail: e.detail
+                };
+            });
+            const chunkBytes = 128000 - JSON.stringify({
+                notifications: notifications,
+                res: ''
+            }).bytes();
+            slimed.chunk(chunkBytes).forEach((c) => {
+                lambda.invoke({
+                    FunctionName: functionName,
+                    InvocationType: 'Event',
+                    Payload: JSON.stringify({
+                        notifications: notifications,
+                        res: c
+                    })
+                }, (err, res) => {
+                    if (err) {
+                        console.log(err);
+                    }
+                });
             });
         })
         .catch((err) => {
