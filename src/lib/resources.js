@@ -5,7 +5,7 @@ const fs = require('fs');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 
 module.exports.resources = () => {
-    return {
+    let resources = {
         FaultlineBucket: {
             Type: 'AWS::S3::Bucket',
             Properties: {
@@ -93,54 +93,62 @@ module.exports.resources = () => {
                 },
                 TableName: `${config.dynamodbTablePrefix}ErrorByTimeunit`
             }
-        },
-        ProjectsListLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        ProjectsDeleteLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        ErrorsPostLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        ErrorsListLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        ErrorsGetLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        ErrorsPatchLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        ErrorsDeleteLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        },
-        CallNotificationsLogGroup: {
-            Type: 'AWS::Logs::LogGroup',
-            Properties: {
-                RetentionInDays: config.logRetentionInDays
-            }
-        }
+        }        
     };
+
+    if (config.logRetentionInDays) {
+        const logResources = {
+            ProjectsListLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            ProjectsDeleteLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            ErrorsPostLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            ErrorsListLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            ErrorsGetLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            ErrorsPatchLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            ErrorsDeleteLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            },
+            CallNotificationsLogGroup: {
+                Type: 'AWS::Logs::LogGroup',
+                Properties: {
+                    RetentionInDays: config.logRetentionInDays
+                }
+            }
+        };
+        resources = Object.assign(resources, logResources);
+    }
+        
+    return resources;
 };
