@@ -1,12 +1,25 @@
 'use strict';
 
+const yaml = require('js-yaml');
+const fs = require('fs');
+const aws = require('aws-sdk');
+const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 const slack = require('../lib/slack');
 const github = require('../lib/github');
+const kms = new aws.KMS({
+    region: config.region
+});
 
 module.exports.call = (event, context, cb) => {
     const notifications = event.notifications;
     const res = event.res;
-    notifications.forEach((n) => {
+
+    const notifyCall = (n) => {
+        if (typeof n !== 'object') {
+            cb('notifyCall error', n);
+            return;
+        }
+
         let notifier = null;
         if (n.type == 'slack') {
             notifier = slack;
@@ -30,5 +43,23 @@ module.exports.call = (event, context, cb) => {
                 notifier.call(null, n, e.detail);
             }
         });
+    };
+
+    notifications.forEach((n) => {
+        if (typeof n === 'string') {
+            // KMS encrypted
+            let kmsEncyptedToken = n;
+            let encryptedBuf = new Buffer(kmsEncyptedToken, 'base64');
+            let cipherText = { CiphertextBlob: encryptedBuf };
+            kms.decrypt(cipherText).promise().then((data) => {
+                const decrypted = JSON.parse(data.Plaintext.toString('ascii'));
+                notifyCall(decrypted);
+            }).catch((err) => {
+                console.log(err);
+                cb('Decrypt error', err);
+            });
+        } else {
+            notifyCall(n);
+        }
     });
 };

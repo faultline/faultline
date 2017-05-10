@@ -246,7 +246,8 @@
                 "items": {
                   "anyOf" : [
                     { "slack": { "$ref":"#/definitions/slack" } },
-                    { "github": { "$ref":"#/definitions/github" } }
+                    { "github": { "$ref":"#/definitions/github" } },
+                    { "kms_encrypted": { "$ref":"#/definitions/kms_encrypted" } }
                   ]
                 },
                 "example": [
@@ -409,6 +410,10 @@
         "timezone": {"type": "string"}
       },
       "required": ["type", "userToken", "owner", "repo"]
+    },
+    "kms_encrypted": {
+      "type": "string",
+      "pattern": "^.+$"
     }
   },
   "title": "faultline API JSON Hyper-Schema"
