@@ -11,9 +11,6 @@ class KmsResources {
         this.serverless = serverless;
         this.options = options;
         this.provider = this.serverless.getProvider('aws');
-        this.service = this.serverless.service.service;
-        this.stage = this.provider.getStage();
-        this.region = this.provider.getRegion();
         this.roleName = this.provider.naming.getRoleName();
 
         this.hooks = {
