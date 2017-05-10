@@ -123,15 +123,13 @@ Set `useKms: true` in config.yml, and deploy. Default AWS KMS Key alias is `alia
 
 ```sh
 $ AWS_PROFILE=XXxxXXX aws kms encrypt --key-id alias/faultline --plaintext '{"type":"slack","endpoint":"https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX","channel":"#random","username":"faultline-notify","notifyInterval":5,"threshold":10}' --query CiphertextBlob --output text --region ap-northeast-1
-
 XXXXXXxxxxXXXXXxxxxxxxxxxxxXXXXXXXXXXXXXxxxxxxxxxxxXXXXXxxxxxxxxXXXXxxxxxxxxXXXXXXXXXXXXxxxxx
 
 $ AWS_PROFILE=XXxxXXX aws kms encrypt --key-id alias/faultline --plaintext '{"type":"github","userToken":"XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX","owner":"k1LoW","repo":"faultline","labels":["faultline","bug"],"if_exist":"reopen-and-comment","notifyInterval":10,"threshold":1,"timezone":"Asia/Tokyo"}' --query CiphertextBlob --output text --region ap-northeast-1
-
 ZZZZZZzzzzZZZZZzzzzzzzzzzzzZZZZZZZZZZZZZzzzzzzzzzzzZZZZZzzzzzzzzZZZZzzzzzzzzZZZZZZZZZZZZzzzzz
 ```
 
-#### STEP 3. Use encrypted text as `notifications` config
+#### STEP 3. Set encrypted text as `notifications` config
 
 ```json5
 {
