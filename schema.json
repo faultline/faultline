@@ -403,9 +403,7 @@
           }
         },
         "if_exist": {
-          "type": {
-            "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
-          }
+          "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
         },
         "timezone": {"type": "string"}
       },
