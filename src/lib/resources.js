@@ -93,7 +93,7 @@ module.exports.resources = () => {
                 },
                 TableName: `${config.dynamodbTablePrefix}ErrorByTimeunit`
             }
-        }        
+        }
     };
 
     if (config.logRetentionInDays) {
@@ -149,6 +149,6 @@ module.exports.resources = () => {
         };
         resources = Object.assign(resources, logResources);
     }
-        
+
     return resources;
 };

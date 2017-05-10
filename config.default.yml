@@ -14,3 +14,7 @@ apiKey: (EDITME)
 clientApiKey: (EDITME)
 # faultline functions CloudWatchLogs Retention (days / null is unlimited)
 logRetentionInDays: 180
+# Use AWS KMS Key to encrypt POST params (notifications)
+useKms: false
+# AWS KMS Key alias
+kmsKeyAlias: faultline
