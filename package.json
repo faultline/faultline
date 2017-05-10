@@ -1,6 +1,6 @@
 {
   "name": "faultline",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
@@ -13,7 +13,13 @@
     "url": "git+https://github.com/k1LoW/faultline.git"
   },
   "keywords": [
-    "error"
+    "error-monitoring",
+    "crash-reporting",
+    "aws-lambda",
+    "serverless",
+    "notifications",
+    "slack",
+    "github"
   ],
   "author": "k1LoW",
   "license": "MIT",
