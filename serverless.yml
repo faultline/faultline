@@ -47,6 +47,9 @@ package:
     - doc/**
     - node_modules/aws-sdk/**
 
+plugins:
+  - kms_resources
+
 functions:
   projectsList:
     handler: src/handlers/projects/get.list
