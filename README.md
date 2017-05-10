@@ -35,6 +35,7 @@
 - Amazon S3
 - Amazon DynamoDB
 - IAM
+- KMS (option)
 
 ## How to deploy
 
