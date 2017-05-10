@@ -110,7 +110,7 @@ POST errors with GitHub repo config for creating issue, like following code
 
 ![GitHub](https://faultline.github.io/faultline/github.png)
 
-### :lock: AWS KMS Encryption of `notifications` config
+### :closed_lock_with_key: AWS KMS Encryption of `notifications` config
 
 #### STEP 1. `useKms` option true
 
