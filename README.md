@@ -125,7 +125,7 @@ XXXXXXxxxxXXXXXxxxxxxxxxxxxXXXXXXXXXXXXXxxxxxxxxxxxXXXXXxxxxxxxxXXXXxxxxxxxxXXXX
 
 $ AWS_PROFILE=XXxxXXX aws kms encrypt --key-id alias/faultline --plaintext '{"type":"github","userToken":"XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX","owner":"k1LoW","repo":"faultline","labels":["faultline","bug"],"if_exist":"reopen-and-comment","notifyInterval":10,"threshold":1,"timezone":"Asia/Tokyo"}' --query CiphertextBlob --output text --region ap-northeast-1
 
-YYYYYYyyyyYYYYYyyyyyyyyyyyyYYYYYYYYYYYYYyyyyyyyyyyyYYYYYyyyyyyyyYYYYyyyyyyyyYYYYYYYYYYYYyyyyy
+ZZZZZZzzzzZZZZZzzzzzzzzzzzzZZZZZZZZZZZZZzzzzzzzzzzzZZZZZzzzzzzzzZZZZzzzzzzzzZZZZZZZZZZZZzzzzz
 ```
 
 #### STEP 3. Use encrypted text as `notifications` config
@@ -139,7 +139,15 @@ YYYYYYyyyyYYYYYyyyyyyyyyyyyYYYYYYYYYYYYYyyyyyyyyyyyYYYYYyyyyyyyyYYYYyyyyyyyyYYYY
   ],
   "notifications": [
     "XXXXXXxxxxXXXXXxxxxxxxxxxxxXXXXXXXXXXXXXxxxxxxxxxxxXXXXXxxxxxxxxXXXXxxxxxxxxXXXXXXXXXXXXxxxxx",
-    "YYYYYYyyyyYYYYYyyyyyyyyyyyyYYYYYYYYYYYYYyyyyyyyyyyyYYYYYyyyyyyyyYYYYyyyyyyyyYYYYYYYYYYYYyyyyy"
+    "ZZZZZZzzzzZZZZZzzzzzzzzzzzzZZZZZZZZZZZZZzzzzzzzzzzzZZZZZzzzzzzzzZZZZzzzzzzzzZZZZZZZZZZZZzzzzz",
+    {
+      "type": "slack",
+      "endpoint": "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX",
+      "channel": "#faultline-other-channel",
+      "username": "faultline-notify",
+      "notifyInterval": 10,
+      "threshold": 1
+    }
   ]
 }
 ```
