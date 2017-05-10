@@ -112,6 +112,8 @@ POST errors with GitHub repo config for creating issue, like following code
 
 ### :closed_lock_with_key: AWS KMS Encryption of `notifications` config
 
+If you use faultline notifications on browser ( e.g [faultline-js](https://github.com/faultline/faultline-js) ), you should encrypt config.
+
 #### STEP 1. `useKms` option true
 
 Set `useKms: true` in config.yml, and deploy. Default AWS KMS Key alias is `alias/faultline`.
