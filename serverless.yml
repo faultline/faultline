@@ -118,7 +118,7 @@ functions:
     name: faultline-${self:provider.stage}-callNotifications
     timeout: 30
   encrypt:
-    handler: src/handlers/kms.encrypt
+    handler: src/handlers/util.encrypt
     events:
       - http:
           path: encrypt
