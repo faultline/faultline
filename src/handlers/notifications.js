@@ -48,9 +48,9 @@ module.exports.call = (event, context, cb) => {
     notifications.forEach((n) => {
         if (typeof n === 'string') {
             // KMS encrypted
-            let kmsEncyptedToken = n;
-            let encryptedBuf = new Buffer(kmsEncyptedToken, 'base64');
-            let cipherText = { CiphertextBlob: encryptedBuf };
+            const kmsEncyptedToken = n;
+            const encryptedBuf = new Buffer(kmsEncyptedToken, 'base64');
+            const cipherText = { CiphertextBlob: encryptedBuf };
             kms.decrypt(cipherText).promise().then((data) => {
                 const decrypted = JSON.parse(data.Plaintext.toString('ascii'));
                 notifyCall(decrypted);

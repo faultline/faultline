@@ -121,12 +121,23 @@ Set `useKms: true` in config.yml, and deploy. Default AWS KMS Key alias is `alia
 
 #### STEP 2. Encrypt notification config
 
+Use `aws kms encrypt` command.
+
 ```sh
 $ AWS_PROFILE=XXxxXXX aws kms encrypt --key-id alias/faultline --plaintext '{"type":"slack","endpoint":"https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX","channel":"#random","username":"faultline-notify","notifyInterval":5,"threshold":10}' --query CiphertextBlob --output text --region ap-northeast-1
 XXXXXXxxxxXXXXXxxxxxxxxxxxxXXXXXXXXXXXXXxxxxxxxxxxxXXXXXxxxxxxxxXXXXxxxxxxxxXXXXXXXXXXXXxxxxx
+```
 
-$ AWS_PROFILE=XXxxXXX aws kms encrypt --key-id alias/faultline --plaintext '{"type":"github","userToken":"XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX","owner":"k1LoW","repo":"faultline","labels":["faultline","bug"],"if_exist":"reopen-and-comment","notifyInterval":10,"threshold":1,"timezone":"Asia/Tokyo"}' --query CiphertextBlob --output text --region ap-northeast-1
-ZZZZZZzzzzZZZZZzzzzzzzzzzzzZZZZZZZZZZZZZzzzzzzzzzzzZZZZZzzzzzzzzZZZZzzzzzzzzZZZZZZZZZZZZzzzzz
+OR
+
+Use `/encrypt` API with apiKey (not clientApiKey).
+
+```sh
+$ curl -X POST -H "x-api-key:0123456789012345678901234567890" -H "Content-Type: application/json" https://xxxxxxxxx.execute-api.ap-northeast-1.amazonaws.com/v0/encrypt -d '{"type":"github","userToken":"XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX","owner":"k1LoW","repo":"faultline","labels":["faultline","bug"],"if_exist":"reopen-and-comment","notifyInterval":10,"threshold":1,"timezone":"Asia/Tokyo"}'
+{
+  "status": "success",
+  "encrypted": "ZZZZZZzzzzZZZZZzzzzzzzzzzzzZZZZZZZZZZZZZzzzzzzzzzzzZZZZZzzzzzzzzZZZZzzzzzzzzZZZZZZZZZZZZzzzzz"
+}
 ```
 
 #### STEP 3. Set encrypted text as `notifications` config

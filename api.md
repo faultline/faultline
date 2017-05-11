@@ -10,6 +10,8 @@ faultline API JSON Hyper-Schema.
 * [Project](#project)
  * [GET /projects](#get-projects)
  * [DELETE /projects/:project](#delete-projectsproject)
+* [Utility](#utility)
+ * [POST /enctypt](#post-enctypt)
 
 ## Error
 Error API.
@@ -258,5 +260,29 @@ Host: api.example.com
 
 ```
 HTTP/1.1 204 No Content
+```
+
+## Utility
+Utility API.
+
+### Properties
+
+### POST /enctypt
+Enctypt payload by AWS KMS.
+
+
+```
+POST /enctypt HTTP/1.1
+Host: api.example.com
+```
+
+```
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+{
+  "status": "success",
+  "encrypted": "VJrcSNSvM/KxZ3IIa/+aaEZMfYQgKrGqmGwzgAAASYwggEiBgkqhkiG9w0BBwagggETMIIBDwIBADCCAQgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMkrC8qGdnuIcfRlX9AgEQgIHaanVWXGDANlr/QkgYFIpSRy5QLmJohU4ltwGKVywOFA/uRZfKw3kAMCuH7H/QJJyVA0mxzqMnQT/WUf6nG2AckhPQ4fTmgQgpXzw7jF4ToUvXL49a"
+}
 ```
 

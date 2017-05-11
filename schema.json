@@ -310,11 +310,39 @@
           "title": "delete_error"
         }
       ]
+    },
+    "utility": {
+      "title": "Utility",
+      "description": "Utility API.",
+      "links": [
+        {
+          "description": "Enctypt payload by AWS KMS.",
+          "href": "/enctypt",
+          "method": "POST",
+          "rel": "create",
+          "readOnly": false,
+          "title": "encrypt",
+          "schema": {
+            "type": "string",
+            "example": "{\"type\":\"slack\",\"endpoint\":\"https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX\",\"channel\":\"#random\",\"username\":\"faultline-notify\",\"notifyInterval\":5,\"threshold\":10}"
+          },
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "encrypted": {
+                "type": "string",
+                "example": "VJrcSNSvM/KxZ3IIa/+aaEZMfYQgKrGqmGwzgAAASYwggEiBgkqhkiG9w0BBwagggETMIIBDwIBADCCAQgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMkrC8qGdnuIcfRlX9AgEQgIHaanVWXGDANlr/QkgYFIpSRy5QLmJohU4ltwGKVywOFA/uRZfKw3kAMCuH7H/QJJyVA0mxzqMnQT/WUf6nG2AckhPQ4fTmgQgpXzw7jF4ToUvXL49a"
+              }
+            }
+          }
+        }
+      ]
     }
   },
   "required": [
     "project",
-    "error"
+    "error",
+    "utility"
   ],
   "definitions": {
     "timestamp": {
