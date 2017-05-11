@@ -71,13 +71,13 @@ Sample errors POST JSON file is [here](sample-errors.json).
 
 ### Notififaction
 
-#### Slack
+#### :speech_balloon: Slack
 
 POST errors with slack notification config like [this](sample-errors.json).
 
 ![slack](https://faultline.github.io/faultline/slack.png)
 
-#### GitHub issue
+#### :octocat: GitHub issue
 
 POST errors with GitHub repo config for creating issue, like following code
 
@@ -115,11 +115,11 @@ POST errors with GitHub repo config for creating issue, like following code
 
 If you use faultline notifications on browser ( e.g [faultline-js](https://github.com/faultline/faultline-js) ), you should encrypt config.
 
-#### STEP 1. `useKms` option true
+#### :key: STEP 1. `useKms` option true
 
 Set `useKms: true` in config.yml, and deploy. Default AWS KMS Key alias is `alias/faultline`.
 
-#### STEP 2. Encrypt notification config
+#### :closed_lock_with_key: STEP 2. Encrypt notification config
 
 Use `aws kms encrypt` command.
 
@@ -140,7 +140,7 @@ $ curl -X POST -H "x-api-key:0123456789012345678901234567890" -H "Content-Type: 
 }
 ```
 
-#### STEP 3. Set encrypted text as `notifications` config
+#### :lock: STEP 3. Set encrypted text as `notifications` config
 
 ```json5
 {
