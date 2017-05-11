@@ -57,9 +57,7 @@ class KmsResources {
                                     Action: [
                                         'kms:Encrypt',
                                         'kms:Decrypt',
-                                        'kms:ReEncrypt',
-                                        'kms:GenerateDataKey*',
-                                        'kms:DescribeKey'
+                                        'kms:ListAliases'
                                     ],
                                     'Resource': '*'
                                 }
