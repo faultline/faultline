@@ -183,17 +183,16 @@ module.exports.resources = () => {
                                     Sid: 'Allow use of the key',
                                     Effect: 'Allow',
                                     Principal: {
-                                        AWS: { 'Fn::Join': [ '/', [ `arn:aws:iam::${accountId}:role`, {
-                                            'Fn::Join': [
+                                        AWS: { 'Fn::Join': [
+                                            '/',
+                                            [ `arn:aws:iam::${accountId}:role`, { 'Fn::Join': [
                                                 '-',
                                                 [
                                                     serverlessConfig.service,
                                                     serverlessConfig.provider.stage,
                                                     serverlessConfig.provider.region,
                                                     'lambdaRole',
-                                                ],
-                                            ]
-                                        } ] ] } // lambdaRole
+                                                ] ] } ] ] } // lambdaRole
                                     },
                                     Action: [
                                         'kms:Encrypt',
