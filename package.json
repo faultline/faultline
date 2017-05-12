@@ -37,7 +37,7 @@
     "lodash": "^4.16.2",
     "moment": "^2.15.0",
     "moment-timezone": "^0.5.13",
-    "serverless": "1.10.2"
+    "serverless": "~1.13.1"
   },
   "devDependencies": {
     "aws-sdk": "^2.7.7"

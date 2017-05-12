@@ -2,7 +2,7 @@ service: faultline
 custom:
   config: ${file(./config.yml)}
 
-frameworkVersion: ">=1.10.1 <2.0.0"
+frameworkVersion: ">=1.13.1 <2.0.0"
 
 provider:
   name: aws
@@ -53,9 +53,6 @@ package:
     - .git/**
     - doc/**
     - node_modules/aws-sdk/**
-
-plugins:
-  - kms_resources
 
 functions:
   projectsList:
