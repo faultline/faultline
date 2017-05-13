@@ -6,7 +6,8 @@
   "scripts": {
     "deploy": "sls deploy -v",
     "destroy": "sls remove",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > api.md"
   },
   "repository": {
     "type": "git",

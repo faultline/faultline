@@ -1,0 +1,55 @@
+# <%= schema.title || "API" %>
+<%= schema.description -%>
+<% schema.resources.each do |resource| %>
+- <%= resource.hyperlink %>
+<% resource.links.each do |link| %>
+    - <%= link.hyperlink %>
+<% end %>
+<% end %>
+
+<% schema.resources.each do |resource| %>
+## <%= resource.title %>
+<%= resource.description %>
+
+### Properties
+<% resource.properties.each do |property| %>
+- <%= property.name %>
+<% if property.description %>
+    - <%= property.description %>
+<% end %>
+<% property.options.each do |key, value| %>
+    - <%= key %>: <%= value %>
+<% end %>
+<% end %>
+
+<% resource.links.each do |link| %>
+### <%= link.endpoint %>
+<%= link.description %>
+
+<% if link.request_schema %>
+<% link.request_properties.each do |property| %>
+- <%= property.name %>
+<% if property.description %>
+    - <%= property.description %>
+<% end %>
+<% property.options.each do |key, value| %>
+    - <%= key %>: <%= value %>
+<% end %>
+<% end %>
+
+<% end %>
+```
+<%= link.method %> <%= link.example_path %><%= link.query_string %> HTTP/1.1
+<%= "Content-Type: #{link.content_type}\n" if link.has_request_body? -%>
+Host: <%= schema.host_with_port %>
+<%= "\n" + link.request_body if link.has_request_body? -%>
+```
+
+```
+HTTP/1.1 <%= link.response_status %> <%= link.response_reason_phrase %>
+<%= "Content-Type: application/json" if link.has_response_body? -%>
+<%= "\n\n#{link.response_body}\n" if link.has_response_body? -%>
+```
+
+<% end %>
+<% end %>
