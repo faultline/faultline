@@ -1,17 +1,17 @@
 # faultline API JSON Hyper-Schema
 faultline API JSON Hyper-Schema.
 
-* [Error](#error)
- * [GET /projects/:project/errors/:message](#get-projectsprojecterrorsmessage)
- * [GET /projects/:project/errors](#get-projectsprojecterrors)
- * [POST /projects/:project/errors](#post-projectsprojecterrors)
- * [PATCH /projects/:project/errors/:message](#patch-projectsprojecterrorsmessage)
- * [DELETE /projects/:project/errors/:message](#delete-projectsprojecterrorsmessage)
-* [Project](#project)
- * [GET /projects](#get-projects)
- * [DELETE /projects/:project](#delete-projectsproject)
-* [Utility](#utility)
- * [POST /enctypt](#post-enctypt)
+- [Error](#error)
+    - [GET /projects/:project/errors/:message](#get-projectsprojecterrorsmessage)
+    - [GET /projects/:project/errors](#get-projectsprojecterrors)
+    - [POST /projects/:project/errors](#post-projectsprojecterrors)
+    - [PATCH /projects/:project/errors/:message](#patch-projectsprojecterrorsmessage)
+    - [DELETE /projects/:project/errors/:message](#delete-projectsprojecterrorsmessage)
+- [Project](#project)
+    - [GET /projects](#get-projects)
+    - [DELETE /projects/:project](#delete-projectsproject)
+- [Utility](#utility)
+    - [POST /enctypt](#post-enctypt)
 
 ## Error
 Error API.
@@ -99,24 +99,24 @@ Content-Type: application/json
 ### POST /projects/:project/errors
 Push errors.
 
-* notifier
- * Type: object
-* errors
- * Type: array
-* context
- * Type: object
-* environment
- * Example: `{}`
- * Type: object
-* session
- * Example: `{}`
- * Type: object
-* params
- * Example: `{}`
- * Type: object
-* notifications
- * Example: `[{"type"=>"slack", "endpoint"=>"https://hooks.slack.com/services/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", "channel"=>"#random", "username"=>"faultline-notify", "notifyInterval"=>5, "threshold"=>10}]`
- * Type: array
+- notifier
+    - Type: object
+- errors
+    - Type: array
+- context
+    - Type: object
+- environment
+    - Example: `{}`
+    - Type: object
+- session
+    - Example: `{}`
+    - Type: object
+- params
+    - Example: `{}`
+    - Type: object
+- notifications
+    - Example: `[{"type"=>"slack", "endpoint"=>"https://hooks.slack.com/services/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", "channel"=>"#random", "username"=>"faultline-notify", "notifyInterval"=>5, "threshold"=>10}]`
+    - Type: array
 
 ```
 POST /projects/{project}/errors HTTP/1.1
@@ -187,8 +187,8 @@ Content-Type: application/json
 ### PATCH /projects/:project/errors/:message
 Update error status.
 
-* status
- * Example: `"resolved"`
+- status
+    - Example: `"resolved"`
 
 ```
 PATCH /projects/{project}/errors/{message} HTTP/1.1
