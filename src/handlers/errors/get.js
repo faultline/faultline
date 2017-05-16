@@ -82,12 +82,12 @@ module.exports.get = (event, context, cb) => {
 
     const key = [project, message].join('##');
 
-    // Get _meta/projects/{project name}/{error message}/{project name}-{error message}.json
-    const metaFilename = [project, message].join('-').replace('/','-') + '.json';
-    const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
-    const metaBucketParams = {
+    const occurrencePrefix = ['projects', project, 'errors', message, 'occurrences'].join('/') + '/';
+    const occurrencesDirParams = {
         Bucket: bucketName,
-        Key: metaBucketKey
+        Delimiter: '/',
+        Prefix: occurrencePrefix,
+        MaxKeys: 1
     };
 
     const docParams = {
@@ -104,10 +104,28 @@ module.exports.get = (event, context, cb) => {
         }
     };
 
-    Promise.resolve()
-        .then(() => {
+    storage.listObjects(occurrencesDirParams)
+        .then((data) => {
+            if (data.Contents.length == 0) {
+                // deprecated
+                // Get _meta/projects/{project name}/{error message}/{project name}-{error message}.json
+                const metaFilename = [project, message].join('-').replace('/','-') + '.json';
+                const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
+                const metaBucketParams = {
+                    Bucket: bucketName,
+                    Key: metaBucketKey
+                };
+                return Promise.all([
+                    storage.getObject(metaBucketParams),
+                    storage.queryDoc(docParams),
+                ]);
+            }
+            const occurrenceParams = {
+                Bucket: bucketName,
+                Key: data.Contents[0].Key
+            };
             return Promise.all([
-                storage.getObject(metaBucketParams),
+                storage.getObject(occurrenceParams),
                 storage.queryDoc(docParams),
             ]);
         })

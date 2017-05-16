@@ -123,16 +123,6 @@ module.exports.post = (event, context, cb) => {
             ContentType: 'application/json'
         };
 
-        // Put _meta/projects/{project name}/{error message}/{project name}-{error message}.json
-        const metaFilename = [project, message].join('-').replace('/','-') + '.json';
-        const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
-        const metaBucketParams = {
-            Bucket: bucketName,
-            Key: metaBucketKey,
-            Body: JSON.stringify(errorData, null, 2),
-            ContentType: 'application/json'
-        };
-
         const docByTimeunitParams = {
             TableName: errorByTimeunitTable,
             Key: {
@@ -178,13 +168,7 @@ module.exports.post = (event, context, cb) => {
         };
 
         promises.push(
-            Promise.resolve()
-                .then(() => {
-                    return Promise.all([
-                        storage.putObject(occurrenceBucketParams),
-                        storage.putObject(metaBucketParams),
-                    ]);
-                })
+            storage.putObject(occurrenceBucketParams)
                 .then(() => {
                     return Promise.all([
                         storage.updateDoc(docByTimeunitParams),
