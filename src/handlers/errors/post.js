@@ -7,7 +7,7 @@ const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
-const reverseEpochId = require('../../lib/reverse_epoch_id');
+const reversedUnixtime = require('../../lib/reverse_unixtime');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
 const timeunitFormat = timeunits[config.timeunit];
 const moment = require('moment');
@@ -114,7 +114,7 @@ module.exports.post = (event, context, cb) => {
 
         // Put projects/{project name}/errors/{error message}/occurrences/{reverse epoch id}.json
         const unixtime = moment(timestamp).format('X');
-        const filename = reverseEpochId(unixtime) + '.json';
+        const filename = reversedUnixtime(unixtime) + '.json';
         const bucketKey = ['projects', project, 'errors', message, 'occurrences', filename].join('/');
         const occurrenceBucketParams = {
             Bucket: bucketName,

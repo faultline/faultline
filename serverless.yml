@@ -110,6 +110,22 @@ functions:
           method: delete
           cors: true
           integration: lambda-proxy
+  occurrencesList:
+    handler: src/handlers/occurrences/get.list
+    events:
+      - http:
+          path: projects/{project}/errors/{message}/occurrences
+          method: get
+          cors: true
+          integration: lambda-proxy
+  occurrencesGet:
+    handler: src/handlers/occurrences/get.get
+    events:
+      - http:
+          path: projects/{project}/errors/{message}/occurrences/{reversedUnixtime}
+          method: get
+          cors: true
+          integration: lambda-proxy
   callNotifications:
     handler: src/handlers/notifications.call
     name: faultline-${self:provider.stage}-callNotifications
