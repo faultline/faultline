@@ -7,6 +7,9 @@ faultline API JSON Hyper-Schema.
     - [POST /projects/:project/errors](#post-projectsprojecterrors)
     - [PATCH /projects/:project/errors/:message](#patch-projectsprojecterrorsmessage)
     - [DELETE /projects/:project/errors/:message](#delete-projectsprojecterrorsmessage)
+- [Occurrence](#occurrence)
+    - [GET /projects/:project/errors/:message/occurrences/:reversedUnixtime](#get-projectsprojecterrorsmessageoccurrencesreversedunixtime)
+    - [GET /projects/:project/errors/:message/occurrences](#get-projectsprojecterrorsmessageoccurrences)
 - [Project](#project)
     - [GET /projects](#get-projects)
     - [DELETE /projects/:project](#delete-projectsproject)
@@ -221,6 +224,90 @@ Host: api.example.com
 
 ```
 HTTP/1.1 204 No Content
+```
+
+## Occurrence
+Error Occurrence API.
+
+### Properties
+
+### GET /projects/:project/errors/:message/occurrences/:reversedUnixtime
+Get error occurrence.
+
+```
+GET /projects/{project}/errors/{message}/occurrences/{reversedUnixtime} HTTP/1.1
+Host: api.example.com
+```
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "success",
+  "meta": {
+    "project": "sample-project",
+    "message": "Undefined index: faultline",
+    "type": "notice",
+    "backtrace": [
+      {
+        "file": "/var/www/test/test.php",
+        "line": 15,
+        "function": "SomeClass->__construct()"
+      },
+      {
+        "file": "/var/www/test/SomeClass.class.php",
+        "line": 36,
+        "function": "SomeClass->callSomething()"
+      }
+    ],
+    "event": {
+    },
+    "timestamp": "2017-05-16T13:36:27+00:00",
+    "reversedUnixtime": "9007197759799204"
+  }
+}
+```
+
+### GET /projects/:project/errors/:message/occurrences
+List error occurrences.
+
+```
+GET /projects/{project}/errors/{message}/occurrences HTTP/1.1
+Host: api.example.com
+```
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "status": "success",
+  "occurrences": [
+    {
+      "project": "sample-project",
+      "message": "Undefined index: faultline",
+      "type": "notice",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "event": {
+      },
+      "timestamp": "2017-05-16T13:36:27+00:00",
+      "reversedUnixtime": "9007197759799204"
+    }
+  ],
+  "count": 1
+}
 ```
 
 ## Project
