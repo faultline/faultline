@@ -82,7 +82,7 @@ module.exports.get = (event, context, cb) => {
 
     const key = [project, message].join('##');
 
-    // Get _meta/projects/project/message/[project-message].json
+    // Get _meta/projects/{project name}/{error message}/{project name}-{error message}.json
     const metaFilename = [project, message].join('-').replace('/','-') + '.json';
     const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
     const metaBucketParams = {
