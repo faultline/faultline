@@ -7,6 +7,7 @@ const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
+const reverseEpochId = require('../../lib/reverse_epoch_id');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
 const timeunitFormat = timeunits[config.timeunit];
 const moment = require('moment');
@@ -111,17 +112,18 @@ module.exports.post = (event, context, cb) => {
             timestamp: timestamp
         };
 
-        // Put projects/project/message/byTimeunit/[project-message-timestamp].json
-        const filename = [project, message, timestamp].join('-').replace('/','-') + '.json';
-        const bucketKey = ['projects', project, message, byTimeunit, filename].join('/');
-        const logByTimeunitBucketParams = {
+        // Put projects/{project name}/errors/{error message}/occurrences/{reverse epoch id}.json
+        const unixtime = moment(timestamp).format('X');
+        const filename = reverseEpochId(unixtime) + '.json';
+        const bucketKey = ['projects', project, 'errors', message, 'occurrences', filename].join('/');
+        const occurrenceBucketParams = {
             Bucket: bucketName,
             Key: bucketKey,
             Body: JSON.stringify(errorData, null, 2),
             ContentType: 'application/json'
         };
 
-        // Put _meta/projects/project/message/[project-message].json
+        // Put _meta/projects/{project name}/{error message}/{project name}-{error message}.json
         const metaFilename = [project, message].join('-').replace('/','-') + '.json';
         const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
         const metaBucketParams = {
@@ -179,7 +181,7 @@ module.exports.post = (event, context, cb) => {
             Promise.resolve()
                 .then(() => {
                     return Promise.all([
-                        storage.putObject(logByTimeunitBucketParams),
+                        storage.putObject(occurrenceBucketParams),
                         storage.putObject(metaBucketParams),
                     ]);
                 })

@@ -78,16 +78,22 @@ module.exports.delete = (event, context, cb) => {
         .then(() => {
             const bucketParams = {
                 Bucket: bucketName,
-                Prefix: 'projects/' + project + '/' + message + '/'
+                Prefix: 'projects/' + project + '/errors/' + message + '/'
             };
             const metaBucketParams = {
                 Bucket: bucketName,
                 Prefix: '_meta/projects/' + project + '/' + message + '/'
             };
+            // deprecated
+            const deprecatedBucketParams = {
+                Bucket: bucketName,
+                Prefix: 'projects/' + project + '/' + message + '/'
+            };
 
             return Promise.all([
                 storage.recursiveDeleteObjects(bucketParams),
                 storage.recursiveDeleteObjects(metaBucketParams),
+                storage.recursiveDeleteObjects(deprecatedBucketParams),
             ]);
         })
         .then(() => {
