@@ -90,15 +90,6 @@ module.exports.get = (event, context, cb) => {
         MaxKeys: 1
     };
 
-    // deprecated
-    // Get _meta/projects/{project name}/{error message}/{project name}-{error message}.json
-    const metaFilename = [project, message].join('-').replace('/','-') + '.json';
-    const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
-    const metaBucketParams = {
-        Bucket: bucketName,
-        Key: metaBucketKey
-    };
-
     const docParams = {
         TableName: errorByTimeunitTable,
         KeyConditionExpression: '#key = :key AND #timestamp BETWEEN :from AND :to',
@@ -117,6 +108,13 @@ module.exports.get = (event, context, cb) => {
         .then((data) => {
             if (data.Contents.length == 0) {
                 // deprecated
+                // Get _meta/projects/{project name}/{error message}/{project name}-{error message}.json
+                const metaFilename = [project, message].join('-').replace('/','-') + '.json';
+                const metaBucketKey = ['_meta', 'projects', project, message, metaFilename].join('/');
+                const metaBucketParams = {
+                    Bucket: bucketName,
+                    Key: metaBucketKey
+                };
                 return Promise.all([
                     storage.getObject(metaBucketParams),
                     storage.queryDoc(docParams),
