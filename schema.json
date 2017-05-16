@@ -323,8 +323,10 @@
           "readOnly": true,
           "title": "get_occurrence",
           "targetSchema": {
-            "status": { "$ref":"#/definitions/status" },
-            "meta": { "$ref":"#/definitions/occurrence" }
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "meta": { "$ref":"#/definitions/occurrence" }
+            }
           }
         },
         {
@@ -444,8 +446,8 @@
           }
         ],
         "event": {},
-        "timestamp": "2016-12-07T00:00:00+09:00",
-        "reversedUnixtime": ""
+        "timestamp": "2017-05-16T13:36:27+00:00",
+        "reversedUnixtime": "9007197759799204"
       }
     },
     "slack": {

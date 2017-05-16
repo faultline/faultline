@@ -244,6 +244,28 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
+  "status": "success",
+  "meta": {
+    "project": "sample-project",
+    "message": "Undefined index: faultline",
+    "type": "notice",
+    "backtrace": [
+      {
+        "file": "/var/www/test/test.php",
+        "line": 15,
+        "function": "SomeClass->__construct()"
+      },
+      {
+        "file": "/var/www/test/SomeClass.class.php",
+        "line": 36,
+        "function": "SomeClass->callSomething()"
+      }
+    ],
+    "event": {
+    },
+    "timestamp": "2017-05-16T13:36:27+00:00",
+    "reversedUnixtime": "9007197759799204"
+  }
 }
 ```
 
@@ -280,8 +302,8 @@ Content-Type: application/json
       ],
       "event": {
       },
-      "timestamp": "2016-12-07T00:00:00+09:00",
-      "reversedUnixtime": ""
+      "timestamp": "2017-05-16T13:36:27+00:00",
+      "reversedUnixtime": "9007197759799204"
     }
   ],
   "count": 1
