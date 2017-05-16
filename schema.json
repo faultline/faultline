@@ -311,6 +311,45 @@
         }
       ]
     },
+    "occurrence": {
+      "title": "Occurrence",
+      "description": "Error Occurrence API.",
+      "links": [
+        {
+          "description": "Get error occurrence.",
+          "href": "/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}",
+          "method": "GET",
+          "rel": "self",
+          "readOnly": true,
+          "title": "get_occurrence",
+          "targetSchema": {
+            "status": { "$ref":"#/definitions/status" },
+            "meta": { "$ref":"#/definitions/occurrence" }
+          }
+        },
+        {
+          "description": "List error occurrences.",
+          "href": "/projects/{project}/errors/{message}/occurrences",
+          "method": "GET",
+          "rel": "occurrences",
+          "readOnly": true,
+          "title": "list_occurrences",
+          "targetSchema": {
+            "properties": {
+              "status": { "$ref":"#/definitions/status" },
+              "occurrences": {
+                "type": "array",
+                "items": { "$ref":"#/definitions/occurrence" }
+              },
+              "count": {
+                "type": "integer",
+                "example": 1
+              }
+            }
+          }
+        }
+      ]
+    },
     "utility": {
       "title": "Utility",
       "description": "Utility API.",
@@ -384,6 +423,29 @@
           "type": "string",
           "example": "notice"
         }
+      }
+    },
+    "occurrence": {
+      "type": "object",
+      "example": {
+        "project": "sample-project",
+        "message": "Undefined index: faultline",
+        "type": "notice",
+        "backtrace": [
+          {
+            "file": "/var/www/test/test.php",
+            "line": 15,
+            "function": "SomeClass->__construct()"
+          },
+          {
+            "file": "/var/www/test/SomeClass.class.php",
+            "line": 36,
+            "function": "SomeClass->callSomething()"
+          }
+        ],
+        "event": {},
+        "timestamp": "2016-12-07T00:00:00+09:00",
+        "reversedUnixtime": ""
       }
     },
     "slack": {

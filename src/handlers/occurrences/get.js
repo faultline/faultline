@@ -56,7 +56,8 @@ module.exports.list = (event, context, cb) => {
             });
             const response = resgen(200, {
                 status: 'success',
-                occurrences: occurrences
+                occurrences: occurrences,
+                count: occurrences.length
             });
             cb(null, response);
         })
@@ -89,9 +90,11 @@ module.exports.get = (event, context, cb) => {
 
     storage.getObject(bucketParams)
         .then((data) => {
+            let parsed = JSON.parse(data.Body.toString());
+            parsed.reversedUnixtime = reversedUnixtime;
             const response = resgen(200, {
                 status: 'success',
-                meta: JSON.parse(data.Body.toString())
+                meta: parsed
             });
             cb(null, response);
         })
