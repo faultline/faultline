@@ -22,13 +22,18 @@ module.exports.list = (event, context, cb) => {
 
     const project = decodeURIComponent(event.pathParameters.project);
     const message = decodeURIComponent(event.pathParameters.message);
+    const limit = event.queryStringParameters && event.queryStringParameters.hasOwnProperty('limit') ? event.queryStringParameters.limit : 10;
+    const after = event.queryStringParameters && event.queryStringParameters.hasOwnProperty('after') ? event.queryStringParameters.after : null;
+
+    const startAfter = after ? ['projects', project, 'errors', message, 'occurrences'].join('/') + '/' + after + '.json' : null;
 
     const occurrencePrefix = ['projects', project, 'errors', message, 'occurrences'].join('/') + '/';
     const occurrencesDirParams = {
         Bucket: bucketName,
         Delimiter: '/',
         Prefix: occurrencePrefix,
-        MaxKeys: 10
+        MaxKeys: limit,
+        StartAfter: startAfter
     };
 
     storage.listObjects(occurrencesDirParams)
