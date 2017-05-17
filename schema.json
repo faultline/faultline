@@ -466,8 +466,10 @@
         "endpoint": {"type": "string"},
         "channel": {"type": "string"},
         "username": {"type": "string"},
-        "icon_emoji": {"type": "string"},
-        "icon_url": {"type": "string"},
+        "icon_emoji": {"type": "string", "description": "deprecated"},
+        "iconEmoji": {"type": "string"},
+        "icon_url": {"type": "string", "description": "deprecated"},
+        "iconUrl": {"type": "string"},
         "timezone": {"type": "string"}
       },
       "required": ["type", "endpoint", "channel"]
