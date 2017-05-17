@@ -65,6 +65,7 @@ functions:
           integration: lambda-proxy
   projectsDelete:
     handler: src/handlers/projects/delete.delete
+    timeout: 30
     events:
       - http:
           path: projects/{project}
@@ -104,6 +105,7 @@ functions:
           integration: lambda-proxy
   errorsDelete:
     handler: src/handlers/errors/delete.delete
+    timeout: 30
     events:
       - http:
           path: projects/{project}/errors/{message}
