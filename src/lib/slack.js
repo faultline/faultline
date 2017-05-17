@@ -62,7 +62,11 @@ module.exports = (n, errorData) => {
     };
 
     // icon
-    if (n.icon_url) {
+    if (n.iconUrl) {
+        data.icon_url = n.iconUrl;
+    } else if(n.iconEmoji) {
+        data.icon_emoji = n.iconEmoji;
+    } else if (n.icon_url) {
         data.icon_url = n.icon_url;
     } else if(n.icon_emoji) {
         data.icon_emoji = n.icon_emoji;
