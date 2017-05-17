@@ -466,11 +466,11 @@
         "endpoint": {"type": "string"},
         "channel": {"type": "string"},
         "username": {"type": "string"},
-        "icon_emoji": {"type": "string", "description": "deprecated"},
         "iconEmoji": {"type": "string"},
-        "icon_url": {"type": "string", "description": "deprecated"},
         "iconUrl": {"type": "string"},
-        "timezone": {"type": "string"}
+        "timezone": {"type": "string"},
+        "icon_emoji": {"type": "string", "description": "deprecated"},
+        "icon_url": {"type": "string", "description": "deprecated"}
       },
       "required": ["type", "endpoint", "channel"]
     },
