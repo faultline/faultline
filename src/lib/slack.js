@@ -1,24 +1,23 @@
 'use strict';
 
-const timeunits = require('./timeunits');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-const timeunitFormat = timeunits[config.timeunit];
+const reversedUnixtime = require('./reversed_unixtime');
 const moment = require('moment-timezone');
 const storage = require('./storage');
 const bucketName = config.s3BucketName;
 const axios = require('axios');
 
 module.exports = (n, errorData) => {
-    const byTimeunit = moment(moment(errorData.timestamp).format(timeunitFormat), timeunitFormat).format();
-    const key = 'projects/'
-              + errorData.project + '/'
-              + errorData.message + '/'
-              + byTimeunit + '/'
-              + errorData.project + '-'
-              + errorData.message + '-'
-              + errorData.timestamp + '.json';
+    const key = [
+        'projects',
+        errorData.project,
+        'errors',
+        errorData.message,
+        'occurrences',
+        reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).format('X'))
+    ].join('/') + '.json';
     const timestamp = (n.timezone)
           ? moment(errorData.timestamp, moment.ISO_8601).tz(n.timezone).format()
           : moment(errorData.timestamp, moment.ISO_8601).format();
