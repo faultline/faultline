@@ -12,7 +12,7 @@
 - [Usage](#usage)
 - [API](#api)
 - [Web UI](#web-ui)
-- [Destroy falueline](#destroy-falueline)
+- [Destroy faultline](#destroy-faultline)
 - [TODO](#todo)
 - [Contribute](#contribute)
 - [License](#license)
