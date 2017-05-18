@@ -50,7 +50,7 @@ module.exports.list = (event, context, cb) => {
         .then((data) => {
             const occurrences = data.map((obj) => {
                 let parsed = JSON.parse(obj.Body.toString());
-                const unixtime = moment(parsed.timestamp).format('X');
+                const unixtime = moment(parsed.timestamp).unix();
                 parsed.reversedUnixtime = reversedUnixtime(unixtime);
                 return parsed;
             });

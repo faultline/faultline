@@ -113,7 +113,7 @@ module.exports.post = (event, context, cb) => {
         };
 
         // Put projects/{project name}/errors/{error message}/occurrences/{reverse epoch id}.json
-        const unixtime = moment(timestamp).format('X');
+        const unixtime = moment(timestamp).unix();
         const filename = reversedUnixtime(unixtime) + '.json';
         const bucketKey = ['projects', project, 'errors', message, 'occurrences', filename].join('/');
         const occurrenceBucketParams = {

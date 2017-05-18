@@ -16,7 +16,7 @@ module.exports = (n, errorData) => {
         'errors',
         errorData.message,
         'occurrences',
-        reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).format('X'))
+        reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
     ].join('/') + '.json';
     const timestamp = (n.timezone)
           ? moment(errorData.timestamp, moment.ISO_8601).tz(n.timezone).format()
