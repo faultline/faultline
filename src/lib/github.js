@@ -2,6 +2,8 @@
 
 const github = require('github');
 const moment = require('moment-timezone');
+const template = require('url-template');
+const reversedUnixtime = require('./reversed_unixtime');
 
 module.exports = (n, errorData) => {
     const title = `[${errorData.type}] ${errorData.message}`;
@@ -25,6 +27,16 @@ module.exports = (n, errorData) => {
 
     function buildBody() {
         let body = '';
+
+        if (n.linkTemplate) {
+            const linkTemplate = template.parse(n.linkTemplate);
+            const link = linkTemplate.expand({
+                project: errorData.project,
+                message: errorData.message,
+                reversedUnixtime: reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
+            });
+            body += '## link\n\n\n' + link + '\n\n';
+        }
 
         if (errorData.backtrace) {
             let backtrace = '## backtrace\n\n';

@@ -8,25 +8,36 @@ const moment = require('moment-timezone');
 const storage = require('./storage');
 const bucketName = config.s3BucketName;
 const axios = require('axios');
+const template = require('url-template');
 
 module.exports = (n, errorData) => {
-    const key = [
-        'projects',
-        errorData.project,
-        'errors',
-        errorData.message,
-        'occurrences',
-        reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
-    ].join('/') + '.json';
+    let titleLink = null;
+    if (n.linkTemplate) {
+        const linkTemplate = template.parse(n.linkTemplate);
+        titleLink = linkTemplate.expand({
+            project: errorData.project,
+            message: errorData.message,
+            reversedUnixtime: reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
+        });
+    } else {
+        const key = [
+            'projects',
+            errorData.project,
+            'errors',
+            errorData.message,
+            'occurrences',
+            reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
+        ].join('/') + '.json';
+        const params = {
+            Bucket: bucketName,
+            Key: key
+        };
+        titleLink = storage.getSignedUrl(params);
+    }
+
     const timestamp = (n.timezone)
           ? moment(errorData.timestamp, moment.ISO_8601).tz(n.timezone).format()
           : moment(errorData.timestamp, moment.ISO_8601).format();
-
-    const params = {
-        Bucket: bucketName,
-        Key: key
-    };
-    const signedUrl = storage.getSignedUrl(params);
 
     let data = {
         channel: n.channel,
@@ -35,7 +46,7 @@ module.exports = (n, errorData) => {
             {
                 fallback: errorData.message,
                 title: errorData.message,
-                title_link: signedUrl,
+                title_link: titleLink,
                 fields: [
                     {
                         title: 'project',

@@ -469,6 +469,7 @@
         "iconEmoji": {"type": "string"},
         "iconUrl": {"type": "string"},
         "timezone": {"type": "string"},
+        "linkTemplate": {"type": "string"},
         "icon_emoji": {"type": "string", "description": "deprecated"},
         "icon_url": {"type": "string", "description": "deprecated"}
       },
@@ -499,7 +500,8 @@
         "if_exist": {
           "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
         },
-        "timezone": {"type": "string"}
+        "timezone": {"type": "string"},
+        "linkTemplate": {"type": "string"}
       },
       "required": ["type", "userToken", "owner", "repo"]
     },
