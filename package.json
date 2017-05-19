@@ -4,7 +4,7 @@
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
-    "deploy": "sls deploy -v",
+    "deploy": "npm install && sls deploy -v",
     "destroy": "sls remove",
     "test": "echo \"Error: no test specified\" && exit 1",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > api.md"
