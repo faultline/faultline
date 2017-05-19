@@ -77,6 +77,8 @@ $ curl -X POST -H "x-api-key: xxxxXXXXXxXxXXxxXXXXXXXxxxxXXXXXX" -H "Content-Typ
 
 Sample errors POST JSON file is [here](sample-errors.json).
 
+API Document is [here](docs/api.md).
+
 ### POST errors using library
 
 - https://github.com/faultline/faultline-php
@@ -88,7 +90,7 @@ Sample errors POST JSON file is [here](sample-errors.json).
 
 When receive error, faultline can send nofitications with POST config.
 
-More information is [here](docs/notifications.md).
+More document is [here](docs/notifications.md).
 
 #### :speech_balloon: Slack
 
@@ -109,6 +111,12 @@ JSON Hyper-Schema is [here](schema.json).
 Sample web UI for faultline
 
 https://github.com/faultline/faultline-webui
+
+![Web UI](docs/webui.png)
+
+## Architecture
+
+"Architecture of faultline" document is [here](docs/architecture.md)
 
 ## TODO
 
