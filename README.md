@@ -12,6 +12,7 @@
 - [Usage](#usage)
 - [API](#api)
 - [Web UI](#web-ui)
+- [Architecture](#architecture)
 - [TODO](#todo)
 - [Contribute](#contribute)
 - [License](#license)
