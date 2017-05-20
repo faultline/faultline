@@ -95,11 +95,11 @@ More document is [here](docs/notifications.md).
 
 #### :speech_balloon: Slack
 
-![slack](https://faultline.github.io/faultline/slack.png)
+![slack](docs/slack.png)
 
 #### :octocat: GitHub issue
 
-![GitHub](https://faultline.github.io/faultline/github.png)
+![GitHub](docs/github.png)
 
 ## API
 

@@ -8,7 +8,7 @@ When receive error, faultline can send nofitications with POST config.
 
 POST errors with slack notification config like [this](../sample-errors.json).
 
-![slack](https://faultline.github.io/faultline/slack.png)
+![slack](slack.png)
 
 ### :octocat: GitHub issue
 
@@ -42,7 +42,7 @@ POST errors with GitHub repo config for creating issue, like following code
 }
 ```
 
-![GitHub](https://faultline.github.io/faultline/github.png)
+![GitHub](github.png)
 
 ## :closed_lock_with_key: AWS KMS Encryption of `notifications` config
 
