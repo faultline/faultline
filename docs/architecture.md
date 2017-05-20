@@ -24,9 +24,9 @@ faultline put raw error data in JSON format.
 
 #### FaultlineTableByTimeunit
 
-| key | timestamp | status | type | count |
-| - | - | - | - | - |
-| `{project}##{message}` | | | | |
+| key | timestamp | type | count |
+| - | - | - | - |
+| `{project}##{message}` | | | |
 
 ## API request validation with JSON Hyper-Schema
 
