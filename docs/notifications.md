@@ -6,13 +6,9 @@ When receive error, faultline can send nofitications with POST config.
 
 ### :speech_balloon: Slack
 
-POST errors with slack notification config like [this](../sample-errors.json).
+POST errors with Slack notification config.
 
-![slack](slack.png)
-
-### :octocat: GitHub issue
-
-POST errors with GitHub repo config for creating issue, like following code
+#### config
 
 ```json5
 {
@@ -22,9 +18,49 @@ POST errors with GitHub repo config for creating issue, like following code
 
   ],
   "notifications": [
+    {
+      "type": "slack",
+      "endpoint": "https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX",
+      "channel": "#faultline",
+      "username": "faultline-notify",
+      "notifyInterval": 5,
+      "threshold": 10,
+      "timezone": "Asia/Tokyo",
+      "linkTemplate": "https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}"
+    }
+  ]
+}
+```
 
-    - snip -
+| Key | Description | Example |
+| - | - | - |
+| type | Notification type ( **required** `slack`) | `slack` |
+| endpoint | Slack incoming webhook endpoint ( **required** ) | `https://hooks.slack.com/services/XXXXXXXX/XXXXXXXX/XXXxxXXXXXXxxxxXXXXXXX` |
+| channel | Slack channel ( **required** ) | `#faultline` |
+| username | Slack username | `faultline-notify` |
+| notifyInterval | Slack notify interval | `5` |
+| threshold | Slack notify threshold | `10` |
+| timezone | timezone for display | `Asia/Tokyo` |
+| linkTemplate | Link template for Slack notify title link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
 
+#### Screenshot
+
+![slack](slack.png)
+
+### :octocat: GitHub issue
+
+POST errors with GitHub repo config for creating issue.
+
+#### config
+
+```json5
+{
+  "errors": [
+
+   - snip -
+
+  ],
+  "notifications": [
     {
       "type": "github",
       "userToken": "XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX",
@@ -36,13 +72,31 @@ POST errors with GitHub repo config for creating issue, like following code
       "if_exist": "reopen-and-comment",
       "notifyInterval": 10,
       "threshold": 1,
-      "timezone": "Asia/Tokyo"
+      "timezone": "Asia/Tokyo",
+      "linkTemplate": "https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}"
     }
   ]
 }
 ```
 
+| Key | Description | Example |
+| - | - | - |
+| type | Notification type ( **required** `github`) | `github` |
+| userToken | GitHub API token ( **required** ) | `XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX` |
+| owner | GitHub repo owner ( **required** ) | `k1LoW` |
+| repo | GitHub repo name ( **required** ) | `faultline` |
+| labels | GitHub Issue labels | `["bug", "wontfix"]` |
+| if_exist | Action If current issue exist | `reopen-and-commend`, `reopen`, `reopen-and-update`, `comment`, `none` |
+| notifyInterval | GitHub Issue open interval | `5` |
+| threshold | GitHub Issue open threshold | `10` |
+| timezone | timezone for display | `Asia/Tokyo` |
+| linkTemplate | Link template for Slack notify title link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+
+#### Screenshot
+
 ![GitHub](github.png)
+
+---
 
 ## :closed_lock_with_key: AWS KMS Encryption of `notifications` config
 
