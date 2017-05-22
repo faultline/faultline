@@ -10,6 +10,7 @@
 - [Using framework](#using-framework)
 - [How to deploy](#how-to-deploy)
 - [Usage](#usage)
+    - [Notifications](#notifications)
 - [API](#api)
 - [Web UI](#web-ui)
 - [Architecture](#architecture)
