@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const github = require('github');
 const moment = require('moment-timezone');
 const template = require('url-template');
@@ -161,10 +162,9 @@ ${timestamp}
             }));
         }
         return Promise.all(promises);
-    }).then((res) => {
-        //console.log(res);
+    }).then(() => {
     }).catch((err) => {
-        console.log(err);
+        console.error(err);
     });
 
 };

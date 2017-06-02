@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
@@ -98,10 +99,9 @@ module.exports = (n, errorData) => {
     }
 
     axios.post(n.endpoint, data)
-        .then((res) => {
-            //console.log(res);
+        .then(() => {
         })
         .catch((err) => {
-            console.log(err);
+            console.error(err);
         });
 };

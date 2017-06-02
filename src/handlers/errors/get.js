@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const resgen = require('../../lib/resgen');
@@ -60,6 +61,7 @@ module.exports.list = (event, context, cb) => {
             cb(null, response);
         })
         .catch((err) => {
+            console.error(err);
             const response = resgen(500, { status: 'error', message: 'Unable to query', data: err });
             cb(null, response);
         });
@@ -142,6 +144,7 @@ module.exports.get = (event, context, cb) => {
             cb(null, response);
         })
         .catch((err) => {
+            console.error(err);
             const response = resgen(500, { status: 'error', message: 'Unable to query', data: err });
             cb(null, response);
         });

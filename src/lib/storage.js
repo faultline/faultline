@@ -1,14 +1,14 @@
 'use strict';
 
-let yaml = require('js-yaml');
-let fs = require('fs');
-let config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-let aws = require('aws-sdk');
+const yaml = require('js-yaml');
+const fs = require('fs');
+const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
+const aws = require('aws-sdk');
 aws.config.region = config.region;
-let s3 = new aws.S3({
+const s3 = new aws.S3({
     apiVersion: '2006-03-01'
 });
-let docClient = new aws.DynamoDB.DocumentClient({
+const docClient = new aws.DynamoDB.DocumentClient({
     apiVersion: '2012-08-10',
     region: config.region
 });

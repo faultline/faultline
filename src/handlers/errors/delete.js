@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const resgen = require('../../lib/resgen');
@@ -102,6 +103,7 @@ module.exports.delete = (event, context, cb) => {
             return;
         })
         .catch((err) => {
+            console.error(err);
             const response = resgen(500, { status: 'error', message: 'Unable to delete', data: err });
             cb(null, response);
         });

@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const aws = require('aws-sdk');
@@ -221,10 +222,9 @@ module.exports.post = (event, context, cb) => {
                         notifications: notifications,
                         res: c
                     })
-                }, (err, res) => {
-                    if (err) {
-                        console.log(err);
-                    }
+                }).promise().then(() => {
+                }).catch((err) => {
+                    console.error(err);
                 });
             });
         })
