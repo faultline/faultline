@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
 const aws = require('aws-sdk');
@@ -47,7 +48,7 @@ module.exports.encrypt = (event, context, cb) => {
             cb(null, response);
         })
         .catch((err) => {
-            console.log(err);
+            console.error(err);
             const response = resgen(500, { status: 'error', message: 'Unable to encrypt error'});
             cb(null, response);
         });
