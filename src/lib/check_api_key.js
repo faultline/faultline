@@ -1,9 +1,6 @@
 'use strict';
-const yaml = require('js-yaml');
-const fs = require('fs');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 
-module.exports = (event, allowClientKey = false) => {
+module.exports = (event, config, allowClientKey = false) => {
     // Check faultline API Key
     let apiKeyHeader = 'X-Api-Key';
     if (event.headers.hasOwnProperty('x-api-key')) {

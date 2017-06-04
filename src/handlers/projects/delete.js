@@ -14,7 +14,7 @@ const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
 module.exports.delete = (event, context, cb) => {
     if (config.apiKey) {
         // Check faultline API Key
-        if (!checkApiKey(event)) {
+        if (!checkApiKey(event, config)) {
             const response = resgen(403, { status: 'error', message: '403 Forbidden'});
             cb(null, response);
             return;
