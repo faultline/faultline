@@ -2,13 +2,11 @@
 
 const yaml = require('js-yaml');
 const fs = require('fs');
-const aws = require('aws-sdk');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 const slack = require('../lib/slack');
 const github = require('../lib/github');
-const kms = new aws.KMS({
-    region: config.region
-});
+const aws = require('../lib/aws')(config);
+const kms = new aws.kms;
 
 module.exports.call = (event, context, cb) => {
     const notifications = event.notifications;

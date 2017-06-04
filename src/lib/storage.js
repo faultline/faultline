@@ -3,15 +3,9 @@
 const yaml = require('js-yaml');
 const fs = require('fs');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-const aws = require('aws-sdk');
-aws.config.region = config.region;
-const s3 = new aws.S3({
-    apiVersion: '2006-03-01'
-});
-const docClient = new aws.DynamoDB.DocumentClient({
-    apiVersion: '2012-08-10',
-    region: config.region
-});
+const aws = require('./aws')(config);
+const s3 = aws.s3;
+const docClient = aws.docClient;
 
 const storage = {
     putObject: (params) => {

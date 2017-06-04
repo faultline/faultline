@@ -3,29 +3,20 @@
 const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
-const aws = require('aws-sdk');
 const resgen = require('../lib/resgen');
 const checkApiKey = require('../lib/check_api_key');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-const kms = new aws.KMS({
-    region: config.region
-});
+const aws = require('../lib/aws')(config);
+const kms = aws.kms;
 
 module.exports.encrypt = (event, context, cb) => {
-    if (config.apiKey) {
-        // Check faultline API Key
-        if (!checkApiKey(event, config)) {
-            const response = resgen(403, { status: 'error', message: '403 Forbidden'});
-            cb(null, response);
-            return;
-        }
-    } else {
+    if (!config.apiKey || !config.useKms || !config.kmsKeyAlias) {
         const response = resgen(403, { status: 'error', message: '412 Precondition Failed: apiKey'});
         cb(null, response);
         return;
     }
-    if (!config.useKms || !config.kmsKeyAlias) {
-        const response = resgen(403, { status: 'error', message: '412 Precondition Failed: useKms kmsKeyAlias'});
+    if (!checkApiKey(event, config)) {
+        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
         cb(null, response);
         return;
     }

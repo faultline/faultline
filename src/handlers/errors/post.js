@@ -3,13 +3,13 @@
 const console = require('console');
 const yaml = require('js-yaml');
 const fs = require('fs');
-const aws = require('aws-sdk');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
+const aws = require('../../lib/aws')(config);
 const timeunitFormat = timeunits[config.timeunit];
 const moment = require('moment');
 
@@ -25,9 +25,7 @@ const errorByMessageTable = config.dynamodbTablePrefix + 'Error';
 const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
 
 const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../serverless.yml', 'utf8'));
-const lambda = new aws.Lambda({
-    region: config.region
-});
+const lambda = aws.lambda;
 
 String.prototype.bytes = function(){
     return(encodeURIComponent(this).replace(/%../g,'x').length);
