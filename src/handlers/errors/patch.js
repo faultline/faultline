@@ -19,13 +19,11 @@ const schema = deref(rootSchema).properties.error.links.find((l) => {
 const errorByMessageTable = config.dynamodbTablePrefix + 'Error';
 
 module.exports.patch = (event, context, cb) => {
-    if (config.apiKey) {
-        // Check faultline API Key
-        if (!checkApiKey(event, config)) {
-            const response = resgen(403, { status: 'error', message: '403 Forbidden'});
-            cb(null, response);
-            return;
-        }
+    // Check faultline API Key
+    if (!checkApiKey(event, config)) {
+        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        cb(null, response);
+        return;
     }
 
     const body = JSON.parse(event.body);

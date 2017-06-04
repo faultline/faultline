@@ -12,13 +12,11 @@ const moment = require('moment');
 const bucketName = config.s3BucketName;
 
 module.exports.list = (event, context, cb) => {
-    if (config.apiKey) {
-        // Check faultline API Key
-        if (!checkApiKey(event, config)) {
-            const response = resgen(403, { status: 'error', message: '403 Forbidden'});
-            cb(null, response);
-            return;
-        }
+    // Check faultline API Key
+    if (!checkApiKey(event, config)) {
+        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        cb(null, response);
+        return;
     }
 
     const project = decodeURIComponent(event.pathParameters.project);
@@ -69,13 +67,11 @@ module.exports.list = (event, context, cb) => {
 };
 
 module.exports.get = (event, context, cb) => {
-    if (config.apiKey) {
-        // Check faultline API Key
-        if (!checkApiKey(event, config)) {
-            const response = resgen(403, { status: 'error', message: '403 Forbidden'});
-            cb(null, response);
-            return;
-        }
+    // Check faultline API Key
+    if (!checkApiKey(event, config)) {
+        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        cb(null, response);
+        return;
     }
 
     const project = decodeURIComponent(event.pathParameters.project);

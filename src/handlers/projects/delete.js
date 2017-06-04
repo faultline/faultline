@@ -12,13 +12,11 @@ const errorByMessageTable = config.dynamodbTablePrefix + 'Error';
 const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
 
 module.exports.delete = (event, context, cb) => {
-    if (config.apiKey) {
-        // Check faultline API Key
-        if (!checkApiKey(event, config)) {
-            const response = resgen(403, { status: 'error', message: '403 Forbidden'});
-            cb(null, response);
-            return;
-        }
+    // Check faultline API Key
+    if (!checkApiKey(event, config)) {
+        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        cb(null, response);
+        return;
     }
 
     const project = decodeURIComponent(event.pathParameters.project);
@@ -102,26 +100,26 @@ module.exports.delete = (event, context, cb) => {
     };
 
     recursiveDeleteDocByProject(project)
-        .then(() => {
-            const bucketParams = {
-                Bucket: bucketName,
-                Prefix: 'projects/' + project + '/'
-            };
-            const metaBucketParams = {
-                Bucket: bucketName,
-                Prefix: '_meta/projects/' + project + '/'
-            };
+          .then(() => {
+              const bucketParams = {
+                  Bucket: bucketName,
+                  Prefix: 'projects/' + project + '/'
+              };
+              const metaBucketParams = {
+                  Bucket: bucketName,
+                  Prefix: '_meta/projects/' + project + '/'
+              };
 
-            return Promise.all([
-                storage.recursiveDeleteObjects(bucketParams),
-                storage.recursiveDeleteObjects(metaBucketParams),
-            ]);
-        })
-        .then(() => {
-            const response = resgen(204, null);
-            cb(null, response);
-            return;
-        })
+              return Promise.all([
+                  storage.recursiveDeleteObjects(bucketParams),
+                  storage.recursiveDeleteObjects(metaBucketParams),
+              ]);
+          })
+          .then(() => {
+              const response = resgen(204, null);
+              cb(null, response);
+              return;
+          })
         .catch((err) => {
             console.error(err);
             const response = resgen(500, { status: 'error', message: 'Unable to delete', data: err });

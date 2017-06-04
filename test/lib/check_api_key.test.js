@@ -43,4 +43,21 @@ describe('checkApiKey', () => {
         event['headers']['x-api-key'] = 'CLIENT_API_KEY';
         assert(checkApiKey(event, config, true) === true);
     });
+
+    it ('!config.apiKey and !config.clientApiKey, checkApiKey does not check', () => {
+        config = {};
+        assert(checkApiKey(event, config) === true);
+    });
+
+    it ('config.clientApiKey and allowClientKey = false, checkApiKey check', () => {
+        config = {};
+        config.clientApiKey = 'CLIENT_API_KEY';
+        assert(checkApiKey(event, config) === false);
+    });
+
+    it ('config.clientApiKey and allowClientKey = true, checkApiKey check', () => {
+        config = {};
+        config.clientApiKey = 'CLIENT_API_KEY';
+        assert(checkApiKey(event, config, true) === false);
+    });
 });
