@@ -1,0 +1,10 @@
+language: node_js
+node_js:
+  - 6
+cache:
+  directories:
+    - "node_modules"
+before_script:
+  - cp config.default.yml config.yml
+script:
+  - npm run test
