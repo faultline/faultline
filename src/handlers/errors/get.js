@@ -15,7 +15,7 @@ const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
 module.exports.list = (event, context, cb) => {
     if (config.apiKey) {
         // Check faultline API Key
-        if (!checkApiKey(event)) {
+        if (!checkApiKey(event, config)) {
             const response = resgen(403, { status: 'error', message: '403 Forbidden'});
             cb(null, response);
             return;
@@ -70,7 +70,7 @@ module.exports.list = (event, context, cb) => {
 module.exports.get = (event, context, cb) => {
     if (config.apiKey) {
         // Check faultline API Key
-        if (!checkApiKey(event)) {
+        if (!checkApiKey(event, config)) {
             const response = resgen(403, { status: 'error', message: '403 Forbidden'});
             cb(null, response);
             return;

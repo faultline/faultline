@@ -6,8 +6,11 @@
   "scripts": {
     "deploy": "npm install && sls deploy -v",
     "destroy": "sls remove",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "nyc --reporter=lcovonly mocha --recursive --require intelli-espower-loader; nyc report",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > docs/api.md"
+  },
+  "directories": {
+    "test": "test/"
   },
   "repository": {
     "type": "git",
@@ -42,6 +45,10 @@
     "url-template": "^2.0.8"
   },
   "devDependencies": {
-    "aws-sdk": "^2.7.7"
+    "aws-sdk": "^2.7.7",
+    "intelli-espower-loader": "^1.0.1",
+    "mocha": "^3.4.2",
+    "nyc": "^11.0.2",
+    "power-assert": "^1.4.3"
   }
 }
