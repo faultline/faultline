@@ -6,7 +6,7 @@ const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'u
 const slack = require('../lib/slack');
 const github = require('../lib/github');
 const aws = require('../lib/aws')(config);
-const kms = new aws.kms;
+const kms = aws.kms;
 
 module.exports.call = (event, context, cb) => {
     const notifications = event.notifications;
