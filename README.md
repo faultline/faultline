@@ -43,7 +43,7 @@
 ### :octocat: STEP 1. Clone
 
 ```sh
-$ git clone https://github.com/k1LoW/faultline.git
+$ git clone https://github.com/faultline/faultline.git
 $ cd faultline
 $ npm install
 ```
