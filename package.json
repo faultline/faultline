@@ -41,7 +41,7 @@
     "lodash": "^4.16.2",
     "moment": "^2.15.0",
     "moment-timezone": "^0.5.13",
-    "serverless": "~1.13.1",
+    "serverless": "~1.15.3",
     "url-template": "^2.0.8"
   },
   "devDependencies": {

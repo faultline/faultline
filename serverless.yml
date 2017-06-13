@@ -2,7 +2,7 @@ service: faultline
 custom:
   config: ${file(./config.yml)}
 
-frameworkVersion: ">=1.13.1 <2.0.0"
+frameworkVersion: ">=1.15.3 <2.0.0"
 
 provider:
   name: aws
