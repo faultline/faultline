@@ -127,13 +127,12 @@ https://github.com/faultline/faultline-webui
 ## TODO
 
 - [ ] Refactor API response format
-- [ ] Notification
+- [x] Notification
     - [x] Slack
     - [x] GitHub Issue
     - [x] GitLab Issue
-    - [ ] ???
-- [ ] Error Notify Filter
 - [ ] API Gateway API Key (waiting CFn/Serverless "Usage plan" support. see [#2450](https://github.com/serverless/serverless/issues/2450) )
+- [ ] Error log TTL
 
 ## Contribute
 
