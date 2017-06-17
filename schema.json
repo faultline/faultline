@@ -535,7 +535,7 @@
         "timezone": {"type": "string"},
         "linkTemplate": {"type": "string"}
       },
-      "required": ["type", "userToken", "owner", "repo"]
+      "required": ["type", "personalAccessToken", "owner", "repo"]
     },
     "kms_encrypted": {
       "type": "string",

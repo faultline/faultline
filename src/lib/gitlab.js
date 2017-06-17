@@ -5,8 +5,13 @@ const messageBuilder = require('./message_builder');
 
 module.exports = (n, errorData) => {
     const title = `[${errorData.type}] ${errorData.message}`;
+    let endpoint = 'https://gitlab.com';
+    if (n.endpoint) {
+        endpoint = n.endpoint;
+    }
+
     const g = gitlab({
-        url:   n.endpoint,
+        url: endpoint,
         token: n.personalAccessToken
     });
 
@@ -62,7 +67,7 @@ module.exports = (n, errorData) => {
                     g.notes.create(project.id, issue.id, {
                         body: body + messageBuilder.commentFooter(n, errorData)
                     });
-                }                
+                }
             } else {
                 // Create issue
                 g.issues.create(project.id, {
