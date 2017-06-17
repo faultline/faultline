@@ -126,6 +126,7 @@ https://github.com/faultline/faultline-webui
 - [ ] Notification
     - [x] Slack
     - [x] GitHub Issue
+    - [ ] GitLab Issue
     - [ ] ???
 - [ ] Error Notify Filter
 - [ ] API Gateway API Key (waiting CFn/Serverless "Usage plan" support. see [#2450](https://github.com/serverless/serverless/issues/2450) )
