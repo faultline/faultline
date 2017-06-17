@@ -247,6 +247,7 @@
                   "anyOf" : [
                     { "slack": { "$ref":"#/definitions/slack" } },
                     { "github": { "$ref":"#/definitions/github" } },
+                    { "gitlab": { "$ref":"#/definitions/gitlab" } },
                     { "kms_encrypted": { "$ref":"#/definitions/kms_encrypted" } }
                   ]
                 },
@@ -504,6 +505,37 @@
         "linkTemplate": {"type": "string"}
       },
       "required": ["type", "userToken", "owner", "repo"]
+    },
+    "gitlab": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "enum": ["gitlab"]
+        },
+        "notifyInterval": {
+          "type": "number",
+          "minimum": 1,
+          "exclusiveMinimum": true
+        },
+        "threshold": {"type": "number"},
+        "endpoint": {"type": "string"},
+        "personalAccessToken": {"type": "string"},
+        "owner": {"type": "string"},
+        "repo": {"type": "string"},
+        "labels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "if_exist": {
+          "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
+        },
+        "timezone": {"type": "string"},
+        "linkTemplate": {"type": "string"}
+      },
+      "required": ["type", "personalAccessToken", "owner", "repo"]
     },
     "kms_encrypted": {
       "type": "string",
