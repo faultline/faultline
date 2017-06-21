@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/hyper-schema",
-  "id": "https://raw.githubusercontent.com/k1LoW/faultline/master/schema.json#",
+  "id": "https://raw.githubusercontent.com/faultline/faultline/master/schema.json#",
   "description": "faultline API JSON Hyper-Schema.",
   "properties": {
     "project": {
