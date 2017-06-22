@@ -13,7 +13,7 @@ describe('checkApiKey', () => {
             headers: {
             }
         };
-        config.apiKey = 'API_KEY';
+        config.masterApiKey = 'MASTER_API_KEY';
         config.clientApiKey = 'CLIENT_API_KEY';
         done();
     });
@@ -22,29 +22,29 @@ describe('checkApiKey', () => {
         assert(checkApiKey(event, config) === false);
     });
 
-    it ('headers has `x-api-key` and value = config.apiKey, should be true', () => {
-        event['headers']['x-api-key'] = 'API_KEY';
+    it ('headers has `x-api-key` and value = config.masterApiKey, should be true', () => {
+        event['headers']['x-api-key'] = 'MASTER_API_KEY';
         assert(checkApiKey(event, config) === true);
     });
 
-    it ('headers has `X-Api-Key` and value = config.apiKey, should be true', () => {
-        event['headers']['X-Api-Key'] = 'API_KEY';
+    it ('headers has `X-Api-Key` and value = config.masterApiKey, should be true', () => {
+        event['headers']['X-Api-Key'] = 'MASTER_API_KEY';
         assert(checkApiKey(event, config) === true);
     });
 
-    it ('headers has `x-api-key` but value != config.apiKey, should be false', () => {
+    it ('headers has `x-api-key` but value != config.masterApiKey, should be false', () => {
         event['headers']['x-api-key'] = 'INVALID_API_KEY';
         assert(checkApiKey(event, config) === false);
     });
 
-    it ('allowClientKey = true, checkApiKey check config.apiKey and config.clientApiKey', () => {
-        event['headers']['x-api-key'] = 'API_KEY';
+    it ('allowClientKey = true, checkApiKey check config.masterApiKey and config.clientApiKey', () => {
+        event['headers']['x-api-key'] = 'MASTER_API_KEY';
         assert(checkApiKey(event, config, true) === true);
         event['headers']['x-api-key'] = 'CLIENT_API_KEY';
         assert(checkApiKey(event, config, true) === true);
     });
 
-    it ('!config.apiKey and !config.clientApiKey, checkApiKey does not check', () => {
+    it ('!config.masterApiKey and !config.clientApiKey, checkApiKey does not check', () => {
         config = {};
         assert(checkApiKey(event, config) === true);
     });

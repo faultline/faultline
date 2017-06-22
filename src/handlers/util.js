@@ -10,8 +10,8 @@ const aws = require('../lib/aws')(config);
 const kms = aws.kms;
 
 module.exports.encrypt = (event, context, cb) => {
-    if (!config.apiKey || !config.useKms || !config.kmsKeyAlias) {
-        const response = resgen(403, { status: 'error', message: '412 Precondition Failed: apiKey'});
+    if (!config.masterApiKey || !config.useKms || !config.kmsKeyAlias) {
+        const response = resgen(403, { status: 'error', message: '412 Precondition Failed: masterApiKey'});
         cb(null, response);
         return;
     }
