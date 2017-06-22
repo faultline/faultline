@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (event, config, allowClientKey = false) => {
-    if (!config.apiKey && !config.clientApiKey) {
+    if (!config.masterApiKey && !config.clientApiKey) {
         return true;
     }
     // Check faultline API Key
@@ -12,7 +12,7 @@ module.exports = (event, config, allowClientKey = false) => {
     if (!event.headers.hasOwnProperty(apiKeyHeader)) {
         return false;
     }
-    let checkKeys = [config.apiKey];
+    let checkKeys = [config.masterApiKey];
     if (allowClientKey) {
         checkKeys.push(config.clientApiKey);
     }
