@@ -96,6 +96,56 @@ POST errors with GitHub repo config for creating issue.
 
 ![GitHub](github.png)
 
+#### :large_orange_diamond: GitLab issue
+
+POST errors with GitLab repo config for creating issue.
+
+#### config
+
+```json5
+{
+  "errors": [
+
+   - snip -
+
+  ],
+  "notifications": [
+    {
+      "type": "gitlab",
+      "personalAccessToken": "XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX",
+      "owner": "k1LoW",
+      "repo": "faultline",
+      "labels": [
+        "faultline", "bug"
+      ],
+      "if_exist": "reopen-and-comment",
+      "notifyInterval": 10,
+      "threshold": 1,
+      "timezone": "Asia/Tokyo",
+      "linkTemplate": "https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}"
+    }
+  ]
+}
+```
+
+| Key | Description | Example |
+| - | - | - |
+| type | Notification type ( **required** `github`) | `github` |
+| personalAccessToken |GitLab Personal Access Token ( **required** ) | `XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX` |
+| owner |GitLab repo owner ( **required** ) | `k1LoW` |
+| repo |GitLab repo name ( **required** ) | `faultline` |
+| endpoint |GitLab Endpoint Url | `https://gitlab.com` |
+| labels |GitLab Issue labels | `["bug", "wontfix"]` |
+| if_exist | Action If current issue exist | `reopen-and-commend`, `reopen`, `reopen-and-update`, `comment`, `none` |
+| notifyInterval |GitLab Issue open interval | `5` |
+| threshold |GitLab Issue open threshold | `10` |
+| timezone | timezone for display | `Asia/Tokyo` |
+| linkTemplate | Link template for Slack notify title link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+
+#### Screenshot
+
+![GitLab](gitlab.png)
+
 ---
 
 ## :closed_lock_with_key: AWS KMS Encryption of `notifications` config

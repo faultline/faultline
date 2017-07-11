@@ -8,6 +8,7 @@ const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
+const hashTruncate = require('../../lib/hash_truncate');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
 const aws = require('../../lib/aws')(config);
 const timeunitFormat = timeunits[config.timeunit];
@@ -26,6 +27,8 @@ const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
 
 const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../serverless.yml', 'utf8'));
 const lambda = aws.lambda;
+
+const projectNameMaxBytes = 256;
 
 String.prototype.bytes = function(){
     return(encodeURIComponent(this).replace(/%../g,'x').length);
@@ -74,7 +77,11 @@ module.exports.post = (event, context, cb) => {
         cb(null, response);
         return;
     }
-
+    if (project.bytes() > projectNameMaxBytes) {
+        const response = resgen(400, { status: 'error', message: 'Validation error: \'project\' too long (limit: 256 bytes)', data: ajv.errors });
+        cb(null, response);
+        return;
+    }
     const errors = body.errors;
     const bodyContext = body.hasOwnProperty('context') ? body.context: {};
     const environment = body.hasOwnProperty('environment') ? body.environment: {};
@@ -88,8 +95,9 @@ module.exports.post = (event, context, cb) => {
 
     errors.forEach((e) => {
         const message = e.message;
+        const truncatedMessage = hashTruncate(message);
         const type = e.type;
-        const key = [project, message].join('##');
+        const key = [project, truncatedMessage].join('##');
         let timestamp = now;
         if (e.timestamp) {
             timestamp = e.timestamp;
@@ -112,10 +120,10 @@ module.exports.post = (event, context, cb) => {
         // Put projects/{project name}/errors/{error message}/occurrences/{reverse epoch id}.json
         const unixtime = moment(timestamp).unix();
         const filename = reversedUnixtime(unixtime) + '.json';
-        const bucketKey = ['projects', project, 'errors', message, 'occurrences', filename].join('/');
+        const occurrenceBucketKey = ['projects', project, 'errors', truncatedMessage, 'occurrences', filename].join('/');
         const occurrenceBucketParams = {
             Bucket: bucketName,
-            Key: bucketKey,
+            Key: occurrenceBucketKey,
             Body: JSON.stringify(errorData, null, 2),
             ContentType: 'application/json'
         };
@@ -135,7 +143,7 @@ module.exports.post = (event, context, cb) => {
             },
             ExpressionAttributeValues:{
                 ':project':project,
-                ':message':message,
+                ':message':truncatedMessage,
                 ':type':type,
                 ':val':1
             },
@@ -146,7 +154,7 @@ module.exports.post = (event, context, cb) => {
             TableName: errorByMessageTable,
             Key: {
                 'project':project,
-                'message':message
+                'message':truncatedMessage
             },
             UpdateExpression: 'SET #type=:type, #status=:status, #lastUpdated=:lastUpdated ADD #count :val',
             ExpressionAttributeNames:{

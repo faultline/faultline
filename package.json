@@ -1,6 +1,6 @@
 {
   "name": "faultline",
-  "version": "0.10.2",
+  "version": "0.12.0",
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
@@ -36,6 +36,8 @@
     "axios": "^0.15.2",
     "config": "^1.21.0",
     "github": "^7.0.0",
+    "gitlab": "^1.7.1",
+    "js-sha256": "^0.5.0",
     "js-yaml": "^3.6.1",
     "json-schema-deref-sync": "^0.3.3",
     "lodash": "^4.16.2",
@@ -49,6 +51,7 @@
     "intelli-espower-loader": "^1.0.1",
     "mocha": "^3.4.2",
     "nyc": "^11.0.2",
+    "octopublish": "^0.5.0",
     "power-assert": "^1.4.3"
   }
 }

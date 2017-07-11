@@ -5,6 +5,7 @@ const fs = require('fs');
 const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 const slack = require('../lib/slack');
 const github = require('../lib/github');
+const gitlab = require('../lib/gitlab');
 const aws = require('../lib/aws')(config);
 const kms = aws.kms;
 
@@ -23,6 +24,8 @@ module.exports.call = (event, context, cb) => {
             notifier = slack;
         } else if (n.type == 'github') {
             notifier = github;
+        } else if (n.type == 'gitlab') {
+            notifier = gitlab;
         } else {
             return;
         }

@@ -9,7 +9,7 @@ dynamodbTablePrefix: faultline
 # Error tracking count interval (year / month / day / hour / minute)
 timeunit: minute
 # faultline API Key for full control (!This is not API Gateway API Key!)
-apiKey: (EDITME)
+masterApiKey: (EDITME)
 # faultline API Key for POST errors only (!This is not API Gateway API Key!)
 clientApiKey: (EDITME)
 # faultline functions CloudWatchLogs Retention (days / null is unlimited)
