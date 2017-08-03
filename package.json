@@ -52,6 +52,7 @@
     "mocha": "^3.4.2",
     "nyc": "^11.0.2",
     "octopublish": "^0.5.0",
-    "power-assert": "^1.4.3"
+    "power-assert": "^1.4.3",
+    "serverless-s3-remover": "^0.2.0"
   }
 }

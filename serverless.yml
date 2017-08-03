@@ -1,6 +1,13 @@
 service: faultline
+
+plugins:
+  - serverless-s3-remover
+
 custom:
   config: ${file(./config.yml)}
+  remover:
+    buckets:
+      - ${self:custom.config.s3BucketName}
 
 frameworkVersion: ">=1.17.0 <2.0.0"
 
