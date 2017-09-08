@@ -1,21 +1,20 @@
 service: faultline
-custom:
-  config: ${file(./config.yml)}
 
 frameworkVersion: ">=1.17.0 <2.0.0"
 
 provider:
   name: aws
+  environment: ${file(src/lib/env.js):env}
   runtime: nodejs6.10
   stage: v0
-  region: ${self:custom.config.region}
+  region: ${self:provider.environment.FAULTLINE_REGION}
   timeout: 10
   cfLogs: true
   apiKey: false
   iamRoleStatements:
     - Effect: Allow
       Resource:
-        - { "Fn::Join" : ["", ["arn:aws:dynamodb:", "${self:custom.config.region}", ":*:*" ] ] }
+        - { "Fn::Join" : ["", ["arn:aws:dynamodb:", "${self:provider.environment.FAULTLINE_REGION}", ":*:*" ] ] }
       Action:
         - "dynamodb:*"
     - Effect: Allow
@@ -25,18 +24,18 @@ provider:
         - "s3:PutObject"
         - "s3:DeleteObject"
       Resource:
-        - { "Fn::Join" : ["", ["arn:aws:s3:::", "${self:custom.config.s3BucketName}"] ] }
+        - { "Fn::Join" : ["", ["arn:aws:s3:::", "${self:provider.environment.FAULTLINE_S3_BUCKET_NAME}"] ] }
         - Fn::Join:
           - ""
           - - "arn:aws:s3:::"
-            - ${self:custom.config.s3BucketName}
+            - ${self:provider.environment.FAULTLINE_S3_BUCKET_NAME}
             - "/*"
     - Effect: Allow
       Action:
         - "lambda:InvokeFunction"
         - "lambda:InvokeAsync"
       Resource:
-        - "arn:aws:lambda:${self:custom.config.region}:*:function:faultline-${self:provider.stage}-callNotifications"
+        - "arn:aws:lambda:${self:provider.environment.FAULTLINE_REGION}:*:function:faultline-${self:provider.stage}-callNotifications"
     - Effect: Allow
       Action:
         - "kms:Encrypt"

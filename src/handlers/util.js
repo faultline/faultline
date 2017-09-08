@@ -1,27 +1,24 @@
 'use strict';
 
 const console = require('console');
-const yaml = require('js-yaml');
-const fs = require('fs');
 const resgen = require('../lib/resgen');
 const checkApiKey = require('../lib/check_api_key');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-const aws = require('../lib/aws')(config);
+const aws = require('../lib/aws')();
 const kms = aws.kms;
 
 module.exports.encrypt = (event, context, cb) => {
-    if (!config.masterApiKey || !config.useKms || !config.kmsKeyAlias) {
+    if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {
         const response = resgen(403, { status: 'error', message: '412 Precondition Failed: masterApiKey'});
         cb(null, response);
         return;
     }
-    if (!checkApiKey(event, config)) {
+    if (!checkApiKey(event)) {
         const response = resgen(403, { status: 'error', message: '403 Forbidden'});
         cb(null, response);
         return;
     }
     const body = event.body;
-    const keyAlias = `alias/${config.kmsKeyAlias}`;
+    const keyAlias = `alias/${process.env.FAULTLINE_KMS_KEY_ALIAS}`;
     kms.listAliases().promise()
         .then((res) => {
             const key = res.Aliases.find((k) => {

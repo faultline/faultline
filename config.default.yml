@@ -12,7 +12,7 @@ timeunit: minute
 masterApiKey: (EDITME)
 # faultline API Key for POST errors only (!This is not API Gateway API Key!)
 clientApiKey: (EDITME)
-# faultline functions CloudWatchLogs Retention (days / null is unlimited)
+# faultline functions CloudWatchLogs Retention (days / -1 is unlimited)
 logRetentionInDays: 180
 # Use AWS KMS Key to encrypt POST params (notifications)
 useKms: false

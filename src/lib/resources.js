@@ -2,7 +2,7 @@
 
 const yaml = require('js-yaml');
 const fs = require('fs');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
+const env = require('./env').env();
 const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../serverless.yml', 'utf8'));
 const AWS = require('aws-sdk');
 const sts = new AWS.STS({apiVersion: '2011-06-15'});
@@ -15,7 +15,7 @@ module.exports.resources = () => {
             FaultlineBucket: {
                 Type: 'AWS::S3::Bucket',
                 Properties: {
-                    BucketName: config.s3BucketName
+                    BucketName: env.FAULTLINE_S3_BUCKET_NAME
                 }
             },
             FaultlineTable: {
@@ -67,7 +67,7 @@ module.exports.resources = () => {
                         ReadCapacityUnits: 1,
                         WriteCapacityUnits: 1
                     },
-                    TableName: `${config.dynamodbTablePrefix}Error`
+                    TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error`
                 }
             },
             FaultlineTableByTimeunit: {
@@ -97,66 +97,66 @@ module.exports.resources = () => {
                         ReadCapacityUnits: 1,
                         WriteCapacityUnits: 1
                     },
-                    TableName: `${config.dynamodbTablePrefix}ErrorByTimeunit`
+                    TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit`
                 }
             }
         };
 
-        if (config.logRetentionInDays) {
+        if (env.FAULTLINE_LOG_RETENTION_IN_DAYS >= 0) {
             const logResources = {
                 ProjectsListLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 ProjectsDeleteLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 ErrorsPostLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 ErrorsListLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 ErrorsGetLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 ErrorsPatchLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 ErrorsDeleteLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 },
                 CallNotificationsLogGroup: {
                     Type: 'AWS::Logs::LogGroup',
                     Properties: {
-                        RetentionInDays: config.logRetentionInDays
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
                 }
             };
             resources = Object.assign(resources, logResources);
         }
 
-        if (config.useKms && config.kmsKeyAlias) {
+        if (env.FAULTLINE_USE_KMS && env.FAULTLINE_KMS_KEY_ALIAS) {
             const kmsResources = {
                 FaultlineKey: {
                     Type: 'AWS::KMS::Key',
@@ -202,7 +202,7 @@ module.exports.resources = () => {
                 FaultlineKeyAlias: {
                     Type: 'AWS::KMS::Alias',
                     Properties: {
-                        AliasName: `alias/${config.kmsKeyAlias}`,
+                        AliasName: `alias/${env.FAULTLINE_KMS_KEY_ALIAS}`,
                         TargetKeyId: { Ref: 'FaultlineKey'}
                     }
                 }

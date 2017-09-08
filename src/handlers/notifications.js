@@ -1,12 +1,9 @@
 'use strict';
 
-const yaml = require('js-yaml');
-const fs = require('fs');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 const slack = require('../lib/slack');
 const github = require('../lib/github');
 const gitlab = require('../lib/gitlab');
-const aws = require('../lib/aws')(config);
+const aws = require('../lib/aws')();
 const kms = aws.kms;
 
 module.exports.call = (event, context, cb) => {

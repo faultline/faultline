@@ -1,19 +1,16 @@
 'use strict';
 
 const console = require('console');
-const yaml = require('js-yaml');
-const fs = require('fs');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
 const checkApiKey = require('../../lib/check_api_key');
-const bucketName = config.s3BucketName;
-const errorByMessageTable = config.dynamodbTablePrefix + 'Error';
-const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
+const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
+const errorByMessageTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'Error';
+const errorByTimeunitTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'ErrorByTimeunit';
 
 module.exports.delete = (event, context, cb) => {
     // Check faultline API Key
-    if (!checkApiKey(event, config)) {
+    if (!checkApiKey(event)) {
         const response = resgen(403, { status: 'error', message: '403 Forbidden'});
         cb(null, response);
         return;

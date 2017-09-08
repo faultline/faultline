@@ -1,8 +1,8 @@
 'use strict';
 
 const AWS = require('aws-sdk');
-const aws = (config) => {
-    AWS.config.region = config.region;
+const aws = () => {
+    AWS.config.region = process.env.FAULTLINE_REGION;
     return {
         s3: new AWS.S3({
             apiVersion: '2006-03-01'
