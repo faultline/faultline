@@ -31,6 +31,9 @@ module.exports.env = () => {
         } else {
             env[k] = defaults[k];
         }
+        if (env[k] === null) {
+            throw [k + '(Environment variable)', 'or', configKey + '(config.yml)', 'is not set'].join(' ');
+        }
 
         // cast boolean to number
         if (typeof env[k] == 'boolean') {
