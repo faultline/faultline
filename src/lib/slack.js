@@ -1,13 +1,10 @@
 'use strict';
 
 const console = require('console');
-const yaml = require('js-yaml');
-const fs = require('fs');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
 const reversedUnixtime = require('./reversed_unixtime');
 const moment = require('moment-timezone');
 const storage = require('./storage');
-const bucketName = config.s3BucketName;
+const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
 const axios = require('axios');
 const template = require('url-template');
 

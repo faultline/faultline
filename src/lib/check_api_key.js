@@ -1,7 +1,7 @@
 'use strict';
 
-module.exports = (event, config, allowClientKey = false) => {
-    if (!config.masterApiKey && !config.clientApiKey) {
+module.exports = (event, allowClientKey = false) => {
+    if (!process.env.FAULTLINE_MASTER_API_KEY && !process.env.FAULTLINE_CLIENT_API_KEY) {
         return true;
     }
     // Check faultline API Key
@@ -12,9 +12,9 @@ module.exports = (event, config, allowClientKey = false) => {
     if (!event.headers.hasOwnProperty(apiKeyHeader)) {
         return false;
     }
-    let checkKeys = [config.masterApiKey];
+    let checkKeys = [process.env.FAULTLINE_MASTER_API_KEY];
     if (allowClientKey) {
-        checkKeys.push(config.clientApiKey);
+        checkKeys.push(process.env.FAULTLINE_CLIENT_API_KEY);
     }
     if (checkKeys.indexOf(event.headers[apiKeyHeader]) < 0) {
         return false;

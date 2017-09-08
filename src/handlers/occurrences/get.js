@@ -1,19 +1,16 @@
 'use strict';
 
 const console = require('console');
-const yaml = require('js-yaml');
-const fs = require('fs');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
 const moment = require('moment');
-const bucketName = config.s3BucketName;
+const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
 
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
-    if (!checkApiKey(event, config)) {
+    if (!checkApiKey(event)) {
         const response = resgen(403, { status: 'error', message: '403 Forbidden'});
         cb(null, response);
         return;
@@ -68,7 +65,7 @@ module.exports.list = (event, context, cb) => {
 
 module.exports.get = (event, context, cb) => {
     // Check faultline API Key
-    if (!checkApiKey(event, config)) {
+    if (!checkApiKey(event)) {
         const response = resgen(403, { status: 'error', message: '403 Forbidden'});
         cb(null, response);
         return;

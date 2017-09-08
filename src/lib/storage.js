@@ -1,9 +1,6 @@
 'use strict';
 
-const yaml = require('js-yaml');
-const fs = require('fs');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../config.yml', 'utf8'));
-const aws = require('./aws')(config);
+const aws = require('./aws')();
 const s3 = aws.s3;
 const docClient = aws.docClient;
 

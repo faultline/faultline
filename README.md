@@ -48,9 +48,15 @@ $ cd faultline
 $ npm install
 ```
 
-### :pencil: STEP 2. Edit config
+### :pencil: STEP 2. Set environment variables OR Edit config.yml
+
+Set environment variables.
+
+OR
 
 Copy [`config.default.yml`](config.default.yml) to `config.yml`. And edit.
+
+Environment / config.yml Document is [here](docs/env.md) :book: .
 
 ### :rocket: STEP 3. Deploy to AWS
 

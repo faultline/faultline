@@ -9,9 +9,8 @@ const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
 const hashTruncate = require('../../lib/hash_truncate');
-const config = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../config.yml', 'utf8'));
-const aws = require('../../lib/aws')(config);
-const timeunitFormat = timeunits[config.timeunit];
+const aws = require('../../lib/aws')();
+const timeunitFormat = timeunits[process.env.FAULTLINE_TIMEUNIT];
 const moment = require('moment');
 
 const deref = require('json-schema-deref-sync');
@@ -21,9 +20,9 @@ const rootSchema = require('./../../../schema.json');
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'create';
 }).schema;
-const bucketName = config.s3BucketName;
-const errorByMessageTable = config.dynamodbTablePrefix + 'Error';
-const errorByTimeunitTable = config.dynamodbTablePrefix + 'ErrorByTimeunit';
+const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
+const errorByMessageTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'Error';
+const errorByTimeunitTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'ErrorByTimeunit';
 
 const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../serverless.yml', 'utf8'));
 const lambda = aws.lambda;
@@ -56,7 +55,7 @@ Array.prototype.chunk = function(chunkBytes = 128000){
 
 module.exports.post = (event, context, cb) => {
     // Check faultline API Key
-    if (!checkApiKey(event, config, true)) {
+    if (!checkApiKey(event, true)) {
         const response = resgen(403, { status: 'error', message: '403 Forbidden'});
         cb(null, response);
         return;
