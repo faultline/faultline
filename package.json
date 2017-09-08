@@ -34,7 +34,6 @@
   "dependencies": {
     "ajv": "^4.7.7",
     "axios": "^0.15.2",
-    "config": "^1.21.0",
     "github": "^7.0.0",
     "gitlab": "^1.7.1",
     "js-sha256": "^0.5.0",
