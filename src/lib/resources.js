@@ -151,6 +151,24 @@ module.exports.resources = () => {
                     Properties: {
                         RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
                     }
+                },
+                OccurrencesListLogGroup: {
+                    Type: 'AWS::Logs::LogGroup',
+                    Properties: {
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
+                    }
+                },
+                OccurrencesGetLogGroup: {
+                    Type: 'AWS::Logs::LogGroup',
+                    Properties: {
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
+                    }
+                },
+                EncryptLogGroup: {
+                    Type: 'AWS::Logs::LogGroup',
+                    Properties: {
+                        RetentionInDays: env.FAULTLINE_LOG_RETENTION_IN_DAYS
+                    }
                 }
             };
             resources = Object.assign(resources, logResources);
