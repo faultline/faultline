@@ -6,6 +6,7 @@
   "scripts": {
     "deploy": "npm install && sls deploy -v",
     "destroy": "sls remove",
+    "info": "sls info",
     "test": "nyc --reporter=lcovonly mocha --recursive --require intelli-espower-loader; nyc report",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > docs/api.md"
   },
