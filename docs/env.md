@@ -2,6 +2,7 @@
 
 |  | Environment | config.yml key | default |
 | --- | --- | --- | --- |
+| Service name | `FAULTLINE_SERVICE_NAME` | `serviceName` | faultline |
 | AWS deploy region | `FAULTLINE_REGION` | `region` | ap-northeast-1 |
 | S3 bucket name | `FAULTLINE_S3_BUCKET_NAME` | `s3BucketName` |  |
 | Dynamodb table prefix | `FAULTLINE_DYNAMODB_TABLE_PREFIX` | `dynamodbTablePrefix` | faultline |
