@@ -2,6 +2,7 @@
 
 const moment = require('moment-timezone');
 const template = require('url-template');
+const sha256 = require('js-sha256');
 const reversedUnixtime = require('./reversed_unixtime');
 const hashTruncate = require('./hash_truncate');
 
@@ -12,18 +13,24 @@ String.prototype.bytes = function(){
 const messageBuilder = {
     title: (n, errorData) => {
         const title = `[${errorData.type}] ${errorData.message}`;
+        return messageBuilder.hashTruncateTitle(title);
+    },
+    hashTruncateTitle: (title) => {
         const titleMaxBytes = 250; // GitHub:256byte, GitLab:253byte
         if (title.bytes() < titleMaxBytes) {
             return title;
         }
         let prefix = '';
+        let truncated = '';
         Array.of(...title).forEach((str) => {
-            if (prefix.bytes() >= titleMaxBytes - '...'.bytes()) {
+            if (prefix.bytes() >= titleMaxBytes - '...'.bytes() - 10) {
+                truncated += str;
                 return;
             }
             prefix += str;
         });
-        return [prefix, '...'].join('');
+        const minHash = sha256(truncated).slice(0, 9);
+        return [prefix, minHash].join('...');
     },
     body: (n, errorData) => {
         let body = '';
