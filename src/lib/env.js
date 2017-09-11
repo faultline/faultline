@@ -11,6 +11,7 @@ try {
 
 module.exports.env = () => {
     const defaults = {
+        FAULTLINE_SERVICE_NAME: 'faultline',
         FAULTLINE_REGION: 'ap-northeast-1',
         FAULTLINE_S3_BUCKET_NAME: null,
         FAULTLINE_DYNAMODB_TABLE_PREFIX: 'faultline',
