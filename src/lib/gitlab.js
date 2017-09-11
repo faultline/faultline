@@ -4,7 +4,7 @@ const gitlab = require('gitlab');
 const messageBuilder = require('./message_builder');
 
 module.exports = (n, errorData) => {
-    const title = `[${errorData.type}] ${errorData.message}`;
+    const title = messageBuilder.title(n, errorData);
     let endpoint = 'https://gitlab.com';
     if (n.endpoint) {
         endpoint = n.endpoint;

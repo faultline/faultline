@@ -5,7 +5,26 @@ const template = require('url-template');
 const reversedUnixtime = require('./reversed_unixtime');
 const hashTruncate = require('./hash_truncate');
 
+String.prototype.bytes = function(){
+    return(encodeURIComponent(this).replace(/%../g,'x').length);
+};
+
 const messageBuilder = {
+    title: (n, errorData) => {
+        const title = `[${errorData.type}] ${errorData.message}`;
+        const titleMaxBytes = 250; // GitHub:256byte, GitLab:253byte
+        if (title.bytes() < titleMaxBytes) {
+            return title;
+        }
+        let prefix = '';
+        Array.of(...title).forEach((str) => {
+            if (prefix.bytes() >= titleMaxBytes - '...'.bytes()) {
+                return;
+            }
+            prefix += str;
+        });
+        return [prefix, '...'].join('');
+    },
     body: (n, errorData) => {
         let body = '';
 
