@@ -2,6 +2,7 @@
 
 const console = require('console');
 const reversedUnixtime = require('./reversed_unixtime');
+const hashTruncate = require('./hash_truncate');
 const moment = require('moment-timezone');
 const storage = require('./storage');
 const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
@@ -10,11 +11,12 @@ const template = require('url-template');
 
 module.exports = (n, errorData) => {
     let titleLink = null;
+    const truncatedMessage = hashTruncate(errorData.message);
     if (n.linkTemplate) {
         const linkTemplate = template.parse(n.linkTemplate);
         titleLink = linkTemplate.expand({
             project: errorData.project,
-            message: errorData.message,
+            message: truncatedMessage,
             reversedUnixtime: reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
         });
     } else {
@@ -22,7 +24,7 @@ module.exports = (n, errorData) => {
             'projects',
             errorData.project,
             'errors',
-            errorData.message,
+            truncatedMessage,
             'occurrences',
             reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
         ].join('/') + '.json';
