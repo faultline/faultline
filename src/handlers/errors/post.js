@@ -8,7 +8,7 @@ const storage = require('../../lib/storage');
 const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
-const hashTruncate = require('../../lib/hash_truncate');
+const truncater = require('../../lib/truncater');
 const aws = require('../../lib/aws')();
 const timeunitFormat = timeunits[process.env.FAULTLINE_TIMEUNIT];
 const moment = require('moment');
@@ -94,7 +94,7 @@ module.exports.post = (event, context, cb) => {
 
     errors.forEach((e) => {
         const message = e.message;
-        const truncatedMessage = hashTruncate(message);
+        const truncatedMessage = truncater.truncateMessage(message);
         const type = e.type;
         const key = [project, truncatedMessage].join('##');
         let timestamp = now;
