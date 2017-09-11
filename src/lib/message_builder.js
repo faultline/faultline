@@ -3,7 +3,7 @@
 const moment = require('moment-timezone');
 const template = require('url-template');
 const reversedUnixtime = require('./reversed_unixtime');
-const hashTruncate = require('./hash_truncate');
+const truncater = require('./truncater');
 
 String.prototype.bytes = function(){
     return(encodeURIComponent(this).replace(/%../g,'x').length);
@@ -12,25 +12,14 @@ String.prototype.bytes = function(){
 const messageBuilder = {
     title: (n, errorData) => {
         const title = `[${errorData.type}] ${errorData.message}`;
-        const titleMaxBytes = 250; // GitHub:256byte, GitLab:253byte
-        if (title.bytes() < titleMaxBytes) {
-            return title;
-        }
-        let prefix = '';
-        Array.of(...title).forEach((str) => {
-            if (prefix.bytes() >= titleMaxBytes - '...'.bytes()) {
-                return;
-            }
-            prefix += str;
-        });
-        return [prefix, '...'].join('');
+        return truncater.truncateTitle(title);
     },
     body: (n, errorData) => {
         let body = '';
 
         if (n.linkTemplate) {
             const linkTemplate = template.parse(n.linkTemplate);
-            const truncatedMessage = hashTruncate(errorData.message);
+            const truncatedMessage = truncater.truncateMessage(errorData.message);
             const link = linkTemplate.expand({
                 project: errorData.project,
                 message: truncatedMessage,

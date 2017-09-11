@@ -2,7 +2,7 @@
 
 const console = require('console');
 const reversedUnixtime = require('./reversed_unixtime');
-const hashTruncate = require('./hash_truncate');
+const truncater = require('./truncater');
 const moment = require('moment-timezone');
 const storage = require('./storage');
 const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
@@ -11,7 +11,7 @@ const template = require('url-template');
 
 module.exports = (n, errorData) => {
     let titleLink = null;
-    const truncatedMessage = hashTruncate(errorData.message);
+    const truncatedMessage = truncater.truncateMessage(errorData.message);
     if (n.linkTemplate) {
         const linkTemplate = template.parse(n.linkTemplate);
         titleLink = linkTemplate.expand({
