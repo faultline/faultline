@@ -3,6 +3,7 @@
 const moment = require('moment-timezone');
 const template = require('url-template');
 const reversedUnixtime = require('./reversed_unixtime');
+const hashTruncate = require('./hash_truncate');
 
 const messageBuilder = {
     body: (n, errorData) => {
@@ -10,9 +11,10 @@ const messageBuilder = {
 
         if (n.linkTemplate) {
             const linkTemplate = template.parse(n.linkTemplate);
+            const truncatedMessage = hashTruncate(errorData.message);
             const link = linkTemplate.expand({
                 project: errorData.project,
-                message: errorData.message,
+                message: truncatedMessage,
                 reversedUnixtime: reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
             });
             body += '## link\n\n\n' + link + '\n\n';
