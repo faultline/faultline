@@ -1,5 +1,6 @@
 # default.yml
-
+# faultline service name
+serviceName: faultline
 # AWS deploy region
 region: ap-northeast-1
 # S3 bucket name

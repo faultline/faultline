@@ -1,4 +1,4 @@
-service: faultline
+service: ${self:provider.environment.FAULTLINE_SERVICE_NAME}
 
 frameworkVersion: ">=1.17.0 <2.0.0"
 
