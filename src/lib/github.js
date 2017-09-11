@@ -5,7 +5,7 @@ const github = require('github');
 const messageBuilder = require('./message_builder');
 
 module.exports = (n, errorData) => {
-    const title = `[${errorData.type}] ${errorData.message}`;
+    const title = messageBuilder.title(n, errorData);
     const g = new github({
         timeout: 5000
     });
