@@ -68,7 +68,7 @@ ${timestamp}
 
 `;
 
-        footer += '> This issue was created by [faultline](https://github.com/k1LoW/faultline).';
+        footer += '> This issue was created by [faultline](https://github.com/faultline/faultline).';
         return footer;
     },
     commentFooter: (n, errorData) => {
