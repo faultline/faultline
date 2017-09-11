@@ -1,4 +1,4 @@
-# faultline
+# faultline [![Build Status](https://travis-ci.org/faultline/faultline.svg?branch=master)](https://travis-ci.org/faultline/faultline)
 
 > Error tracking tool on AWS managed services.
 
