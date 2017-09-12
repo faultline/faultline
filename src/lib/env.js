@@ -18,6 +18,7 @@ module.exports.env = () => {
         FAULTLINE_TIMEUNIT: 'minute',
         FAULTLINE_MASTER_API_KEY: null,
         FAULTLINE_CLIENT_API_KEY: null,
+        FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS: -1,
         FAULTLINE_LOG_RETENTION_IN_DAYS: 180,
         FAULTLINE_USE_KMS: false,
         FAULTLINE_KMS_KEY_ALIAS: 'faultline'
