@@ -1,9 +1,6 @@
 'use strict';
 
-const yaml = require('js-yaml');
-const fs = require('fs');
 const env = require('./env').env();
-const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../serverless.yml', 'utf8'));
 const AWS = require('aws-sdk');
 const sts = new AWS.STS({apiVersion: '2011-06-15'});
 
@@ -195,7 +192,7 @@ module.exports.resources = () => {
                         Enabled: true,
                         KeyPolicy: {
                             Version: '2012-10-17',
-                            Id: `${serverlessConfig.service}-key`,
+                            Id: `${env.FAULTLINE_SERVICE_NAME}-key`,
                             Statement: [
                                 {
                                     Sid: 'Allow administration of the key / faultline',
