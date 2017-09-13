@@ -65,6 +65,7 @@ package:
 
 plugins:
   - faultline-env-checker
+  - faultline-resources
 
 functions:
   projectsList:
@@ -151,6 +152,3 @@ functions:
           path: encrypt
           method: post
           integration: lambda-proxy
-
-resources:
-  Resources: ${file(src/lib/resources.js):resources}
