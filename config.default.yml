@@ -1,4 +1,3 @@
-# default.yml
 # faultline service name
 serviceName: faultline
 # AWS deploy region
@@ -15,7 +14,7 @@ masterApiKey: (EDITME)
 clientApiKey: (EDITME)
 # faultline functions CloudWatchLogs Retention (days / -1 is unlimited)
 logRetentionInDays: 180
-# Use AWS KMS Key to encrypt POST params (notifications)
-useKms: false
+# Use AWS KMS Key to encrypt POST params (notifications) ( 0 or 1 )
+useKms: 0
 # AWS KMS Key alias
 kmsKeyAlias: faultline

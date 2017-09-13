@@ -35,6 +35,7 @@
   "dependencies": {
     "ajv": "^4.7.7",
     "axios": "^0.15.2",
+    "bluebird": "^3.4.0",
     "github": "^7.0.0",
     "gitlab": "^1.7.1",
     "js-sha256": "^0.5.0",
@@ -43,7 +44,7 @@
     "lodash": "^4.16.2",
     "moment": "^2.15.0",
     "moment-timezone": "^0.5.13",
-    "serverless": "~1.17.0",
+    "serverless": "^1.21.1",
     "url-template": "^2.0.8"
   },
   "devDependencies": {

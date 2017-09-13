@@ -1,5 +1,7 @@
 'use strict';
 
+/** TODO: Use serverless.classes.Variables.populateProperty() **/
+
 const yaml = require('js-yaml');
 const fs = require('fs');
 const configPath = __dirname + '/../../config.yml';
@@ -11,6 +13,7 @@ try {
 
 module.exports.env = () => {
     const defaults = {
+        /** NOTICE: Sync serverless.yml **/
         FAULTLINE_SERVICE_NAME: 'faultline',
         FAULTLINE_REGION: 'ap-northeast-1',
         FAULTLINE_S3_BUCKET_NAME: null,
@@ -31,14 +34,6 @@ module.exports.env = () => {
             env[k] = config[configKey];
         } else {
             env[k] = defaults[k];
-        }
-        if (env[k] === null) {
-            throw [k + '(Environment variable)', 'or', configKey + '(config.yml)', 'is not set'].join(' ');
-        }
-
-        // cast boolean to number
-        if (typeof env[k] == 'boolean') {
-            env[k] = Number(env[k]);
         }
     });
     return env;
