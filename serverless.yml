@@ -1,10 +1,21 @@
 service: ${self:provider.environment.FAULTLINE_SERVICE_NAME}
 
-frameworkVersion: ">=1.17.0 <2.0.0"
+frameworkVersion: ">=1.21.1 <2.0.0"
 
 provider:
   name: aws
-  environment: ${file(src/lib/env.js):env}
+  environment:
+    FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
+    FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'ap-northeast-1'}
+    FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
+    FAULTLINE_DYNAMODB_TABLE_PREFIX: ${env:FAULTLINE_DYNAMODB_TABLE_PREFIX, file(./config.yml):dynamodbTablePrefix, 'faultline'}
+    FAULTLINE_TIMEUNIT: ${env:FAULTLINE_TIMEUNIT, file(./config.yml):timeunit, 'minute'}
+    FAULTLINE_MASTER_API_KEY: ${env:FAULTLINE_MASTER_API_KEY, file(./config.yml):masterApiKey}
+    FAULTLINE_CLIENT_API_KEY: ${env:FAULTLINE_CLIENT_API_KEY, file(./config.yml):clientApiKey}
+    FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS: ${env:FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS, file(./config.yml):errorDataRetentionInDays, '-1'}
+    FAULTLINE_LOG_RETENTION_IN_DAYS: ${env:FAULTLINE_LOG_RETENTION_IN_DAYS, file(./config.yml):logRetentionInDays, '180'}
+    FAULTLINE_USE_KMS: ${env:FAULTLINE_USE_KMS, file(./config.yml):useKms, '0'}
+    FAULTLINE_KMS_KEY_ALIAS: ${env:FAULTLINE_KMS_KEY_ALIAS, file(./config.yml):kmsKeyAlias, 'faultline'}
   runtime: nodejs6.10
   stage: v0
   region: ${self:provider.environment.FAULTLINE_REGION}
@@ -52,6 +63,10 @@ package:
     - .git/**
     - doc/**
     - node_modules/aws-sdk/**
+
+plugins:
+  - faultline-env-checker
+  - faultline-resources
 
 functions:
   projectsList:
@@ -138,6 +153,3 @@ functions:
           path: encrypt
           method: post
           integration: lambda-proxy
-
-resources:
-  Resources: ${file(src/lib/resources.js):resources}
