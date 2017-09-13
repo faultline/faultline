@@ -1,0 +1,44 @@
+environment:
+  AWS_ACCESS_KEY_ID:
+    type: password
+  AWS_SECRET_ACCESS_KEY:
+    type: password
+  FAULTLINE_STAGE:
+    type: text
+    default: 'v0'
+  FAULTLINE_SERVICE_NAME:
+    type: text
+    default: 'faultline'
+  FAULTLINE_REGION:
+    type: text
+    default: 'ap-northeast-1'
+  FAULTLINE_S3_BUCKET_NAME:
+    type: text
+  FAULTLINE_DYNAMODB_TABLE_PREFIX:
+    type: text
+    default: 'faultline'
+  FAULTLINE_TIMEUNIT:
+    type: select
+    default: 'minute'
+    options:
+      - year
+      - month
+      - day
+      - hour
+      - minute
+  FAULTLINE_MASTER_API_KEY:
+    type: password
+  FAULTLINE_CLIENT_API_KEY:
+    type: password
+  FAULTLINE_LOG_RETENTION_IN_DAYS:
+    type: number
+    default: 180
+  FAULTLINE_USE_KMS:
+    type: select
+    default: '0'
+    options:
+      - '0'
+      - '1'
+  FAULTLINE_KMS_KEY_ALIAS:
+    type: text
+    default: 'faultline'
