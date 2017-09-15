@@ -62,7 +62,7 @@ package:
   exclude:
     - .git/**
     - doc/**
-    - node_modules/aws-sdk/**
+    - node_modules/serverless/**
 
 plugins:
   - faultline-env-checker
