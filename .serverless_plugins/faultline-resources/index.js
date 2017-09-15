@@ -186,7 +186,7 @@ class FaultlineResources {
                 resources = Object.assign(resources, logResources);
             }
 
-            if (env.FAULTLINE_USE_KMS && env.FAULTLINE_KMS_KEY_ALIAS) {
+            if (Number(env.FAULTLINE_USE_KMS) && env.FAULTLINE_KMS_KEY_ALIAS) {
                 const kmsResources = {
                     FaultlineKey: {
                         Type: 'AWS::KMS::Key',
