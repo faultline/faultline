@@ -8,12 +8,12 @@ const kms = aws.kms;
 
 module.exports.encrypt = (event, context, cb) => {
     if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {
-        const response = resgen(403, { status: 'error', message: '412 Precondition Failed: masterApiKey'});
+        const response = resgen(412, { errors: [{ message: '412 Precondition Failed: masterApiKey' }] });
         cb(null, response);
         return;
     }
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -32,12 +32,12 @@ module.exports.encrypt = (event, context, cb) => {
         })
         .then((res) => {
             const encrypted = res.CiphertextBlob.toString('base64');
-            const response = resgen(201, { status: 'success', encrypted: encrypted });
+            const response = resgen(201, { data: { encrypted: encrypted }});
             cb(null, response);
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to encrypt error'});
+            const response = resgen(500, { errors: [{ message: 'Unable to POST error', detail: err }] });
             cb(null, response);
         });
 };

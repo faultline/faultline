@@ -11,7 +11,7 @@ const errorByTimeunitTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'Erro
 module.exports.delete = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -99,7 +99,7 @@ module.exports.delete = (event, context, cb) => {
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to delete', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to DELETE error', detail: err }] });
             cb(null, response);
         });
 };

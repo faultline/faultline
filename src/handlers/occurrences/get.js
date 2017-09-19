@@ -11,7 +11,7 @@ const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -51,14 +51,15 @@ module.exports.list = (event, context, cb) => {
                 return parsed;
             });
             const response = resgen(200, {
-                status: 'success',
-                occurrences: occurrences,
-                count: occurrences.length
+                data: {
+                    errors: occurrences,
+                    totalCount: occurrences.length
+                }
             });
             cb(null, response);
         })
         .catch((err) => {
-            const response = resgen(500, { status: 'error', message: 'Unable to query', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to GET error', detail: err }] });
             cb(null, response);
         });
 };
@@ -66,7 +67,7 @@ module.exports.list = (event, context, cb) => {
 module.exports.get = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -87,14 +88,15 @@ module.exports.get = (event, context, cb) => {
             let parsed = JSON.parse(data.Body.toString());
             parsed.reversedUnixtime = reversedUnixtime;
             const response = resgen(200, {
-                status: 'success',
-                meta: parsed
+                data: {
+                    error: parsed
+                }
             });
             cb(null, response);
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to query', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to GET error', detail: err }] });
             cb(null, response);
         });
 };

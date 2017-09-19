@@ -12,7 +12,7 @@ const errorByTimeunitTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'Erro
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -49,15 +49,16 @@ module.exports.list = (event, context, cb) => {
     storage.queryDoc(params)
         .then((data) => {
             const response = resgen(200, {
-                status: 'success',
-                errors: data.Items,
-                count: data.ScannedCount
+                data: {
+                    errors: data.Items,
+                    scannedCount: data.ScannedCount
+                }
             });
             cb(null, response);
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to query', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to GET error', detail: err }] });
             cb(null, response);
         });
 };
@@ -65,7 +66,7 @@ module.exports.list = (event, context, cb) => {
 module.exports.get = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -126,19 +127,20 @@ module.exports.get = (event, context, cb) => {
         })
         .then((data) => {
             const response = resgen(200, {
-                status: 'success',
-                meta: JSON.parse(data[0].Body.toString()),
-                timeline: {
-                    errors: data[1].Items,
-                    count: data[1].Count,
-                    scannedCount: data[1].ScannedCount
+                data: {
+                    error: JSON.parse(data[0].Body.toString()),
+                    timeline: {
+                        errors: data[1].Items,
+                        totalCount: data[1].Count,
+                        scannedCount: data[1].ScannedCount
+                    }
                 }
             });
             cb(null, response);
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to query', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to GET error', detail: err }] });
             cb(null, response);
         });
 };
