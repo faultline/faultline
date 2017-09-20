@@ -5,6 +5,7 @@ frameworkVersion: ">=1.21.1 <2.0.0"
 provider:
   name: aws
   environment:
+    FAULTLINE_STAGE: ${env:FAULTLINE_STAGE, 'v0'}
     FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
     FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'ap-northeast-1'}
     FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
@@ -17,7 +18,7 @@ provider:
     FAULTLINE_USE_KMS: ${env:FAULTLINE_USE_KMS, file(./config.yml):useKms, '0'}
     FAULTLINE_KMS_KEY_ALIAS: ${env:FAULTLINE_KMS_KEY_ALIAS, file(./config.yml):kmsKeyAlias, 'faultline'}
   runtime: nodejs6.10
-  stage: v0
+  stage: ${self:provider.environment.FAULTLINE_STAGE}
   region: ${self:provider.environment.FAULTLINE_REGION}
   timeout: 10
   cfLogs: true
@@ -62,7 +63,7 @@ package:
   exclude:
     - .git/**
     - doc/**
-    - node_modules/aws-sdk/**
+    - node_modules/serverless/**
 
 plugins:
   - faultline-env-checker
