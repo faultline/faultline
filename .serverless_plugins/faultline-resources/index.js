@@ -242,6 +242,10 @@ class FaultlineResources {
             self.serverless.service.resources = {
                 Resources: resources
             };
+            // enable deleteExpiredErrors function
+            if (Number(env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS) > -1) {
+                self.serverless.service.functions.deleteExpiredErrors.events[0].schedule.enabled = true;
+            }
             return BbPromise.resolve();
         });
     }
