@@ -114,18 +114,6 @@ class FaultlineResources {
                 }
             };
 
-            if (env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS >= 0) {
-                resources.FaultlineBucket.Properties.LifecycleConfiguration = {
-                    Rules: [
-                        {
-                            Id: `${env.FAULTLINE_SERVICE_NAME}-FaultlineErrorDataRetentionInDays`,
-                            ExpirationInDays: env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS,
-                            Status: 'Enabled'
-                        }
-                    ]
-                };
-            }
-            
             if (env.FAULTLINE_LOG_RETENTION_IN_DAYS >= 0) {
                 const logResources = {
                     ProjectsListLogGroup: {
@@ -254,6 +242,10 @@ class FaultlineResources {
             self.serverless.service.resources = {
                 Resources: resources
             };
+            // enable deleteExpiredErrors function
+            if (Number(env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS) > -1) {
+                self.serverless.service.functions.deleteExpiredErrors.events[0].schedule.enabled = true;
+            }
             return BbPromise.resolve();
         });
     }

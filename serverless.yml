@@ -147,6 +147,12 @@ functions:
     handler: src/handlers/notifications.call
     name: faultline-${self:provider.stage}-callNotifications
     timeout: 30
+  deleteExpiredErrors:
+    handler: src/handlers/util.deleteExpiredErrors
+    events:
+      - schedule:
+          rate: cron(0 0 * * ? *)
+          enabled: false # ${env:FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS, file(./config.yml):errorDataRetentionInDays, '-1'}
   encrypt:
     handler: src/handlers/util.encrypt
     events:
