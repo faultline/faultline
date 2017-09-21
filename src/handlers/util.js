@@ -108,7 +108,9 @@ module.exports.deleteExpiredErrors = (event, context, cb) => {
         })
         .then((res) => {
             cb(null, {
-                deleteCount: res.length
+                data: {
+                    deleteCount: res.length
+                }
             });
         })
         .catch((err) => {
