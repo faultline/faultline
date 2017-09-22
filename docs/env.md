@@ -2,6 +2,7 @@
 
 |  | Environment | config.yml key | default |
 | --- | --- | --- | --- |
+| Stage | `FAULTLINE_STAGE` | `stage` | 'v0' |
 | Service name | `FAULTLINE_SERVICE_NAME` | `serviceName` | faultline |
 | AWS deploy region | `FAULTLINE_REGION` | `region` | ap-northeast-1 |
 | S3 bucket name | `FAULTLINE_S3_BUCKET_NAME` | `s3BucketName` |  |

@@ -1,29 +1,39 @@
 environment:
   AWS_ACCESS_KEY_ID:
+    description: AWS Access Key ID
     type: password
   AWS_SECRET_ACCESS_KEY:
+    description: AWS Secret Access Key
     type: password
   FAULTLINE_STAGE:
+    description: Stage
     type: text
     default: 'v0'
   FAULTLINE_SERVICE_NAME:
+    description: Service name
     type: text
     default: 'faultline'
   FAULTLINE_REGION:
+    description: AWS deploy region
     type: text
     default: 'ap-northeast-1'
   FAULTLINE_S3_BUCKET_NAME:
+    description: S3 bucket name
     type: text
   FAULTLINE_DYNAMODB_TABLE_PREFIX:
+    description: Dynamodb table prefix
     type: text
     default: 'faultline'
   FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS:
+    description: Dynamodb Read Capacity Units
     type: number
     default: 1
   FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS:
+    description: Dynamodb Write Capacity Units
     type: number
     default: 1
   FAULTLINE_TIMEUNIT:
+    description: Error tracking count interval
     type: select
     default: 'minute'
     options:
@@ -33,21 +43,27 @@ environment:
       - hour
       - minute
   FAULTLINE_MASTER_API_KEY:
+    description: faultline API Key for full control
     type: password
   FAULTLINE_CLIENT_API_KEY:
+    description: faultline API Key for POST errors only
     type: password
   FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS:
+    description: faultline error data Retention (days / -1 is unlimited)
     type: number
     default: -1
   FAULTLINE_LOG_RETENTION_IN_DAYS:
+    description: faultline functions CloudWatchLogs Retention (days / -1 is unlimited)
     type: number
     default: 180
   FAULTLINE_USE_KMS:
+    description: Use AWS KMS Key to encrypt POST params (notifications)
     type: select
     default: '0'
     options:
       - '0'
       - '1'
   FAULTLINE_KMS_KEY_ALIAS:
+    description: AWS KMS Key alias
     type: text
     default: 'faultline'
