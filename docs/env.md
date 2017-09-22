@@ -6,6 +6,8 @@
 | AWS deploy region | `FAULTLINE_REGION` | `region` | ap-northeast-1 |
 | S3 bucket name | `FAULTLINE_S3_BUCKET_NAME` | `s3BucketName` |  |
 | Dynamodb table prefix | `FAULTLINE_DYNAMODB_TABLE_PREFIX` | `dynamodbTablePrefix` | faultline |
+| Dynamodb Read Capacity Units | `FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS` | `dynamodbReadCapacityUnits` | 1 |
+| Dynamodb Write Capacity Units | `FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS` | `dynamodbWriteCapacityUnits` | 1 |
 | Error tracking count interval (year / month / day / hour / minute) | `FAULTLINE_TIMEOUT` | `timeunit` | minute |
 | faultline API Key for full control (!This is not API Gateway API Key!) | `FAULTLINE_MASTER_API_KEY` | `masterApiKey` | |
 | faultline API Key for POST errors only (!This is not API Gateway API Key!) | `FAULTLINE_MASTER_API_KEY` | `clientApiKey` | |
