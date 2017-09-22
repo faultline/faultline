@@ -9,6 +9,7 @@
 | Error tracking count interval (year / month / day / hour / minute) | `FAULTLINE_TIMEOUT` | `timeunit` | minute |
 | faultline API Key for full control (!This is not API Gateway API Key!) | `FAULTLINE_MASTER_API_KEY` | `masterApiKey` | |
 | faultline API Key for POST errors only (!This is not API Gateway API Key!) | `FAULTLINE_MASTER_API_KEY` | `clientApiKey` | |
+| faultline error data Retention (days / -1 is unlimited) | `FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS` | `errorDataRetentionInDays` | -1 |
 | faultline functions CloudWatchLogs Retention (days / -1 is unlimited) | `FAULTLINE_LOG_RETENTION_IN_DAYS` | `logRetentionInDays` | 180 |
 | Use AWS KMS Key to encrypt POST params (notifications) | `FAULTLINE_USE_KMS` | `useKms` | 0 |
 | AWS KMS Key alias | `FAULTLINE_KMS_KEY_ALIAS` | `kmsKeyAlias` | faultline |

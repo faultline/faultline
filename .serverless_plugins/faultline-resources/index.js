@@ -76,8 +76,8 @@ class FaultlineResources {
                             }
                         ],
                         ProvisionedThroughput: {
-                            ReadCapacityUnits: 1,
-                            WriteCapacityUnits: 1
+                            ReadCapacityUnits: Number(env.FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS),
+                            WriteCapacityUnits: Number(env.FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS)
                         },
                         TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error`
                     }
@@ -106,8 +106,8 @@ class FaultlineResources {
                             }
                         ],
                         ProvisionedThroughput: {
-                            ReadCapacityUnits: 1,
-                            WriteCapacityUnits: 1
+                            ReadCapacityUnits: Number(env.FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS),
+                            WriteCapacityUnits: Number(env.FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS)
                         },
                         TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit`
                     }
@@ -242,6 +242,10 @@ class FaultlineResources {
             self.serverless.service.resources = {
                 Resources: resources
             };
+            // enable deleteExpiredErrors function
+            if (Number(env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS) > -1) {
+                self.serverless.service.functions.deleteExpiredErrors.events[0].schedule.enabled = true;
+            }
             return BbPromise.resolve();
         });
     }
