@@ -17,6 +17,12 @@ environment:
   FAULTLINE_DYNAMODB_TABLE_PREFIX:
     type: text
     default: 'faultline'
+  FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS:
+    type: number
+    default: 1
+  FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS:
+    type: number
+    default: 1
   FAULTLINE_TIMEUNIT:
     type: select
     default: 'minute'
@@ -30,6 +36,9 @@ environment:
     type: password
   FAULTLINE_CLIENT_API_KEY:
     type: password
+  FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS:
+    type: number
+    default: -1
   FAULTLINE_LOG_RETENTION_IN_DAYS:
     type: number
     default: 180
