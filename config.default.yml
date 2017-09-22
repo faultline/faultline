@@ -6,6 +6,10 @@ region: ap-northeast-1
 s3BucketName: (EDITME)
 # Dynamodb table prefix
 dynamodbTablePrefix: faultline
+# Dynamodb Read Capacity Units
+dynamodbReadCapacityUnits: 1
+# Dynamodb Write Capacity Units
+dynamodbWriteCapacityUnits: 1
 # Error tracking count interval (year / month / day / hour / minute)
 timeunit: minute
 # faultline API Key for full control (!This is not API Gateway API Key!)
