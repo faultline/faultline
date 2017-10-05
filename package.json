@@ -47,11 +47,12 @@
     "url-template": "^2.0.8"
   },
   "devDependencies": {
-    "serverless": "^1.21.1",
     "intelli-espower-loader": "^1.0.1",
     "mocha": "^3.4.2",
     "nyc": "^11.0.2",
     "octopublish": "^0.5.0",
-    "power-assert": "^1.4.3"
+    "power-assert": "^1.4.3",
+    "serverless": "^1.21.1",
+    "serverless-prune-plugin": "^1.2.0"
   }
 }
