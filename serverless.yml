@@ -70,6 +70,7 @@ package:
 plugins:
   - faultline-env-checker
   - faultline-resources
+  - serverless-prune-plugin
 
 functions:
   projectsList:
