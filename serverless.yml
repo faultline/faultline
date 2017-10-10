@@ -24,7 +24,6 @@ provider:
   region: ${self:provider.environment.FAULTLINE_REGION}
   timeout: 10
   cfLogs: true
-  apiKey: false
   iamRoleStatements:
     - Effect: Allow
       Resource:
