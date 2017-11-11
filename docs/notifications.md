@@ -130,7 +130,7 @@ POST errors with GitLab repo config for creating issue.
 
 | Key | Description | Example |
 | - | - | - |
-| type | Notification type ( **required** `github`) | `github` |
+| type | Notification type ( **required** `gitlab`) | `gitlab` |
 | personalAccessToken |GitLab Personal Access Token ( **required** ) | `XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX` |
 | owner |GitLab repo owner ( **required** ) | `k1LoW` |
 | repo |GitLab repo name ( **required** ) | `faultline` |
