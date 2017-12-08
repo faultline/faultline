@@ -138,7 +138,7 @@ https://github.com/faultline/faultline-webui
     - [x] GitHub Issue
     - [x] GitLab Issue
 - [ ] API Gateway API Key (waiting CFn/Serverless "Usage plan" support. see [#2450](https://github.com/serverless/serverless/issues/2450) )
-- [ ] Error data TTL
+- [x] Error data TTL
 
 ## Contribute
 
