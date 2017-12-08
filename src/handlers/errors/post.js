@@ -56,7 +56,7 @@ Array.prototype.chunk = function(chunkBytes = 128000){
 module.exports.post = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event, true)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -64,7 +64,18 @@ module.exports.post = (event, context, cb) => {
     const body = JSON.parse(event.body);
     const valid = ajv.validate(schema, body);
     if (!valid) {
-        const response = resgen(400, { status: 'error', message: 'JSON Schema Error', data: ajv.errors });
+        const response = resgen(400, {
+            errors: ajv.errors.map((v) => {
+                let e = {
+                    message: v.message,
+                    detail: v
+                };
+                if (v.hasOwnProperty('dataPath')) {
+                    e['path'] = v.dataPath.split(/[\.\[\]]/).filter((v) => { return v !== ''; });
+                }
+                return e;
+            })
+        });
         cb(null, response);
         return;
     }
@@ -72,12 +83,20 @@ module.exports.post = (event, context, cb) => {
     const project = decodeURIComponent(event.pathParameters.project);
 
     if (project.match(/[\/\s\.]/)) {
-        const response = resgen(400, { status: 'error', message: 'Validation error: invalid field \'project\'', data: ajv.errors });
+        const response = resgen(400, {
+            errors: [{
+                message: 'Validation error: invalid field \'project\''
+            }]
+        });
         cb(null, response);
         return;
     }
     if (project.bytes() > projectNameMaxBytes) {
-        const response = resgen(400, { status: 'error', message: 'Validation error: \'project\' too long (limit: 256 bytes)', data: ajv.errors });
+        const response = resgen(400, {
+            errors: [{
+                message: 'Validation error: \'project\' too long (limit: 256 bytes)'
+            }]
+        });
         cb(null, response);
         return;
     }
@@ -191,12 +210,16 @@ module.exports.post = (event, context, cb) => {
 
     Promise.all(promises)
         .then((res) => {
-            const response = resgen(201, { status: 'success', errors: res.length });
+            const response = resgen(201, {
+                data: {
+                    errors: { postCount: res.length }
+                }
+            });
             cb(null, response);
             return res;
         })
         .catch((err) => {
-            const response = resgen(500, { status: 'error', message: 'Unable to POST error', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to POST error', detail: err }] });
             cb(null, response);
         })
         .then((res) => {

@@ -132,7 +132,7 @@ https://github.com/faultline/faultline-webui
 
 ## TODO
 
-- [ ] Refactor API response format
+- [x] Refactor API response format
 - [x] Notification
     - [x] Slack
     - [x] GitHub Issue

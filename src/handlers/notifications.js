@@ -1,5 +1,6 @@
 'use strict';
 
+const console = require('console');
 const slack = require('../lib/slack');
 const github = require('../lib/github');
 const gitlab = require('../lib/gitlab');
@@ -53,8 +54,8 @@ module.exports.call = (event, context, cb) => {
                 const decrypted = JSON.parse(data.Plaintext.toString('ascii'));
                 notifyCall(decrypted);
             }).catch((err) => {
-                console.log(err);
-                cb('Decrypt error', err);
+                console.error(err);
+                cb(new Error('Decrypt error. Error JSON:', JSON.stringify(err, null, 2)));
             });
         } else {
             notifyCall(n);

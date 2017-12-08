@@ -18,7 +18,7 @@ const errorByMessageTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'Error
 module.exports.patch = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -26,7 +26,18 @@ module.exports.patch = (event, context, cb) => {
     const body = JSON.parse(event.body);
     const valid = ajv.validate(schema, body);
     if (!valid) {
-        const response = resgen(400, { status: 'error', message: 'JSON Schema Error', data: ajv.errors });
+        const response = resgen(400, {
+            errors: ajv.errors.map((v) => {
+                let e = {
+                    message: v.message,
+                    detail: v
+                };
+                if (v.hasOwnProperty('dataPath')) {
+                    e['path'] = v.dataPath.split(/[\.\[\]]/).filter((v) => { return v !== ''; });
+                }
+                return e;
+            })
+        });
         cb(null, response);
         return;
     }
@@ -69,7 +80,7 @@ module.exports.patch = (event, context, cb) => {
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to POST error', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to PATCH error', detail: err }] });
             cb(null, response);
         });
 };
