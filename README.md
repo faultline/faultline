@@ -130,16 +130,6 @@ https://github.com/faultline/faultline-webui
 
 "Architecture of faultline" document is [here](docs/architecture.md) :book: .
 
-## TODO
-
-- [x] Refactor API response format
-- [x] Notification
-    - [x] Slack
-    - [x] GitHub Issue
-    - [x] GitLab Issue
-- [ ] API Gateway API Key (waiting CFn/Serverless "Usage plan" support. see [#2450](https://github.com/serverless/serverless/issues/2450) )
-- [x] Error data TTL
-
 ## Contribute
 
 PRs accepted.
