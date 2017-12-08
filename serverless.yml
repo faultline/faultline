@@ -1,6 +1,6 @@
 service: ${self:provider.environment.FAULTLINE_SERVICE_NAME}
 
-frameworkVersion: ">=1.21.1 <2.0.0"
+frameworkVersion: ">=1.24.1 <2.0.0"
 
 provider:
   name: aws
