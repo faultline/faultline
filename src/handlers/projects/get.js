@@ -9,7 +9,7 @@ const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
-        const response = resgen(403, { status: 'error', message: '403 Forbidden'});
+        const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
         cb(null, response);
         return;
     }
@@ -26,12 +26,16 @@ module.exports.list = (event, context, cb) => {
             const projects = data.CommonPrefixes.map((prefix) => {
                 return { name: decodeURIComponent(prefix.Prefix.replace(/projects\/([^\/]+)\//,'$1')) };
             });
-            const response = resgen(200, { status: 'success', projects: projects });
+            const response = resgen(200, {
+                data: {
+                    projects: projects
+                }
+            });
             cb(null, response);
         })
         .catch((err) => {
             console.error(err);
-            const response = resgen(500, { status: 'error', message: 'Unable to get projects', data: err });
+            const response = resgen(500, { errors: [{ message: 'Unable to GET error', detail: err }] });
             cb(null, response);
         });
 };
