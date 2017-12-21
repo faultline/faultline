@@ -1,6 +1,6 @@
 {
   "name": "faultline",
-  "version": "0.15.0",
+  "version": "1.0.0",
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
@@ -35,24 +35,24 @@
   "dependencies": {
     "ajv": "^4.7.7",
     "axios": "^0.15.2",
-    "bluebird": "^3.4.0",
+    "bluebird": "^3.5.1",
     "github": "^7.0.0",
     "gitlab": "^1.7.1",
     "js-sha256": "^0.5.0",
-    "js-yaml": "^3.6.1",
-    "json-schema-deref-sync": "^0.3.3",
+    "js-yaml": "^3.10.0",
+    "json-schema-deref-sync": "^0.3.4",
     "lodash": "^4.16.2",
-    "moment": "^2.15.0",
-    "moment-timezone": "^0.5.13",
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
     "url-template": "^2.0.8"
   },
   "devDependencies": {
     "intelli-espower-loader": "^1.0.1",
-    "mocha": "^3.4.2",
-    "nyc": "^11.0.2",
+    "mocha": "^3.5.3",
+    "nyc": "^11.4.1",
     "octopublish": "^0.5.0",
     "power-assert": "^1.4.3",
-    "serverless": "^1.21.1",
+    "serverless": "^1.25.0",
     "serverless-prune-plugin": "^1.2.0"
   }
 }

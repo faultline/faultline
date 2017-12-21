@@ -5,7 +5,7 @@ frameworkVersion: ">=1.24.1 <2.0.0"
 provider:
   name: aws
   environment:
-    FAULTLINE_STAGE: ${env:FAULTLINE_STAGE, 'v0'}
+    FAULTLINE_STAGE: ${env:FAULTLINE_STAGE, 'v1'}
     FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
     FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'ap-northeast-1'}
     FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
