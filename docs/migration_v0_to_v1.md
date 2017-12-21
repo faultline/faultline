@@ -6,9 +6,9 @@ If you use faultline v0, Set `FAULTLINE_STAGE=v0`.
 $ FAULTLINE_STAGE=v0 AWS_PROFILE=XXxxXXX npm run deploy
 ```
 
-## Does the API schema change ?
+## FAQ
 
-API Document is [here](api.md) :book: .
+### Does the API schema change ?
 
 | API Method | Request Schema | Response Schema |
 | --- | --- | --- |
@@ -16,3 +16,13 @@ API Document is [here](api.md) :book: .
 | [POST](https://github.com/faultline/faultline/blob/master/docs/api.md#post-projectsprojecterrors) | No | Yes |
 | PATCH | No | Yes |
 | DELETE | No | Yes |
+
+API Document is [here](api.md) :book: .
+
+### Is it necessary to update SDK ?
+
+No
+
+### Is it necessary to update WebUI ?
+
+Yes
