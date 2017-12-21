@@ -4,6 +4,8 @@
 
 ![logo](https://faultline.github.io/faultline/faultline.png)
 
+[Migration Guide: from v0.x to v1.x](docs/migration_v0_to_v1.md)
+
 ## Table of Contents
 
 - [Concept](#concept)
