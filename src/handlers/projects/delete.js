@@ -97,26 +97,26 @@ module.exports.delete = (event, context, cb) => {
     };
 
     recursiveDeleteDocByProject(project)
-          .then(() => {
-              const bucketParams = {
-                  Bucket: bucketName,
-                  Prefix: 'projects/' + project + '/'
-              };
-              const metaBucketParams = {
-                  Bucket: bucketName,
-                  Prefix: '_meta/projects/' + project + '/'
-              };
+        .then(() => {
+            const bucketParams = {
+                Bucket: bucketName,
+                Prefix: 'projects/' + project + '/'
+            };
+            const metaBucketParams = {
+                Bucket: bucketName,
+                Prefix: '_meta/projects/' + project + '/'
+            };
 
-              return Promise.all([
-                  storage.recursiveDeleteObjects(bucketParams),
-                  storage.recursiveDeleteObjects(metaBucketParams),
-              ]);
-          })
-          .then(() => {
-              const response = resgen(204, null);
-              cb(null, response);
-              return;
-          })
+            return Promise.all([
+                storage.recursiveDeleteObjects(bucketParams),
+                storage.recursiveDeleteObjects(metaBucketParams),
+            ]);
+        })
+        .then(() => {
+            const response = resgen(204, null);
+            cb(null, response);
+            return;
+        })
         .catch((err) => {
             console.error(err);
             const response = resgen(500, { errors: [{ message: 'Unable to DELETE error', detail: err }] });

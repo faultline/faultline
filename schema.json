@@ -128,9 +128,9 @@
                     "type": "array",
                     "items": { "$ref":"#/definitions/error" }
                   },
-                  "count": {
+                  "scannedCount": {
                     "type": "integer",
-                    "example": 1
+                    "example": 27
                   }
                 }
               }
