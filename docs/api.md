@@ -217,23 +217,14 @@ Content-Type: application/json
 {
   "data": {
     "error": {
-      "project": "sample-project",
+      "project": {
+        "name": "sample-project"
+      },
+      "count": 96,
+      "lastUpdated": "2016-12-07T00:00:00+09:00",
       "message": "Undefined index: faultline",
-      "type": "notice",
-      "backtrace": [
-        {
-          "file": "/var/www/test/test.php",
-          "line": 15,
-          "function": "SomeClass->__construct()"
-        },
-        {
-          "file": "/var/www/test/SomeClass.class.php",
-          "line": 36,
-          "function": "SomeClass->callSomething()"
-        }
-      ],
-      "event": {
-      }
+      "status": "resolved",
+      "type": "notice"
     }
   }
 }
