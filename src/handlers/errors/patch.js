@@ -69,7 +69,7 @@ module.exports.patch = (event, context, cb) => {
         .then((data) => {
             const response = resgen(200, {
                 data: {
-                    error: data
+                    error: data.Attributes
                 }
             });
             cb(null, response);

@@ -330,27 +330,7 @@
                 "type": "object",
                 "additionalProperties": false,
                 "properties": {
-                  "error": {
-                    "type": "object",
-                    "example": {
-                      "project": "sample-project",
-                      "message": "Undefined index: faultline",
-                      "type": "notice",
-                      "backtrace": [
-                        {
-                          "file": "/var/www/test/test.php",
-                          "line": 15,
-                          "function": "SomeClass->__construct()"
-                        },
-                        {
-                          "file": "/var/www/test/SomeClass.class.php",
-                          "line": 36,
-                          "function": "SomeClass->callSomething()"
-                        }
-                      ],
-                      "event": {}
-                    }
-                  }
+                  "error": { "$ref":"#/definitions/error" }
                 }
               }
             }
