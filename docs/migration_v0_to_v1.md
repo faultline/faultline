@@ -10,7 +10,7 @@ $ FAULTLINE_STAGE=v0 AWS_PROFILE=XXxxXXX npm run deploy
 
 ### Does the API schema change ?
 
-| API Method | Request Schema | Response Schema |
+| API HTTP Method | Request Schema | Response Schema |
 | --- | --- | --- |
 | GET | No | Yes |
 | [POST](https://github.com/faultline/faultline/blob/master/docs/api.md#post-projectsprojecterrors) | No | Yes |
@@ -19,7 +19,7 @@ $ FAULTLINE_STAGE=v0 AWS_PROFILE=XXxxXXX npm run deploy
 
 API Document is [here](api.md) :book: .
 
-### Is it necessary to update SDK ?
+### Is it necessary to update SDKs ?
 
 No
 
