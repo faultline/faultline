@@ -67,15 +67,11 @@ module.exports.patch = (event, context, cb) => {
 
     storage.updateDoc(docParams)
         .then((data) => {
-            const response = {
-                statusCode: 200,
-                headers: {
-                    'Access-Control-Allow-Origin': '*'
-                },
-                body: JSON.stringify({
-                    status: 'success', meta: data
-                })
-            };
+            const response = resgen(200, {
+                data: {
+                    error: data
+                }
+            });
             cb(null, response);
         })
         .catch((err) => {
