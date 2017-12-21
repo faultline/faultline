@@ -98,7 +98,7 @@ Content-Type: application/json
         "type": "notice"
       }
     ],
-    "count": 1
+    "scannedCount": 27
   }
 }
 ```
