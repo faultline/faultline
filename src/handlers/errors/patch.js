@@ -13,7 +13,7 @@ const rootSchema = require('./../../../schema.json');
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'update';
 }).schema;
-const errorByMessageTable = process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX + 'Error';
+const errorByMessageTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
 
 module.exports.patch = (event, context, cb) => {
     // Check faultline API Key
