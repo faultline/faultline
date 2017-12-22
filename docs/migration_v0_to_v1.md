@@ -1,9 +1,9 @@
 # Migration Guide: from v0.x to v1.x
 
-If you are using faultline v0 now, Set `FAULTLINE_STAGE=v0`.
+If you are using faultline v0 now, Set `FAULTLINE_STAGE=v0 FAULTLINE_DYNAMODB_TABLE_SUFFIX=`.
 
 ```sh
-$ FAULTLINE_STAGE=v0 AWS_PROFILE=XXxxXXX npm run deploy
+$ FAULTLINE_STAGE=v0 FAULTLINE_DYNAMODB_TABLE_SUFFIX= AWS_PROFILE=XXxxXXX npm run deploy
 ```
 
 ## FAQ
