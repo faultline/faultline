@@ -2,7 +2,7 @@
 
 If you are using faultline v0 now, please choice migration method.
 
-## 1. Create new faultline v1 stack and copy data
+## a. Create new faultline v1 stack and copy data
 
 ```sh
 $ AWS_PROFILE=XXxxXXX npm run deploy
@@ -10,12 +10,21 @@ $ [Copy S3 objects]
 $ [Copy DynamoDB table records]
 ```
 
-## 2. Use current v0 stack
+## b. Use current v0 stack
 
-Set `FAULTLINE_STAGE=v0 FAULTLINE_DYNAMODB_TABLE_SUFFIX=`.
+Set `FAULTLINE_STAGE=v0 FAULTLINE_DYNAMODB_TABLE_SUFFIX=` or Edit config.yml
 
 ```sh
 $ FAULTLINE_STAGE=v0 FAULTLINE_DYNAMODB_TABLE_SUFFIX= AWS_PROFILE=XXxxXXX npm run deploy
+```
+
+```yaml
+...
+
+stage: v0
+dynamodbTableSuffix: ''
+
+...
 ```
 
 ## FAQ
