@@ -6,7 +6,7 @@ const storage = require('../../lib/storage');
 const checkApiKey = require('../../lib/check_api_key');
 const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
 const errorByMessageTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
-const errorByTimeunitTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeout${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
+const errorByTimeunitTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
 
 module.exports.delete = (event, context, cb) => {
     // Check faultline API Key
