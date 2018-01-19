@@ -7,7 +7,7 @@ provider:
   environment:
     FAULTLINE_STAGE: ${env:FAULTLINE_STAGE, file(./config.yml):stage, 'dev'}
     FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
-    FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'ap-northeast-1'}
+    FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'us-east-1'}
     FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
     FAULTLINE_DYNAMODB_TABLE_PREFIX: ${env:FAULTLINE_DYNAMODB_TABLE_PREFIX, file(./config.yml):dynamodbTablePrefix, 'faultline'}
     FAULTLINE_DYNAMODB_TABLE_SUFFIX: ${env:FAULTLINE_DYNAMODB_TABLE_SUFFIX, file(./config.yml):dynamodbTableSuffix, "-${self:provider.environment.FAULTLINE_STAGE}"}
