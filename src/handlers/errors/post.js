@@ -1,33 +1,31 @@
 'use strict';
 
 const console = require('console');
-const yaml = require('js-yaml');
-const fs = require('fs');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const timeunits = require('../../lib/timeunits');
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
 const truncater = require('../../lib/truncater');
 const aws = require('../../lib/aws')();
-const timeunitFormat = timeunits[process.env.FAULTLINE_TIMEUNIT];
 const moment = require('moment');
-
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
+const {
+    timeunitFormat,
+    bucketName,
+    errorByMessageTable,
+    errorByTimeunitTable,
+    projectNameMaxBytes,
+    rootSchema,
+    serverlessConfig
+} = require('../../lib/constants');
+
 const ajv = new Ajv();
-const rootSchema = require('./../../../schema.json');
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'create';
 }).schema;
-const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
-const errorByMessageTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
-const errorByTimeunitTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
 
-const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../../serverless.yml', 'utf8'));
 const lambda = aws.lambda;
-
-const projectNameMaxBytes = 256;
 
 String.prototype.bytes = function(){
     return(encodeURIComponent(this).replace(/%../g,'x').length);

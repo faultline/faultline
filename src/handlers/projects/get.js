@@ -4,7 +4,9 @@ const console = require('console');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const checkApiKey = require('../../lib/check_api_key');
-const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
+const {
+    bucketName
+} = require('../../lib/constants');
 
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
