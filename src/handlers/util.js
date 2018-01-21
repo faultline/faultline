@@ -8,10 +8,12 @@ const checkApiKey = require('../lib/check_api_key');
 const aws = require('../lib/aws')();
 const kms = aws.kms;
 const lambda = aws.lambda;
-const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
-const errorByMessageTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
-const errorDataRetentionInDays = process.env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS;
-const errorsDeleteFunctionName = [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'errorsDelete'].join('-');
+const {
+    bucketName,
+    errorByMessageTable,
+    errorDataRetentionInDays,
+    errorsDeleteFunctionName
+} = require('../lib/constants');
 
 module.exports.encrypt = (event, context, cb) => {
     if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {

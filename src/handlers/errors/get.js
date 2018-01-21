@@ -5,9 +5,11 @@ const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const checkApiKey = require('../../lib/check_api_key');
 const moment = require('moment');
-const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
-const errorByMessageTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
-const errorByTimeunitTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
+const {
+    bucketName,
+    errorByMessageTable,
+    errorByTimeunitTable
+} = require('../../lib/constants');
 
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key

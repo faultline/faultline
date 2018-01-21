@@ -5,15 +5,17 @@ const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
 const checkApiKey = require('../../lib/check_api_key');
 const moment = require('moment');
-
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
+const {
+    errorByMessageTable,
+    rootSchema
+} = require('../../lib/constants');
+
 const ajv = new Ajv();
-const rootSchema = require('./../../../schema.json');
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'update';
 }).schema;
-const errorByMessageTable = `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`;
 
 module.exports.patch = (event, context, cb) => {
     // Check faultline API Key

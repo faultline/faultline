@@ -6,7 +6,9 @@ const storage = require('../../lib/storage');
 const checkApiKey = require('../../lib/check_api_key');
 const reversedUnixtime = require('../../lib/reversed_unixtime');
 const moment = require('moment');
-const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
+const {
+    bucketName
+} = require('../../lib/constants');
 
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
