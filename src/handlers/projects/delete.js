@@ -104,15 +104,8 @@ module.exports.delete = (event, context, cb) => {
                 Bucket: bucketName,
                 Prefix: 'projects/' + project + '/'
             };
-            const metaBucketParams = {
-                Bucket: bucketName,
-                Prefix: '_meta/projects/' + project + '/'
-            };
 
-            return Promise.all([
-                storage.recursiveDeleteObjects(bucketParams),
-                storage.recursiveDeleteObjects(metaBucketParams),
-            ]);
+            return storage.recursiveDeleteObjects(bucketParams);
         })
         .then(() => {
             const response = resgen(204, null);
