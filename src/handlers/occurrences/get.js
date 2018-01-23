@@ -3,8 +3,8 @@
 const console = require('console');
 const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const checkApiKey = require('../../lib/check_api_key');
-const reversedUnixtime = require('../../lib/reversed_unixtime');
+const checkApiKey = require('../../lib/checkApiKey');
+const reversedUnixtime = require('../../lib/reversedUnixtime');
 const moment = require('moment');
 const {
     bucketName

@@ -2,7 +2,7 @@
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('power-assert');
-const reversedUnixtime = require('../../src/lib/reversed_unixtime');
+const reversedUnixtime = require('../../src/lib/reversedUnixtime');
 
 describe('reversedUnixtime', () => {
     it ('reversedUnixtime(0) -> "9007199254740991"', () => {

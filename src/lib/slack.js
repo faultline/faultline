@@ -1,7 +1,7 @@
 'use strict';
 
 const console = require('console');
-const reversedUnixtime = require('./reversed_unixtime');
+const reversedUnixtime = require('./reversedUnixtime');
 const truncater = require('./truncater');
 const moment = require('moment-timezone');
 const storage = require('./storage');

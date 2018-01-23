@@ -3,7 +3,7 @@ const describe = require('mocha').describe;
 const it = require('mocha').it;
 const beforeEach = require('mocha').beforeEach;
 const assert = require('power-assert');
-const checkApiKey = require('../../src/lib/check_api_key');
+const checkApiKey = require('../../src/lib/checkApiKey');
 
 describe('checkApiKey', () => {
     let event = {};
