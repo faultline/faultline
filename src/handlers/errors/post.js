@@ -1,10 +1,7 @@
 'use strict';
 
 const console = require('console');
-const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const checkApiKey = require('../../lib/checkApiKey');
-const reversedUnixtime = require('../../lib/reversedUnixtime');
 const truncater = require('../../lib/truncater');
 const aws = require('../../lib/aws')();
 const moment = require('moment');
@@ -17,8 +14,15 @@ const {
     errorByTimeunitTable,
     projectNameMaxBytes,
     rootSchema,
-    serverlessConfig
+    callNotificationsFunctionName
 } = require('../../lib/constants');
+const {
+    resgen,
+    checkApiKey,
+    reversedUnixtime,
+    getByteLength,
+    chunkArray
+} = require('../../lib/functions');
 
 const ajv = new Ajv();
 const schema = deref(rootSchema).properties.error.links.find((l) => {
@@ -26,30 +30,6 @@ const schema = deref(rootSchema).properties.error.links.find((l) => {
 }).schema;
 
 const lambda = aws.lambda;
-
-String.prototype.bytes = function(){
-    return(encodeURIComponent(this).replace(/%../g,'x').length);
-};
-
-Array.prototype.chunk = function(chunkBytes = 128000){
-    // invoke payload size limit 128kb
-    // http://docs.aws.amazon.com/lambda/latest/dg/limits.html
-    let sets = [];
-    let len = this.length;
-    let chunk = [];
-    for (let i = 0; i < len; i++) {
-        chunk.push(this[i]);
-        if (JSON.stringify(chunk).bytes() > chunkBytes) {
-            let poped = chunk.pop();
-            sets.push(chunk);
-            chunk = [poped];
-        }
-    }
-    if (chunk.length > 0) {
-        sets.push(chunk);
-    }
-    return sets;
-};
 
 module.exports.post = (event, context, cb) => {
     // Check faultline API Key
@@ -89,7 +69,7 @@ module.exports.post = (event, context, cb) => {
         cb(null, response);
         return;
     }
-    if (project.bytes() > projectNameMaxBytes) {
+    if (getByteLength(project) > projectNameMaxBytes) {
         const response = resgen(400, {
             errors: [{
                 message: 'Validation error: \'project\' too long (limit: 256 bytes)'
@@ -224,7 +204,6 @@ module.exports.post = (event, context, cb) => {
             if (!notifications) {
                 return;
             }
-            const functionName = serverlessConfig.functions.callNotifications.name.replace('${self:provider.stage}', serverlessConfig.provider.stage);
             let slimed = res.map((e) => {
                 return {
                     counts: [
@@ -234,13 +213,13 @@ module.exports.post = (event, context, cb) => {
                     detail: e.detail
                 };
             });
-            const chunkBytes = 128000 - JSON.stringify({
+            const chunkBytes = 128000 - getByteLength(JSON.stringify({
                 notifications: notifications,
                 res: ''
-            }).bytes();
-            slimed.chunk(chunkBytes).forEach((c) => {
+            }));
+            chunkArray(slimed, chunkBytes).forEach((c) => {
                 lambda.invoke({
-                    FunctionName: functionName,
+                    FunctionName: callNotificationsFunctionName,
                     InvocationType: 'Event',
                     Payload: JSON.stringify({
                         notifications: notifications,

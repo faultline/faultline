@@ -1,14 +1,16 @@
 'use strict';
 
 const console = require('console');
-const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const checkApiKey = require('../../lib/checkApiKey');
 const {
     bucketName,
     errorByMessageTable,
     errorByTimeunitTable
 } = require('../../lib/constants');
+const {
+    resgen,
+    checkApiKey
+} = require('../../lib/functions');
 
 module.exports.delete = (event, context, cb) => {
     // Check faultline API Key

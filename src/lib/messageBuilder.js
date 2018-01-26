@@ -2,8 +2,10 @@
 
 const moment = require('moment-timezone');
 const template = require('url-template');
-const reversedUnixtime = require('./reversed_unixtime');
 const truncater = require('./truncater');
+const {
+    reversedUnixtime
+} = require('./functions');
 
 String.prototype.bytes = function(){
     return(encodeURIComponent(this).replace(/%../g,'x').length);

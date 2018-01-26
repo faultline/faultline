@@ -148,7 +148,6 @@ functions:
           integration: lambda-proxy
   callNotifications:
     handler: src/handlers/notifications.call
-    name: faultline-${self:provider.stage}-callNotifications
     timeout: 30
   deleteExpiredErrors:
     handler: src/handlers/util.deleteExpiredErrors

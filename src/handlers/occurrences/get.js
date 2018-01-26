@@ -1,14 +1,16 @@
 'use strict';
 
 const console = require('console');
-const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const checkApiKey = require('../../lib/checkApiKey');
-const reversedUnixtime = require('../../lib/reversedUnixtime');
 const moment = require('moment');
 const {
     bucketName
 } = require('../../lib/constants');
+const {
+    resgen,
+    checkApiKey,
+    reversedUnixtime
+} = require('../../lib/functions');
 
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key
