@@ -1,16 +1,16 @@
 'use strict';
 
 const console = require('console');
-const storage = require('../../lib/storage');
+const storage = require('../lib/storage');
 const {
     bucketName
-} = require('../../lib/constants');
+} = require('../lib/constants');
 const {
     resgen,
     checkApiKey
-} = require('../../lib/functions');
+} = require('../lib/functions');
 
-module.exports.list = (event, context, cb) => {
+module.exports.handler = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
         const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });

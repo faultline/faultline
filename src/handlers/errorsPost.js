@@ -1,9 +1,9 @@
 'use strict';
 
 const console = require('console');
-const storage = require('../../lib/storage');
-const truncater = require('../../lib/truncater');
-const aws = require('../../lib/aws')();
+const storage = require('../lib/storage');
+const truncater = require('../lib/truncater');
+const aws = require('../lib/aws')();
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
@@ -15,14 +15,14 @@ const {
     projectNameMaxBytes,
     rootSchema,
     callNotificationsFunctionName
-} = require('../../lib/constants');
+} = require('../lib/constants');
 const {
     resgen,
     checkApiKey,
     reversedUnixtime,
     getByteLength,
     chunkArray
-} = require('../../lib/functions');
+} = require('../lib/functions');
 
 const ajv = new Ajv();
 const schema = deref(rootSchema).properties.error.links.find((l) => {
@@ -31,7 +31,7 @@ const schema = deref(rootSchema).properties.error.links.find((l) => {
 
 const lambda = aws.lambda;
 
-module.exports.post = (event, context, cb) => {
+module.exports.handler = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event, true)) {
         const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });

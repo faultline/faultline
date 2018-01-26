@@ -74,7 +74,7 @@ plugins:
 
 functions:
   projectsList:
-    handler: src/handlers/projects/get.list
+    handler: src/handlers/projectsList.handler
     events:
       - http:
           path: projects
@@ -82,7 +82,7 @@ functions:
           cors: true
           integration: lambda-proxy
   projectsDelete:
-    handler: src/handlers/projects/delete.delete
+    handler: src/handlers/projectsDelete.handler
     timeout: 30
     events:
       - http:
@@ -91,14 +91,14 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsPost:
-    handler: src/handlers/errors/post.post
+    handler: src/handlers/errorsPost.handler
     events:
       - http:
           path: projects/{project}/errors
           method: post
           integration: lambda-proxy
   errorsList:
-    handler: src/handlers/errors/get.list
+    handler: src/handlers/errorsList.handler
     events:
       - http:
           path: projects/{project}/errors
@@ -106,7 +106,7 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsGet:
-    handler: src/handlers/errors/get.get
+    handler: src/handlers/errorsGet.handler
     events:
       - http:
           path: projects/{project}/errors/{message}
@@ -114,7 +114,7 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsPatch:
-    handler: src/handlers/errors/patch.patch
+    handler: src/handlers/errorsPatch.handler
     events:
       - http:
           path: projects/{project}/errors/{message}
@@ -122,7 +122,7 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsDelete:
-    handler: src/handlers/errors/delete.delete
+    handler: src/handlers/errorsDelete.handler
     timeout: 30
     events:
       - http:
@@ -131,7 +131,7 @@ functions:
           cors: true
           integration: lambda-proxy
   occurrencesList:
-    handler: src/handlers/occurrences/get.list
+    handler: src/handlers/occurrencesList.handler
     events:
       - http:
           path: projects/{project}/errors/{message}/occurrences
@@ -139,7 +139,7 @@ functions:
           cors: true
           integration: lambda-proxy
   occurrencesGet:
-    handler: src/handlers/occurrences/get.get
+    handler: src/handlers/occurrencesGet.handler
     events:
       - http:
           path: projects/{project}/errors/{message}/occurrences/{reversedUnixtime}
@@ -147,10 +147,10 @@ functions:
           cors: true
           integration: lambda-proxy
   callNotifications:
-    handler: src/handlers/notifications.call
+    handler: src/handlers/callNotifications.handler
     timeout: 30
   deleteExpiredErrors:
-    handler: src/handlers/util.deleteExpiredErrors
+    handler: src/handlers/deleteExpiredErrors.handler
     events:
       - schedule:
           rate: cron(0 0 * * ? *)
