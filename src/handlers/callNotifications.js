@@ -7,7 +7,7 @@ const gitlab = require('../lib/gitlab');
 const aws = require('../lib/aws')();
 const kms = aws.kms;
 
-module.exports.call = (event, context, cb) => {
+module.exports.handler = (event, context, cb) => {
     const notifications = event.notifications;
     const res = event.res;
 

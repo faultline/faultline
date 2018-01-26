@@ -1,25 +1,25 @@
 'use strict';
 
 const console = require('console');
-const storage = require('../../lib/storage');
+const storage = require('../lib/storage');
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
 const {
     errorByMessageTable,
     rootSchema
-} = require('../../lib/constants');
+} = require('../lib/constants');
 const {
     resgen,
     checkApiKey
-} = require('../../lib/functions');
+} = require('../lib/functions');
 
 const ajv = new Ajv();
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'update';
 }).schema;
 
-module.exports.patch = (event, context, cb) => {
+module.exports.handler = (event, context, cb) => {
     // Check faultline API Key
     if (!checkApiKey(event)) {
         const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
