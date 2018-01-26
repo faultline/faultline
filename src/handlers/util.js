@@ -2,9 +2,7 @@
 
 const console = require('console');
 const moment = require('moment');
-const resgen = require('../lib/resgen');
 const storage = require('../lib/storage');
-const checkApiKey = require('../lib/checkApiKey');
 const aws = require('../lib/aws')();
 const kms = aws.kms;
 const lambda = aws.lambda;
@@ -14,6 +12,10 @@ const {
     errorDataRetentionInDays,
     errorsDeleteFunctionName
 } = require('../lib/constants');
+const {
+    resgen,
+    checkApiKey
+} = require('../lib/functions');
 
 module.exports.encrypt = (event, context, cb) => {
     if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {

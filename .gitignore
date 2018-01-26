@@ -1,4 +1,5 @@
-/node_modules/
-/coverage/
-/.serverless/
+node_modules
+.nyc_output
+coverage
+.serverless/
 config.yml

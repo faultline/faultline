@@ -1,12 +1,14 @@
 'use strict';
 
 const console = require('console');
-const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const checkApiKey = require('../../lib/checkApiKey');
 const {
     bucketName
 } = require('../../lib/constants');
+const {
+    resgen,
+    checkApiKey
+} = require('../../lib/functions');
 
 module.exports.list = (event, context, cb) => {
     // Check faultline API Key

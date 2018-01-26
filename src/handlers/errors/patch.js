@@ -1,9 +1,7 @@
 'use strict';
 
 const console = require('console');
-const resgen = require('../../lib/resgen');
 const storage = require('../../lib/storage');
-const checkApiKey = require('../../lib/checkApiKey');
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
@@ -11,6 +9,10 @@ const {
     errorByMessageTable,
     rootSchema
 } = require('../../lib/constants');
+const {
+    resgen,
+    checkApiKey
+} = require('../../lib/functions');
 
 const ajv = new Ajv();
 const schema = deref(rootSchema).properties.error.links.find((l) => {

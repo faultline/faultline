@@ -1,13 +1,17 @@
 'use strict';
 
 const console = require('console');
-const reversedUnixtime = require('./reversedUnixtime');
 const truncater = require('./truncater');
 const moment = require('moment-timezone');
 const storage = require('./storage');
-const bucketName = process.env.FAULTLINE_S3_BUCKET_NAME;
 const axios = require('axios');
 const template = require('url-template');
+const {
+    reversedUnixtime
+} = require('./functions');
+const {
+    bucketName
+} = require('./constants');
 
 module.exports = (n, errorData) => {
     let titleLink = null;
