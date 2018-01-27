@@ -2,7 +2,7 @@
 
 const console = require('console');
 const github = require('github');
-const messageBuilder = require('./messageBuilder');
+const messageBuilder = require('../messageBuilder');
 
 module.exports = (n, errorData) => {
     const title = messageBuilder.title(n, errorData);
