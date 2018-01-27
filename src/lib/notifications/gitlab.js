@@ -1,7 +1,7 @@
 'use strict';
 
 const gitlab = require('gitlab');
-const messageBuilder = require('./messageBuilder');
+const messageBuilder = require('../messageBuilder');
 
 module.exports = (n, errorData) => {
     const title = messageBuilder.title(n, errorData);

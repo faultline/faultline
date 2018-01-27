@@ -1,9 +1,6 @@
 'use strict';
 
 const console = require('console');
-const slack = require('../lib/slack');
-const github = require('../lib/github');
-const gitlab = require('../lib/gitlab');
 const aws = require('../lib/aws')();
 const kms = aws.kms;
 
@@ -17,16 +14,8 @@ module.exports.handler = (event, context, cb) => {
             return;
         }
 
-        let notifier = null;
-        if (n.type == 'slack') {
-            notifier = slack;
-        } else if (n.type == 'github') {
-            notifier = github;
-        } else if (n.type == 'gitlab') {
-            notifier = gitlab;
-        } else {
-            return;
-        }
+        const notifier = require(`../lib/notifications/${n.type}`);
+
         res.forEach((e) => {
             const resByTimeunitCount = e.counts[0];
             const resCount = e.counts[1];

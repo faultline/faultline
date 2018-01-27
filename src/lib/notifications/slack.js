@@ -1,17 +1,17 @@
 'use strict';
 
 const console = require('console');
-const truncater = require('./truncater');
+const truncater = require('../truncater');
 const moment = require('moment-timezone');
-const storage = require('./storage');
+const storage = require('../storage');
 const axios = require('axios');
 const template = require('url-template');
 const {
     reversedUnixtime
-} = require('./functions');
+} = require('../functions');
 const {
     bucketName
-} = require('./constants');
+} = require('../constants');
 
 module.exports = (n, errorData) => {
     let titleLink = null;
