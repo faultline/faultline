@@ -7,10 +7,6 @@ const {
     reversedUnixtime
 } = require('./functions');
 
-String.prototype.bytes = function(){
-    return(encodeURIComponent(this).replace(/%../g,'x').length);
-};
-
 const messageBuilder = {
     title: (n, errorData) => {
         const title = `[${errorData.type}] ${errorData.message}`;

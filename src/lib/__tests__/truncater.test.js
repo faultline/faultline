@@ -2,11 +2,8 @@
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('power-assert');
-const truncater = require('./truncater');
-
-String.prototype.bytes = function(){
-    return(encodeURIComponent(this).replace(/%../g,'x').length);
-};
+const truncater = require('../truncater');
+const { getByteLength } = require('../functions');
 
 describe('truncater', () => {
     it ('truncateMessage("short string") -> "short string"', () => {
@@ -24,7 +21,7 @@ describe('truncater', () => {
               + '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
               + '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
               + '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789';
-        const truncated = truncater.truncateMessage(longLongString).bytes() + 'projects/'.length + 256 + '/errors/'.length + '/occurrences/0000000000000000.json'.length;
+        const truncated = getByteLength(truncater.truncateMessage(longLongString)) + 'projects/'.length + 256 + '/errors/'.length + '/occurrences/0000000000000000.json'.length;
         assert(truncated === 1024);
     });
 
@@ -43,7 +40,7 @@ describe('truncater', () => {
               + '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
               + '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
               + '0123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789';
-        const truncated = truncater.truncateTitle(longLongString).bytes();
+        const truncated = getByteLength(truncater.truncateTitle(longLongString));
         assert(truncated === 250);
     });
 });
