@@ -1,10 +1,13 @@
 language: node_js
 node_js:
   - 6
+services:
+  - docker
 cache:
   directories:
     - "node_modules"
 before_script:
+  - docker-compose up -d
   - cp config.default.yml config.yml
 script:
   - npm run test

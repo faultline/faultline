@@ -3,7 +3,8 @@
 const console = require('console');
 const truncater = require('../truncater');
 const moment = require('moment-timezone');
-const storage = require('../storage');
+const Aws = require('../aws');
+const aws = new Aws();
 const axios = require('axios');
 const template = require('url-template');
 const {
@@ -36,7 +37,7 @@ module.exports = (n, errorData) => {
             Bucket: bucketName,
             Key: key
         };
-        titleLink = storage.getSignedUrl(params);
+        titleLink = aws.storage.getSignedUrl(params);
     }
 
     const timestamp = (n.timezone)

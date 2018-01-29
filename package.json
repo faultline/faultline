@@ -7,7 +7,7 @@
     "deploy": "npm install && sls deploy -v",
     "destroy": "sls remove",
     "info": "sls info",
-    "test": "nyc --reporter=lcovonly mocha './src/**/*.test.js' --require intelli-espower-loader; nyc report",
+    "test": "nyc --reporter=lcovonly mocha './src/**/__tests__/*.js' --require intelli-espower-loader; nyc report",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > docs/api.md"
   },
   "repository": {
