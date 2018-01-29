@@ -7,7 +7,7 @@ const {
 } = require('../../lib/mock');
 
 const { ErrorsPostHandler } = require('./../errorsPost.js');
-const { OccurrencesListHandler } = require('./../OccurrencesList.js');
+const { OccurrencesListHandler } = require('./../occurrencesList.js');
 const errorsPostHandler = new ErrorsPostHandler(mockAws);
 const handler = new OccurrencesListHandler(mockAws);
 
