@@ -1,9 +1,6 @@
 'use strict';
 
-const yaml = require('js-yaml');
-const fs = require('fs');
 const rootSchema = require('../../schema.json');
-const serverlessConfig = yaml.safeLoad(fs.readFileSync(__dirname + '/../../serverless.yml', 'utf8'));
 
 const timeunits = {
     year: 'YYYY',
@@ -23,6 +20,5 @@ module.exports = {
     errorsDeleteFunctionName: [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'errorsDelete'].join('-'),
     callNotificationsFunctionName: [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'callNotifications'].join('-'),
     projectNameMaxBytes: 256,
-    rootSchema: rootSchema,
-    serverlessConfig: serverlessConfig
+    rootSchema: rootSchema
 };
