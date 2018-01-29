@@ -2,7 +2,7 @@
 const describe = require('mocha').describe;
 const it = require('mocha').it;
 const assert = require('power-assert');
-const truncater = require('../../src/lib/truncater');
+const truncater = require('./truncater');
 
 String.prototype.bytes = function(){
     return(encodeURIComponent(this).replace(/%../g,'x').length);
