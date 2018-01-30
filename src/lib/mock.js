@@ -20,19 +20,31 @@ AWS.config.region = process.env.FAULTLINE_REGION;
 const mockResource = {
     s3: new AWS.S3({
         apiVersion: '2006-03-01',
-        endpoint: new AWS.Endpoint('http://localhost:4572')
+        endpoint: new AWS.Endpoint('http://localhost:4572'),
+        accessKeyId: 'DUMMY',
+        secretAccessKey: 'DUMMY',
+        region: process.env.FAULTLINE_REGION
     }),
     dynamoDB: new AWS.DynamoDB({
         apiVersion: '2012-08-10',
-        endpoint: new AWS.Endpoint('http://localhost:4569')
+        endpoint: new AWS.Endpoint('http://localhost:4569'),
+        accessKeyId: 'DUMMY',
+        secretAccessKey: 'DUMMY',
+        region: process.env.FAULTLINE_REGION
     }),
     docClient: new AWS.DynamoDB.DocumentClient({
         apiVersion: '2012-08-10',
-        endpoint: new AWS.Endpoint('http://localhost:4569')
+        endpoint: new AWS.Endpoint('http://localhost:4569'),
+        accessKeyId: 'DUMMY',
+        secretAccessKey: 'DUMMY',
+        region: process.env.FAULTLINE_REGION
     }),
     lambda: new AWS.Lambda({
         apiVersion: '2015-03-31',
-        endpoint: new AWS.Endpoint('http://localhost:4574')
+        endpoint: new AWS.Endpoint('http://localhost:4574'),
+        accessKeyId: 'DUMMY',
+        secretAccessKey: 'DUMMY',
+        region: process.env.FAULTLINE_REGION
     }),
     kms: {}
 };

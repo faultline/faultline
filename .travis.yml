@@ -6,6 +6,7 @@ services:
   - docker
 addons:
   hosts:
+    - localhost
     - faultline-test-bucket.localhost
 cache:
   directories:
