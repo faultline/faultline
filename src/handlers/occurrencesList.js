@@ -1,8 +1,11 @@
 'use strict';
 
+const middy = require('middy');
+const { cors, httpErrorHandler } = require('middy/middlewares');
 const moment = require('moment');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
+const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
 const aws = new Aws();
 
 const {
@@ -10,20 +13,12 @@ const {
 } = require('../lib/constants');
 const {
     resgen,
-    checkApiKey,
     reversedUnixtime
 } = require('../lib/functions');
 
 class OccurrencesListHandler extends Handler {
     constructor(aws) {
         return (event, context, cb) => {
-            // Check faultline API Key
-            if (!checkApiKey(event)) {
-                const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
-                cb(null, response);
-                return;
-            }
-
             const project = decodeURIComponent(event.pathParameters.project);
             const message = decodeURIComponent(event.pathParameters.message);
             const limit = event.queryStringParameters && event.queryStringParameters.hasOwnProperty('limit') ? event.queryStringParameters.limit : 10;
@@ -73,6 +68,11 @@ class OccurrencesListHandler extends Handler {
         };
     }
 }
-module.exports.OccurrencesListHandler = OccurrencesListHandler;
-
-module.exports.handler = new OccurrencesListHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new OccurrencesListHandler(aws))
+        .use(checkApiKeyMiddleware())
+        .use(httpErrorHandler())
+        .use(cors());
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };

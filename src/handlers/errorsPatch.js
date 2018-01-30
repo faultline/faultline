@@ -1,19 +1,21 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
+const { cors, httpErrorHandler } = require('middy/middlewares');
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
+const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
 const aws = new Aws();
 const {
     errorByMessageTable,
     rootSchema
 } = require('../lib/constants');
 const {
-    resgen,
-    checkApiKey
+    resgen
 } = require('../lib/functions');
 
 const ajv = new Ajv();
@@ -24,13 +26,6 @@ const schema = deref(rootSchema).properties.error.links.find((l) => {
 class ErrorsPatchHandler extends Handler {
     constructor(aws) {
         return (event, context, cb) => {
-            // Check faultline API Key
-            if (!checkApiKey(event)) {
-                const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
-                cb(null, response);
-                return;
-            }
-
             const body = JSON.parse(event.body);
             const valid = ajv.validate(schema, body);
             if (!valid) {
@@ -90,6 +85,11 @@ class ErrorsPatchHandler extends Handler {
         };
     }
 }
-module.exports.ErrorsPatchHandler = ErrorsPatchHandler;
-
-module.exports.handler = new ErrorsPatchHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new ErrorsPatchHandler(aws))
+        .use(checkApiKeyMiddleware())
+        .use(httpErrorHandler())
+        .use(cors());
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };
