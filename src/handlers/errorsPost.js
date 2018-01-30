@@ -1,6 +1,7 @@
 'use strict';
 
 const console = require('console');
+const createError = require('http-errors');
 const middy = require('middy');
 const { cors, httpErrorHandler } = require('middy/middlewares');
 const moment = require('moment');
@@ -9,7 +10,7 @@ const Ajv = require('ajv');
 const truncater = require('../lib/truncater');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
+const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
 const aws = new Aws();
 const {
     timeunitFormat,
@@ -21,7 +22,7 @@ const {
     callNotificationsFunctionName
 } = require('../lib/constants');
 const {
-    resgen,
+    createResponse,
     reversedUnixtime,
     getByteLength,
     chunkArray
@@ -39,7 +40,7 @@ class ErrorsPostHandler extends Handler {
             const body = JSON.parse(event.body);
             const valid = ajv.validate(schema, body);
             if (!valid) {
-                const response = resgen(400, {
+                throw new createError.BadRequest({
                     errors: ajv.errors.map((v) => {
                         let e = {
                             message: v.message,
@@ -51,29 +52,23 @@ class ErrorsPostHandler extends Handler {
                         return e;
                     })
                 });
-                cb(null, response);
-                return;
             }
 
             const project = decodeURIComponent(event.pathParameters.project);
 
             if (project.match(/[\/\s\.]/)) {
-                const response = resgen(400, {
+                throw new createError.BadRequest({
                     errors: [{
                         message: 'Validation error: invalid field \'project\''
                     }]
                 });
-                cb(null, response);
-                return;
             }
             if (getByteLength(project) > projectNameMaxBytes) {
-                const response = resgen(400, {
+                throw new createError.BadRequest({
                     errors: [{
                         message: 'Validation error: \'project\' too long (limit: 256 bytes)'
                     }]
                 });
-                cb(null, response);
-                return;
             }
             const errors = body.errors;
             const bodyContext = body.hasOwnProperty('context') ? body.context: {};
@@ -184,17 +179,13 @@ class ErrorsPostHandler extends Handler {
 
             Promise.all(promises)
                 .then((res) => {
-                    const response = resgen(201, {
+                    const response = createResponse(201, {
                         data: {
                             errors: { postCount: res.length }
                         }
                     });
                     cb(null, response);
                     return res;
-                })
-                .catch((err) => {
-                    const response = resgen(500, { errors: [{ message: 'Unable to POST error', detail: err }] });
-                    cb(null, response);
                 })
                 .then((res) => {
                     if (!notifications || notifications.length === 0) {
@@ -228,16 +219,16 @@ class ErrorsPostHandler extends Handler {
                     });
                 })
                 .catch((err) => {
-                    console.error(err);
-                    cb(new Error('Unable to notify error. Error JSON:', JSON.stringify(err, null, 2)));
+                    throw new createError.InternalServerError({ errors: [{ message: 'Internal Server Error: Unable to POST error', detail: err }] });
                 });
         };
     }
 }
 const handlerBuilder = (aws) => {
     return middy(new ErrorsPostHandler(aws))
-        .use(checkApiKeyMiddleware({ allowClientKey: true }))
+        .use(checkApiKey({ allowClientKey: true }))
         .use(httpErrorHandler())
+        .use(bodyStringifier())
         .use(cors());
 };
 const handler = handlerBuilder(aws);

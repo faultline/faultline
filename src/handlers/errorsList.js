@@ -1,17 +1,18 @@
 'use strict';
 
 const console = require('console');
+const createError = require('http-errors');
 const middy = require('middy');
 const { cors, httpErrorHandler } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
+const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
 const aws = new Aws();
 const {
     errorByMessageTable
 } = require('../lib/constants');
 const {
-    resgen
+    createResponse
 } = require('../lib/functions');
 
 class ErrorsListHandler extends Handler {
@@ -48,7 +49,7 @@ class ErrorsListHandler extends Handler {
 
             aws.storage.queryDoc(params)
                 .then((data) => {
-                    const response = resgen(200, {
+                    const response = createResponse(200, {
                         data: {
                             errors: data.Items,
                             scannedCount: data.ScannedCount
@@ -58,8 +59,7 @@ class ErrorsListHandler extends Handler {
                 })
                 .catch((err) => {
                     console.error(err);
-                    const response = resgen(500, { errors: [{ message: 'Unable to GET error', detail: err }] });
-                    cb(null, response);
+                    throw new createError.InternalServerError({ errors: [{ message: 'Internal Server Error: Unable to GET error', detail: err }] });
                 });
         };
 
@@ -67,8 +67,9 @@ class ErrorsListHandler extends Handler {
 }
 const handlerBuilder = (aws) => {
     return middy(new ErrorsListHandler(aws))
-        .use(checkApiKeyMiddleware())
+        .use(checkApiKey())
         .use(httpErrorHandler())
+        .use(bodyStringifier())
         .use(cors());
 };
 const handler = handlerBuilder(aws);

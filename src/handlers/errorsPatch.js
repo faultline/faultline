@@ -1,6 +1,7 @@
 'use strict';
 
 const console = require('console');
+const createError = require('http-errors');
 const middy = require('middy');
 const { cors, httpErrorHandler } = require('middy/middlewares');
 const moment = require('moment');
@@ -8,14 +9,14 @@ const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
+const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
 const aws = new Aws();
 const {
     errorByMessageTable,
     rootSchema
 } = require('../lib/constants');
 const {
-    resgen
+    createResponse
 } = require('../lib/functions');
 
 const ajv = new Ajv();
@@ -29,7 +30,7 @@ class ErrorsPatchHandler extends Handler {
             const body = JSON.parse(event.body);
             const valid = ajv.validate(schema, body);
             if (!valid) {
-                const response = resgen(400, {
+                throw new createError.BadRequest({
                     errors: ajv.errors.map((v) => {
                         let e = {
                             message: v.message,
@@ -41,8 +42,6 @@ class ErrorsPatchHandler extends Handler {
                         return e;
                     })
                 });
-                cb(null, response);
-                return;
             }
 
             const status = body.status;
@@ -70,7 +69,7 @@ class ErrorsPatchHandler extends Handler {
 
             aws.storage.updateDoc(docParams)
                 .then((data) => {
-                    const response = resgen(200, {
+                    const response = createResponse(200, {
                         data: {
                             error: data.Attributes
                         }
@@ -79,16 +78,16 @@ class ErrorsPatchHandler extends Handler {
                 })
                 .catch((err) => {
                     console.error(err);
-                    const response = resgen(500, { errors: [{ message: 'Unable to PATCH error', detail: err }] });
-                    cb(null, response);
+                    throw new createError.InternalServerError({ errors: [{ message: 'Internal Server Error: Unable to PATCH error', detail: err }] });
                 });
         };
     }
 }
 const handlerBuilder = (aws) => {
     return middy(new ErrorsPatchHandler(aws))
-        .use(checkApiKeyMiddleware())
+        .use(checkApiKey())
         .use(httpErrorHandler())
+        .use(bodyStringifier())
         .use(cors());
 };
 const handler = handlerBuilder(aws);
