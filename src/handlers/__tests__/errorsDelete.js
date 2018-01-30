@@ -4,7 +4,7 @@ const assert = require('power-assert');
 
 const {
     mockAws
-} = require('../../lib/mock');
+} = require('../../lib/mockUtility');
 
 const { ErrorsPostHandler } = require('./../errorsPost.js');
 const { ErrorsDeleteHandler } = require('./../errorsDelete.js');

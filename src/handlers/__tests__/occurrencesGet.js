@@ -9,7 +9,7 @@ const {
 
 const {
     mockAws
-} = require('../../lib/mock');
+} = require('../../lib/mockUtility');
 
 const { ErrorsPostHandler } = require('./../errorsPost.js');
 const { OccurrencesGetHandler } = require('./../occurrencesGet.js');
