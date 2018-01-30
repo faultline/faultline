@@ -11,6 +11,15 @@
     "report": "nyc report",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > docs/api.md"
   },
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "src/lib/mockUtility.js",
+      "src/**/__tests__/*.js"
+    ]
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/faultline/faultline.git"
