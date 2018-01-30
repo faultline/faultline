@@ -14,7 +14,7 @@ const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
 const handler = require('./../occurrencesGet.js').handlerBuilder(mockAws);
 
 describe('occurrencesGet.handler', () => {
-    beforeEach((done) => {
+    beforeEach(() => {
         const event = {
             httpMethod: 'POST',
             headers: {
@@ -47,18 +47,20 @@ describe('occurrencesGet.handler', () => {
             })
         };
         const context = {};
-        mockAws.createResources(() => {
-            errorsPostHandler(event, context, (error, response) => {
-                done();
+        return mockAws.createResources().then(() => {
+            return new Promise((resolve) => {
+                errorsPostHandler(event, context, (error, response) => {
+                    resolve();
+                });
             });
         });
     });
 
-    afterEach((done) => {
-        mockAws.deleteResources(done);
+    afterEach(() => {
+        return mockAws.deleteResources();
     });
 
-    it ('GET error occrrence, response.statusCode should be 200', (done) => {
+    it ('GET error occrrence, response.statusCode should be 200', () => {
         const unixtime = moment('2016-11-02T00:01:00+00:00').unix();
         const event = {
             httpMethod: 'GET',
@@ -73,18 +75,18 @@ describe('occurrencesGet.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 200);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 
-    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+    it ('When invalid X-Api-Key, response should be 403 error', () => {
         const unixtime = moment('2016-11-02T00:01:00+00:00').unix();
         const event = {
             httpMethod: 'GET',
@@ -99,14 +101,14 @@ describe('occurrencesGet.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 403);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 });

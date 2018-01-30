@@ -10,7 +10,7 @@ const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
 const handler = require('./../errorsDelete.js').handlerBuilder(mockAws);
 
 describe('errorsDelete.handler', () => {
-    beforeEach((done) => {
+    beforeEach(() => {
         const event = {
             httpMethod: 'POST',
             headers: {
@@ -43,18 +43,20 @@ describe('errorsDelete.handler', () => {
             })
         };
         const context = {};
-        mockAws.createResources(() => {
-            errorsPostHandler(event, context, (error, response) => {
-                done();
+        return mockAws.createResources().then(() => {
+            return new Promise((resolve) => {
+                errorsPostHandler(event, context, (error, response) => {
+                    resolve();
+                });
             });
         });
     });
 
-    afterEach((done) => {
-        mockAws.deleteResources(done);
+    afterEach(() => {
+        return mockAws.deleteResources();
     });
 
-    it ('DELETE error, response.statusCode should be 204', (done) => {
+    it ('DELETE error, response.statusCode should be 204', () => {
         const event = {
             httpMethod: 'DELETE',
             headers: {
@@ -67,18 +69,18 @@ describe('errorsDelete.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 204);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 
-    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+    it ('When invalid X-Api-Key, response should be 403 error', () => {
         const event = {
             httpMethod: 'DELETE',
             headers: {
@@ -91,14 +93,14 @@ describe('errorsDelete.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 403);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 });

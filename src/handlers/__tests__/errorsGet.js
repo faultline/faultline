@@ -10,7 +10,7 @@ const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
 const handler = require('./../errorsGet.js').handlerBuilder(mockAws);
 
 describe('errorsGet.handler', () => {
-    beforeEach((done) => {
+    beforeEach(() => {
         const event = {
             httpMethod: 'POST',
             headers: {
@@ -43,15 +43,17 @@ describe('errorsGet.handler', () => {
             })
         };
         const context = {};
-        mockAws.createResources(() => {
-            errorsPostHandler(event, context, (error, response) => {
-                done();
+        return mockAws.createResources().then(() => {
+            return new Promise((resolve) => {
+                errorsPostHandler(event, context, (error, response) => {
+                    resolve();
+                });
             });
         });
     });
 
-    afterEach((done) => {
-        mockAws.deleteResources(done);
+    afterEach(() => {
+        return mockAws.deleteResources();
     });
 
     it ('GET error, response.statusCode should be 200', (done) => {
