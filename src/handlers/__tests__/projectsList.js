@@ -6,14 +6,13 @@ const {
     mockAws
 } = require('../../lib/mockUtility');
 
-const { ErrorsPostHandler } = require('./../errorsPost.js');
-const { ProjectsListHandler } = require('./../projectsList.js');
-const errorsPostHandler = new ErrorsPostHandler(mockAws);
-const handler = new ProjectsListHandler(mockAws);
+const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
+const handler = require('./../projectsList.js').handlerBuilder(mockAws);
 
 describe('projectsList.handler', () => {
     beforeEach((done) => {
         const event = {
+            httpMethod: 'POST',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
@@ -57,6 +56,7 @@ describe('projectsList.handler', () => {
 
     it ('GET projects, response.statusCode should be 200', (done) => {
         const event = {
+            httpMethod: 'GET',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_MASTER_API_KEY
             },
@@ -70,6 +70,30 @@ describe('projectsList.handler', () => {
             return Promise.resolve().then(() => {
                 assert(error === null);
                 assert(response.statusCode === 200);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
+            }).then(done, done);
+        };
+
+        handler(event, context, cb);
+    });
+
+    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+        const event = {
+            httpMethod: 'GET',
+            headers: {
+                'X-Api-Key': 'invalid'
+            },
+            pathParameters: {
+                project: encodeURIComponent('sample-project')
+            }
+        };
+        const context = {};
+
+        const cb = (error, response) => {
+            return Promise.resolve().then(() => {
+                assert(error === null);
+                assert(response.statusCode === 403);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
             }).then(done, done);
         };
 

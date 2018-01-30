@@ -1,6 +1,7 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
 const moment = require('moment');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
@@ -87,6 +88,8 @@ class DeleteExpiredErrorsHander extends Handler {
 
     }
 }
-module.exports.DeleteExpiredErrorsHander = DeleteExpiredErrorsHander;
-
-module.exports.handler = new DeleteExpiredErrorsHander(aws);
+const handlerBuilder = (aws) => {
+    return middy(new DeleteExpiredErrorsHander(aws));
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };

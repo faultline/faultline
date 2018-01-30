@@ -6,14 +6,13 @@ const {
     mockAws
 } = require('../../lib/mockUtility');
 
-const { ErrorsPostHandler } = require('./../errorsPost.js');
-const { ErrorsGetHandler } = require('./../errorsGet.js');
-const errorsPostHandler = new ErrorsPostHandler(mockAws);
-const handler = new ErrorsGetHandler(mockAws);
+const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
+const handler = require('./../errorsGet.js').handlerBuilder(mockAws);
 
 describe('errorsGet.handler', () => {
     beforeEach((done) => {
         const event = {
+            httpMethod: 'POST',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
@@ -57,6 +56,7 @@ describe('errorsGet.handler', () => {
 
     it ('GET error, response.statusCode should be 200', (done) => {
         const event = {
+            httpMethod: 'GET',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_MASTER_API_KEY
             },
@@ -71,6 +71,31 @@ describe('errorsGet.handler', () => {
             return Promise.resolve().then(() => {
                 assert(error === null);
                 assert(response.statusCode === 200);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
+            }).then(done, done);
+        };
+
+        handler(event, context, cb);
+    });
+
+    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+        const event = {
+            httpMethod: 'GET',
+            headers: {
+                'X-Api-Key': 'Invalid'
+            },
+            pathParameters: {
+                project: encodeURIComponent('sample-project'),
+                message: encodeURIComponent('Undefined index: faultline')
+            }
+        };
+        const context = {};
+
+        const cb = (error, response) => {
+            return Promise.resolve().then(() => {
+                assert(error === null);
+                assert(response.statusCode === 403);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
             }).then(done, done);
         };
 
