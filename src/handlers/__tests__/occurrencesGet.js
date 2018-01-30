@@ -3,7 +3,6 @@ const { describe, it, beforeEach, afterEach } = require('mocha');
 const assert = require('power-assert');
 const moment = require('moment');
 const {
-    timeunitFormat,
     reversedUnixtime
 } = require('../../lib/functions');
 
@@ -11,14 +10,13 @@ const {
     mockAws
 } = require('../../lib/mockUtility');
 
-const { ErrorsPostHandler } = require('./../errorsPost.js');
-const { OccurrencesGetHandler } = require('./../occurrencesGet.js');
-const errorsPostHandler = new ErrorsPostHandler(mockAws);
-const handler = new OccurrencesGetHandler(mockAws);
+const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
+const handler = require('./../occurrencesGet.js').handlerBuilder(mockAws);
 
 describe('occurrencesGet.handler', () => {
     beforeEach((done) => {
         const event = {
+            httpMethod: 'POST',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
@@ -63,6 +61,7 @@ describe('occurrencesGet.handler', () => {
     it ('GET error occrrence, response.statusCode should be 200', (done) => {
         const unixtime = moment('2016-11-02T00:01:00+00:00').unix();
         const event = {
+            httpMethod: 'GET',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_MASTER_API_KEY
             },
@@ -78,6 +77,33 @@ describe('occurrencesGet.handler', () => {
             return Promise.resolve().then(() => {
                 assert(error === null);
                 assert(response.statusCode === 200);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
+            }).then(done, done);
+        };
+
+        handler(event, context, cb);
+    });
+
+    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+        const unixtime = moment('2016-11-02T00:01:00+00:00').unix();
+        const event = {
+            httpMethod: 'GET',
+            headers: {
+                'X-Api-Key': 'Invalid'
+            },
+            pathParameters: {
+                project: encodeURIComponent('sample-project'),
+                message: encodeURIComponent('Undefined index: faultline'),
+                reversedUnixtime: encodeURIComponent(reversedUnixtime(unixtime))
+            }
+        };
+        const context = {};
+
+        const cb = (error, response) => {
+            return Promise.resolve().then(() => {
+                assert(error === null);
+                assert(response.statusCode === 403);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
             }).then(done, done);
         };
 

@@ -1,12 +1,15 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
+const { cors, httpErrorHandler } = require('middy/middlewares');
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
 const Ajv = require('ajv');
 const truncater = require('../lib/truncater');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
+const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
 const aws = new Aws();
 const {
     timeunitFormat,
@@ -19,7 +22,6 @@ const {
 } = require('../lib/constants');
 const {
     resgen,
-    checkApiKey,
     reversedUnixtime,
     getByteLength,
     chunkArray
@@ -34,13 +36,6 @@ class ErrorsPostHandler extends Handler {
     constructor(aws) {
         const lambda = aws.lambda;
         return (event, context, cb) => {
-            // Check faultline API Key
-            if (!checkApiKey(event, true)) {
-                const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
-                cb(null, response);
-                return;
-            }
-
             const body = JSON.parse(event.body);
             const valid = ajv.validate(schema, body);
             if (!valid) {
@@ -239,6 +234,11 @@ class ErrorsPostHandler extends Handler {
         };
     }
 }
-module.exports.ErrorsPostHandler = ErrorsPostHandler;
-
-module.exports.handler = new ErrorsPostHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new ErrorsPostHandler(aws))
+        .use(checkApiKeyMiddleware({ allowClientKey: true }))
+        .use(httpErrorHandler())
+        .use(cors());
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };

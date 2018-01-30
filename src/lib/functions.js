@@ -38,9 +38,6 @@ module.exports.resgen = (statusCode, body) => {
     }
     const response = {
         statusCode: statusCode,
-        headers: {
-            'Access-Control-Allow-Origin': '*'
-        },
         body: stringified
     };
     return response;

@@ -1,6 +1,7 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
 const aws = new Aws();
@@ -57,6 +58,8 @@ class CallNotificationsHandler extends Handler {
         };
     }
 }
-module.exports.CallNotificationsHandler = CallNotificationsHandler;
-
-module.exports.handler = new CallNotificationsHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new CallNotificationsHandler(aws));
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };
