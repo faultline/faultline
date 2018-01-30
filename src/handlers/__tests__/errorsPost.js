@@ -18,7 +18,7 @@ describe('errorsPost.handler', () => {
         mockAws.deleteResources(done);
     });
 
-    it ('Valid error POST, response.statusCode should be 201', (done) => {
+    it ('POST error, response.statusCode should be 201', (done) => {
         const event = {
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY

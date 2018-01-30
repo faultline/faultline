@@ -16,7 +16,7 @@ before_script:
   - sleep 10s
   - docker ps
   - docker network ls
-#  - AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=DUMMY AWS_SECRET_ACCESS_KEY=DUMMY aws --endpoint-url=http://localhost:4572 s3api create-bucket --bucket test-bucket
+  - AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=DUMMY AWS_SECRET_ACCESS_KEY=DUMMY aws --endpoint-url=http://localhost:4572 s3api create-bucket --bucket for-localstack-connection
   - cp config.default.yml config.yml
 script:
   - npm run test
