@@ -16,6 +16,14 @@ process.env.FAULTLINE_CLIENT_API_KEY = 'CLIENT_API_KEY';
 process.env.FAULTLINE_USE_KMS = '1';
 process.env.FAULTLINE_KMS_KEY_ALIAS = 'faultline-test';
 
+const sleep = (time) => {
+    return new Promise((resolve) => {
+        setTimeout(() => {
+            resolve();
+        }, time);
+    });
+};
+
 AWS.config.region = process.env.FAULTLINE_REGION;
 const mockResource = {
     s3: new AWS.S3({
@@ -52,8 +60,8 @@ const mockResource = {
 const constants = require('./constants');
 
 const mockAws = new Aws(mockResource);
-mockAws.createResources = (done) => {
-    mockAws.s3.createBucket({Bucket: constants.bucketName}).promise()
+mockAws.createResources = () => {
+    return mockAws.s3.createBucket({Bucket: constants.bucketName}).promise()
         .then(mockAws.dynamoDB.createTable({
             AttributeDefinitions: [
                 {
@@ -129,36 +137,15 @@ mockAws.createResources = (done) => {
                 WriteCapacityUnits: 1
             },
             TableName: constants.errorByTimeunitTable
-        }).promise())
-        .then(() => {
-            done();
-        })
-        .catch((err) => {
-            console.error(err);
-            done();
-        });
+        }).promise());
 };
 
-mockAws.deleteResources = (done) => {
-    mockAws.storage.recursiveDeleteObjects({Bucket: constants.bucketName})
+mockAws.deleteResources = () => {
+    return mockAws.storage.recursiveDeleteObjects({Bucket: constants.bucketName})
     // .then(mockAws.s3.deleteBucket({Bucket: bucketName}).promise())
         .then(mockAws.dynamoDB.deleteTable({TableName: constants.errorByMessageTable}).promise())
         .then(mockAws.dynamoDB.deleteTable({TableName: constants.errorByTimeunitTable}).promise())
-        .then(() => {
-            done();
-        })
-        .catch((err) => {
-            console.error(err);
-            done();
-        });
-};
-
-const sleep = (time) => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            resolve();
-        }, time);
-    });
+        .then(() => { return sleep(300); });
 };
 
 module.exports = constants;

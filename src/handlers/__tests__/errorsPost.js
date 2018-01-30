@@ -9,15 +9,15 @@ const {
 const handler = require('./../errorsPost.js').handlerBuilder(mockAws);
 
 describe('errorsPost.handler', () => {
-    beforeEach((done) => {
-        mockAws.createResources(done);
+    beforeEach(() => {
+        return mockAws.createResources();
     });
 
-    afterEach((done) => {
-        mockAws.deleteResources(done);
+    afterEach(() => {
+        return mockAws.deleteResources();
     });
 
-    it ('POST error, response.statusCode should be 201', (done) => {
+    it ('POST error, response.statusCode should be 201', () => {
         const event = {
             httpMethod: 'POST',
             headers: {
@@ -51,17 +51,18 @@ describe('errorsPost.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 201);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 
-    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+    it ('When invalid X-Api-Key, response should be 403 error', () => {
         const event = {
             httpMethod: 'POST',
             headers: {
@@ -95,14 +96,15 @@ describe('errorsPost.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 403);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
                 assert(response.body === JSON.stringify({ errors: [{ message: '403 Forbidden' }] }, null, 2));
-            }).then(done, done);
-        };
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 });
