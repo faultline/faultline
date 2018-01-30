@@ -1,8 +1,11 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
+const { cors, httpErrorHandler } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
+const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
 const aws = new Aws();
 const {
     bucketName,
@@ -10,20 +13,12 @@ const {
     errorByTimeunitTable
 } = require('../lib/constants');
 const {
-    resgen,
-    checkApiKey
+    resgen
 } = require('../lib/functions');
 
 class ErrorsDeleteHandler extends Handler {
     constructor(aws) {
         return (event, context, cb) => {
-            // Check faultline API Key
-            if (!checkApiKey(event)) {
-                const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
-                cb(null, response);
-                return;
-            }
-
             const project = decodeURIComponent(event.pathParameters.project);
             const message = decodeURIComponent(event.pathParameters.message);
             const key = [project, message].join('##');
@@ -100,6 +95,11 @@ class ErrorsDeleteHandler extends Handler {
         };
     }
 }
-module.exports.ErrorsDeleteHandler = ErrorsDeleteHandler;
-
-module.exports.handler = new ErrorsDeleteHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new ErrorsDeleteHandler(aws))
+        .use(checkApiKeyMiddleware())
+        .use(httpErrorHandler())
+        .use(cors());
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };

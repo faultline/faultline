@@ -1,12 +1,14 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
+const { cors, httpErrorHandler } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
+const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
 const aws = new Aws();
 const {
-    resgen,
-    checkApiKey
+    resgen
 } = require('../lib/functions');
 
 class EncryptHandler extends Handler {
@@ -15,11 +17,6 @@ class EncryptHandler extends Handler {
         return (event, context, cb) => {
             if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {
                 const response = resgen(412, { errors: [{ message: '412 Precondition Failed: masterApiKey' }] });
-                cb(null, response);
-                return;
-            }
-            if (!checkApiKey(event)) {
-                const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
                 cb(null, response);
                 return;
             }
@@ -49,6 +46,11 @@ class EncryptHandler extends Handler {
         };
     }
 }
-module.exports.EncryptHandler = EncryptHandler;
-
-module.exports.handler = new EncryptHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new EncryptHandler(aws))
+        .use(checkApiKeyMiddleware())
+        .use(httpErrorHandler())
+        .use(cors());
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };

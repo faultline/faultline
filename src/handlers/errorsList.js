@@ -1,27 +1,22 @@
 'use strict';
 
 const console = require('console');
+const middy = require('middy');
+const { cors, httpErrorHandler } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
+const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
 const aws = new Aws();
 const {
     errorByMessageTable
 } = require('../lib/constants');
 const {
-    resgen,
-    checkApiKey
+    resgen
 } = require('../lib/functions');
 
 class ErrorsListHandler extends Handler {
     constructor(aws) {
         return (event, context, cb) => {
-            // Check faultline API Key
-            if (!checkApiKey(event)) {
-                const response = resgen(403, { errors: [{ message: '403 Forbidden' }] });
-                cb(null, response);
-                return;
-            }
-
             const project = decodeURIComponent(event.pathParameters.project);
             const status = event.queryStringParameters && event.queryStringParameters.hasOwnProperty('status') ? event.queryStringParameters.status : null;
 
@@ -70,6 +65,11 @@ class ErrorsListHandler extends Handler {
 
     }
 }
-module.exports.ErrorsListHandler = ErrorsListHandler;
-
-module.exports.handler = new ErrorsListHandler(aws);
+const handlerBuilder = (aws) => {
+    return middy(new ErrorsListHandler(aws))
+        .use(checkApiKeyMiddleware())
+        .use(httpErrorHandler())
+        .use(cors());
+};
+const handler = handlerBuilder(aws);
+module.exports = { handler, handlerBuilder };

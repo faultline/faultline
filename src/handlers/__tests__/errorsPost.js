@@ -6,8 +6,7 @@ const {
     mockAws
 } = require('../../lib/mockUtility');
 
-const { ErrorsPostHandler } = require('./../errorsPost.js');
-const handler = new ErrorsPostHandler(mockAws);
+const handler = require('./../errorsPost.js').handlerBuilder(mockAws);
 
 describe('errorsPost.handler', () => {
     beforeEach((done) => {
@@ -20,6 +19,7 @@ describe('errorsPost.handler', () => {
 
     it ('POST error, response.statusCode should be 201', (done) => {
         const event = {
+            httpMethod: 'POST',
             headers: {
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
@@ -55,6 +55,7 @@ describe('errorsPost.handler', () => {
             return Promise.resolve().then(() => {
                 assert(error === null);
                 assert(response.statusCode === 201);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
             }).then(done, done);
         };
         handler(event, context, cb);
@@ -62,6 +63,7 @@ describe('errorsPost.handler', () => {
 
     it ('When invalid X-Api-Key, response should be 403 error', (done) => {
         const event = {
+            httpMethod: 'POST',
             headers: {
                 'X-Api-Key': 'Invalid'
             },

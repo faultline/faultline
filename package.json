@@ -45,10 +45,12 @@
     "bluebird": "^3.5.1",
     "github": "^7.0.0",
     "gitlab": "^1.7.1",
+    "http-errors": "^1.6.2",
     "js-sha256": "^0.5.0",
     "js-yaml": "^3.10.0",
     "json-schema-deref-sync": "^0.3.4",
     "lodash": "^4.16.2",
+    "middy": "^0.8.5",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
     "url-template": "^2.0.8"
