@@ -1,14 +1,15 @@
 'use strict';
 
 const console = require('console');
+const createError = require('http-errors');
 const middy = require('middy');
 const { cors, httpErrorHandler } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
+const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
 const aws = new Aws();
 const {
-    resgen
+    createResponse
 } = require('../lib/functions');
 
 class EncryptHandler extends Handler {
@@ -16,9 +17,7 @@ class EncryptHandler extends Handler {
         const kms = aws.kms;
         return (event, context, cb) => {
             if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {
-                const response = resgen(412, { errors: [{ message: '412 Precondition Failed: masterApiKey' }] });
-                cb(null, response);
-                return;
+                throw new createError.PreconditionFailed({ errors: [{ message: 'Precondition Failed: masterApiKey' }] });
             }
             const body = event.body;
             const keyAlias = `alias/${process.env.FAULTLINE_KMS_KEY_ALIAS}`;
@@ -35,21 +34,21 @@ class EncryptHandler extends Handler {
                 })
                 .then((res) => {
                     const encrypted = res.CiphertextBlob.toString('base64');
-                    const response = resgen(201, { data: { encrypted: encrypted }});
+                    const response = createResponse(201, { data: { encrypted: encrypted }});
                     cb(null, response);
                 })
                 .catch((err) => {
                     console.error(err);
-                    const response = resgen(500, { errors: [{ message: 'Unable to POST error', detail: err }] });
-                    cb(null, response);
+                    throw new createError.InternalServerError({ errors: [{ message: 'Internal Server Error: Unable to POST error', detail: err }] });
                 });
         };
     }
 }
 const handlerBuilder = (aws) => {
     return middy(new EncryptHandler(aws))
-        .use(checkApiKeyMiddleware())
+        .use(checkApiKey())
         .use(httpErrorHandler())
+        .use(bodyStringifier())
         .use(cors());
 };
 const handler = handlerBuilder(aws);

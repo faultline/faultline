@@ -1,11 +1,12 @@
 'use strict';
 
 const console = require('console');
+const createError = require('http-errors');
 const middy = require('middy');
 const { cors, httpErrorHandler } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const checkApiKeyMiddleware = require('../lib/checkApiKeyMiddleware');
+const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
 const aws = new Aws();
 const {
     bucketName,
@@ -13,7 +14,7 @@ const {
     errorByTimeunitTable
 } = require('../lib/constants');
 const {
-    resgen
+    createResponse
 } = require('../lib/functions');
 
 class ProjectsDeleteHandler extends Handler {
@@ -109,22 +110,22 @@ class ProjectsDeleteHandler extends Handler {
                     return aws.storage.recursiveDeleteObjects(bucketParams);
                 })
                 .then(() => {
-                    const response = resgen(204, null);
+                    const response = createResponse(204, null);
                     cb(null, response);
                     return;
                 })
                 .catch((err) => {
                     console.error(err);
-                    const response = resgen(500, { errors: [{ message: 'Unable to DELETE error', detail: err }] });
-                    cb(null, response);
+                    throw new createError.InternalServerError({ errors: [{ message: 'Internal Server Error: Unable to DELTE error', detail: err }] });
                 });
         };
     }
 }
 const handlerBuilder = (aws) => {
     return middy(new ProjectsDeleteHandler(aws))
-        .use(checkApiKeyMiddleware())
+        .use(checkApiKey())
         .use(httpErrorHandler())
+        .use(bodyStringifier())
         .use(cors());
 };
 const handler = handlerBuilder(aws);

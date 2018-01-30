@@ -1,10 +1,10 @@
 const createError = require('http-errors');
 
-const checkApiKeyMiddleware = (config = { allowClientKey: false }) => {
+const middleware = (config = { allowClientKey: false }) => {
     return ({
         before: (handler, next) => {
-            if (!checkApiKeyMiddleware(config).checkApiKey(handler.event)) {
-                throw new createError.Forbidden(JSON.stringify({ errors: [{ message: '403 Forbidden' }] }, null, 2));
+            if (!middleware(config).checkApiKey(handler.event)) {
+                throw new createError.Forbidden({ errors: [{ message: '403 Forbidden' }] });
             }
             return next();
         },
@@ -32,4 +32,4 @@ const checkApiKeyMiddleware = (config = { allowClientKey: false }) => {
     });
 };
 
-module.exports = checkApiKeyMiddleware;
+module.exports = middleware;
