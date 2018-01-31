@@ -107,4 +107,30 @@ describe('errorsPost.handler', () => {
             handler(event, context, cb);
         });
     });
+
+    it ('When invalid error schema, response should be 400 error', () => {
+        const event = {
+            httpMethod: 'POST',
+            headers: {
+                'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
+            },
+            pathParameters: {
+                project: 'sample-project'
+            },
+            body: JSON.stringify({
+                invalid: {}
+            })
+        };
+        const context = {};
+
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
+                assert(error === null);
+                assert(response.statusCode === 400);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
+                resolve();
+            };
+            handler(event, context, cb);
+        });
+    });
 });
