@@ -14,6 +14,7 @@ describe('errorsPatch.handler', () => {
         const event = {
             httpMethod: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
             pathParameters: {
@@ -60,6 +61,7 @@ describe('errorsPatch.handler', () => {
         const event = {
             httpMethod: 'PATCH',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': process.env.FAULTLINE_MASTER_API_KEY
             },
             pathParameters: {
@@ -87,6 +89,7 @@ describe('errorsPatch.handler', () => {
         const event = {
             httpMethod: 'PATCH',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': 'Invalid'
             },
             pathParameters: {
@@ -103,6 +106,34 @@ describe('errorsPatch.handler', () => {
             const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 403);
+                assert(response.headers['Access-Control-Allow-Origin'] === '*');
+                resolve();
+            };
+            handler(event, context, cb);
+        });
+    });
+
+    it ('When invalid body, response should be 400 error', () => {
+        const event = {
+            httpMethod: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Api-Key': process.env.FAULTLINE_MASTER_API_KEY
+            },
+            pathParameters: {
+                project: encodeURIComponent('sample-project'),
+                message: encodeURIComponent('Undefined index: faultline')
+            },
+            body: JSON.stringify({
+                invalid: {}
+            })
+        };
+        const context = {};
+
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
+                assert(error === null);
+                assert(response.statusCode === 400);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
                 resolve();
             };

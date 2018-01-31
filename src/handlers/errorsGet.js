@@ -3,7 +3,7 @@
 const console = require('console');
 const createError = require('http-errors');
 const middy = require('middy');
-const { cors, httpErrorHandler } = require('middy/middlewares');
+const { cors, httpErrorHandler, httpHeaderNormalizer } = require('middy/middlewares');
 const moment = require('moment');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
@@ -82,6 +82,7 @@ class ErrorsGetHandler extends Handler {
 }
 const handlerBuilder = (aws) => {
     return middy(new ErrorsGetHandler(aws))
+        .use(httpHeaderNormalizer())
         .use(checkApiKey())
         .use(httpErrorHandler())
         .use(bodyStringifier())

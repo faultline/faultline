@@ -14,6 +14,7 @@ describe('errorsGet.handler', () => {
         const event = {
             httpMethod: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
             pathParameters: {
@@ -56,7 +57,7 @@ describe('errorsGet.handler', () => {
         return mockAws.deleteResources();
     });
 
-    it ('GET error, response.statusCode should be 200', (done) => {
+    it ('GET error, response.statusCode should be 200', () => {
         const event = {
             httpMethod: 'GET',
             headers: {
@@ -69,18 +70,18 @@ describe('errorsGet.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 200);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 
-    it ('When invalid X-Api-Key, response should be 403 error', (done) => {
+    it ('When invalid X-Api-Key, response should be 403 error', () => {
         const event = {
             httpMethod: 'GET',
             headers: {
@@ -93,14 +94,14 @@ describe('errorsGet.handler', () => {
         };
         const context = {};
 
-        const cb = (error, response) => {
-            return Promise.resolve().then(() => {
+        return new Promise((resolve) => {
+            const cb = (error, response) => {
                 assert(error === null);
                 assert(response.statusCode === 403);
                 assert(response.headers['Access-Control-Allow-Origin'] === '*');
-            }).then(done, done);
-        };
-
-        handler(event, context, cb);
+                resolve();
+            };
+            handler(event, context, cb);
+        });
     });
 });

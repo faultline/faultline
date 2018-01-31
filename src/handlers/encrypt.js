@@ -3,7 +3,7 @@
 const console = require('console');
 const createError = require('http-errors');
 const middy = require('middy');
-const { cors, httpErrorHandler } = require('middy/middlewares');
+const { cors, httpErrorHandler, httpHeaderNormalizer } = require('middy/middlewares');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
 const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
@@ -46,6 +46,7 @@ class EncryptHandler extends Handler {
 }
 const handlerBuilder = (aws) => {
     return middy(new EncryptHandler(aws))
+        .use(httpHeaderNormalizer())
         .use(checkApiKey())
         .use(httpErrorHandler())
         .use(bodyStringifier())

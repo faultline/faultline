@@ -18,6 +18,7 @@ describe('occurrencesGet.handler', () => {
         const event = {
             httpMethod: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
             pathParameters: {

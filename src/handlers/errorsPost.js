@@ -3,14 +3,13 @@
 const console = require('console');
 const createError = require('http-errors');
 const middy = require('middy');
-const { cors, httpErrorHandler } = require('middy/middlewares');
+const { cors, httpErrorHandler, httpHeaderNormalizer, jsonBodyParser } = require('middy/middlewares');
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
-const Ajv = require('ajv');
 const truncater = require('../lib/truncater');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
+const { checkApiKey, bodyStringifier, bodyValidator } = require('../lib/middlewares');
 const aws = new Aws();
 const {
     timeunitFormat,
@@ -28,7 +27,6 @@ const {
     chunkArray
 } = require('../lib/functions');
 
-const ajv = new Ajv();
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'create';
 }).schema;
@@ -37,23 +35,7 @@ class ErrorsPostHandler extends Handler {
     constructor(aws) {
         const lambda = aws.lambda;
         return (event, context, cb) => {
-            const body = JSON.parse(event.body);
-            const valid = ajv.validate(schema, body);
-            if (!valid) {
-                throw new createError.BadRequest({
-                    errors: ajv.errors.map((v) => {
-                        let e = {
-                            message: v.message,
-                            detail: v
-                        };
-                        if (v.hasOwnProperty('dataPath')) {
-                            e['path'] = v.dataPath.split(/[\.\[\]]/).filter((v) => { return v !== ''; });
-                        }
-                        return e;
-                    })
-                });
-            }
-
+            const body = event.body;
             const project = decodeURIComponent(event.pathParameters.project);
 
             if (project.match(/[\/\s\.]/)) {
@@ -226,7 +208,10 @@ class ErrorsPostHandler extends Handler {
 }
 const handlerBuilder = (aws) => {
     return middy(new ErrorsPostHandler(aws))
+        .use(httpHeaderNormalizer())
         .use(checkApiKey({ allowClientKey: true }))
+        .use(jsonBodyParser())
+        .use(bodyValidator(schema))
         .use(httpErrorHandler())
         .use(bodyStringifier())
         .use(cors());
