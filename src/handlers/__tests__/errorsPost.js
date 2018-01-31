@@ -21,6 +21,7 @@ describe('errorsPost.handler', () => {
         const event = {
             httpMethod: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'X-Api-Key': process.env.FAULTLINE_CLIENT_API_KEY
             },
             pathParameters: {
@@ -108,7 +109,7 @@ describe('errorsPost.handler', () => {
         });
     });
 
-    it ('When invalid error schema, response should be 400 error', () => {
+    it ('When invalid body, response should be 400 error', () => {
         const event = {
             httpMethod: 'POST',
             headers: {

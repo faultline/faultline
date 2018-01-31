@@ -3,13 +3,12 @@
 const console = require('console');
 const createError = require('http-errors');
 const middy = require('middy');
-const { cors, httpErrorHandler } = require('middy/middlewares');
+const { cors, httpErrorHandler, httpHeaderNormalizer, jsonBodyParser } = require('middy/middlewares');
 const moment = require('moment');
 const deref = require('json-schema-deref-sync');
-const Ajv = require('ajv');
 const Aws = require('../lib/aws');
 const Handler = require('../lib/handler');
-const { checkApiKey, bodyStringifier } = require('../lib/middlewares');
+const { checkApiKey, bodyStringifier, bodyValidator } = require('../lib/middlewares');
 const aws = new Aws();
 const {
     errorByMessageTable,
@@ -19,7 +18,6 @@ const {
     createResponse
 } = require('../lib/functions');
 
-const ajv = new Ajv();
 const schema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'update';
 }).schema;
@@ -27,23 +25,7 @@ const schema = deref(rootSchema).properties.error.links.find((l) => {
 class ErrorsPatchHandler extends Handler {
     constructor(aws) {
         return (event, context, cb) => {
-            const body = JSON.parse(event.body);
-            const valid = ajv.validate(schema, body);
-            if (!valid) {
-                throw new createError.BadRequest({
-                    errors: ajv.errors.map((v) => {
-                        let e = {
-                            message: v.message,
-                            detail: v
-                        };
-                        if (v.hasOwnProperty('dataPath')) {
-                            e['path'] = v.dataPath.split(/[\.\[\]]/).filter((v) => { return v !== ''; });
-                        }
-                        return e;
-                    })
-                });
-            }
-
+            const body = event.body;
             const status = body.status;
             const project = decodeURIComponent(event.pathParameters.project);
             const message = decodeURIComponent(event.pathParameters.message);
@@ -85,7 +67,10 @@ class ErrorsPatchHandler extends Handler {
 }
 const handlerBuilder = (aws) => {
     return middy(new ErrorsPatchHandler(aws))
+        .use(httpHeaderNormalizer())
         .use(checkApiKey())
+        .use(jsonBodyParser())
+        .use(bodyValidator(schema))
         .use(httpErrorHandler())
         .use(bodyStringifier())
         .use(cors());

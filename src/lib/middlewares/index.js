@@ -1,4 +1,5 @@
 module.exports = {
     checkApiKey: require('./checkApiKey'),
-    bodyStringifier: require('./bodyStringifier')
+    bodyStringifier: require('./bodyStringifier'),
+    bodyValidator: require('./bodyValidator')
 };
