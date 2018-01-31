@@ -17,12 +17,12 @@ describe('checkApiKey', () => {
         done();
     });
 
-    it ('headers has no `x-api-key`, should be false', () => {
+    it ('headers has no `X-Api-Key`, should be false', () => {
         assert(checkApiKey().checkApiKey(event) === false);
     });
 
-    it ('headers has `x-api-key` and value = process.env.FAULTLINE_MASTER_API_KEY, should be true', () => {
-        event['headers']['x-api-key'] = 'MASTER_API_KEY';
+    it ('headers has `X-Api-Key` and value = process.env.FAULTLINE_MASTER_API_KEY, should be true', () => {
+        event['headers']['X-Api-Key'] = 'MASTER_API_KEY';
         assert(checkApiKey().checkApiKey(event) === true);
     });
 
@@ -31,15 +31,15 @@ describe('checkApiKey', () => {
         assert(checkApiKey().checkApiKey(event) === true);
     });
 
-    it ('headers has `x-api-key` but value != process.env.FAULTLINE_MASTER_API_KEY, should be false', () => {
-        event['headers']['x-api-key'] = 'INVALID_API_KEY';
+    it ('headers has `X-Api-Key` but value != process.env.FAULTLINE_MASTER_API_KEY, should be false', () => {
+        event['headers']['X-Api-Key'] = 'INVALID_API_KEY';
         assert(checkApiKey().checkApiKey(event) === false);
     });
 
     it ('allowClientKey = true, checkApiKey().checkApiKey check process.env.FAULTLINE_MASTER_API_KEY and process.env.FAULTLINE_CLIENT_API_KEY', () => {
-        event['headers']['x-api-key'] = 'MASTER_API_KEY';
+        event['headers']['X-Api-Key'] = 'MASTER_API_KEY';
         assert(checkApiKey({ allowClientKey: true }).checkApiKey(event) === true);
-        event['headers']['x-api-key'] = 'CLIENT_API_KEY';
+        event['headers']['X-Api-Key'] = 'CLIENT_API_KEY';
         assert(checkApiKey({ allowClientKey: true }).checkApiKey(event) === true);
     });
 

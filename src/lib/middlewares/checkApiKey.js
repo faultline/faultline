@@ -1,4 +1,5 @@
 const createError = require('http-errors');
+const apiKeyHeader = 'X-Api-Key';
 
 const middleware = (config = { allowClientKey: false }) => {
     return ({
@@ -13,10 +14,6 @@ const middleware = (config = { allowClientKey: false }) => {
                 return true;
             }
             // Check faultline API Key
-            let apiKeyHeader = 'X-Api-Key';
-            if (event.headers.hasOwnProperty('x-api-key')) {
-                apiKeyHeader = 'x-api-key';
-            }
             if (!event.headers.hasOwnProperty(apiKeyHeader)) {
                 return false;
             }
