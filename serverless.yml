@@ -5,11 +5,12 @@ frameworkVersion: ">=1.24.1 <2.0.0"
 provider:
   name: aws
   environment:
-    FAULTLINE_STAGE: ${env:FAULTLINE_STAGE, 'v0'}
+    FAULTLINE_STAGE: ${env:FAULTLINE_STAGE, file(./config.yml):stage, 'dev'}
     FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
-    FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'ap-northeast-1'}
+    FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'us-east-1'}
     FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
     FAULTLINE_DYNAMODB_TABLE_PREFIX: ${env:FAULTLINE_DYNAMODB_TABLE_PREFIX, file(./config.yml):dynamodbTablePrefix, 'faultline'}
+    FAULTLINE_DYNAMODB_TABLE_SUFFIX: ${env:FAULTLINE_DYNAMODB_TABLE_SUFFIX, file(./config.yml):dynamodbTableSuffix, "-${self:provider.environment.FAULTLINE_STAGE}"}
     FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS: ${env:FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS, file(./config.yml):dynamodbReadCapacityUnits, '1'}
     FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS: ${env:FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS, file(./config.yml):dynamodbWriteCapacityUnits, '1'}
     FAULTLINE_TIMEUNIT: ${env:FAULTLINE_TIMEUNIT, file(./config.yml):timeunit, 'minute'}
@@ -73,7 +74,7 @@ plugins:
 
 functions:
   projectsList:
-    handler: src/handlers/projects/get.list
+    handler: src/handlers/projectsList.handler
     events:
       - http:
           path: projects
@@ -81,7 +82,7 @@ functions:
           cors: true
           integration: lambda-proxy
   projectsDelete:
-    handler: src/handlers/projects/delete.delete
+    handler: src/handlers/projectsDelete.handler
     timeout: 30
     events:
       - http:
@@ -90,14 +91,14 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsPost:
-    handler: src/handlers/errors/post.post
+    handler: src/handlers/errorsPost.handler
     events:
       - http:
           path: projects/{project}/errors
           method: post
           integration: lambda-proxy
   errorsList:
-    handler: src/handlers/errors/get.list
+    handler: src/handlers/errorsList.handler
     events:
       - http:
           path: projects/{project}/errors
@@ -105,7 +106,7 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsGet:
-    handler: src/handlers/errors/get.get
+    handler: src/handlers/errorsGet.handler
     events:
       - http:
           path: projects/{project}/errors/{message}
@@ -113,7 +114,7 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsPatch:
-    handler: src/handlers/errors/patch.patch
+    handler: src/handlers/errorsPatch.handler
     events:
       - http:
           path: projects/{project}/errors/{message}
@@ -121,7 +122,7 @@ functions:
           cors: true
           integration: lambda-proxy
   errorsDelete:
-    handler: src/handlers/errors/delete.delete
+    handler: src/handlers/errorsDelete.handler
     timeout: 30
     events:
       - http:
@@ -130,7 +131,7 @@ functions:
           cors: true
           integration: lambda-proxy
   occurrencesList:
-    handler: src/handlers/occurrences/get.list
+    handler: src/handlers/occurrencesList.handler
     events:
       - http:
           path: projects/{project}/errors/{message}/occurrences
@@ -138,7 +139,7 @@ functions:
           cors: true
           integration: lambda-proxy
   occurrencesGet:
-    handler: src/handlers/occurrences/get.get
+    handler: src/handlers/occurrencesGet.handler
     events:
       - http:
           path: projects/{project}/errors/{message}/occurrences/{reversedUnixtime}
@@ -146,11 +147,10 @@ functions:
           cors: true
           integration: lambda-proxy
   callNotifications:
-    handler: src/handlers/notifications.call
-    name: faultline-${self:provider.stage}-callNotifications
+    handler: src/handlers/callNotifications.handler
     timeout: 30
   deleteExpiredErrors:
-    handler: src/handlers/util.deleteExpiredErrors
+    handler: src/handlers/deleteExpiredErrors.handler
     events:
       - schedule:
           rate: cron(0 0 * * ? *)

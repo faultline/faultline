@@ -50,9 +50,9 @@ faultline put raw error data in JSON format.
 | `{project}##{message}` | | | |
 
 - **key** : `{project}##{message}`
-- **timestamp** : timestamp by [timeunit](../config.default.yml)
+- **timestamp** : timestamp by [timeunit](env.yml)
 - **type** : Error type
-- **count** : Error count by [timeunit](../config.default.yml)
+- **count** : Error count by [timeunit](env.yml)
 
 ##### Key Schema
 
