@@ -1,10 +1,24 @@
+sudo: required
 language: node_js
 node_js:
   - 6
+services:
+  - docker
+addons:
+  hosts:
+    - faultline-test-bucket.localhost
 cache:
   directories:
     - "node_modules"
 before_script:
+  - sudo pip install awscli
+  - docker-compose up -d
+  - sleep 10s
+  - docker ps
+  - docker network ls
+  - AWS_REGION=us-east-1 AWS_ACCESS_KEY_ID=DUMMY AWS_SECRET_ACCESS_KEY=DUMMY aws --endpoint-url=http://localhost:4572 s3api create-bucket --bucket for-localstack-connection
   - cp config.default.yml config.yml
 script:
   - npm run test
+after_script:
+  - npm run report

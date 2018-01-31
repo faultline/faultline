@@ -1,8 +1,10 @@
-# faultline [![Build Status](https://travis-ci.org/faultline/faultline.svg?branch=master)](https://travis-ci.org/faultline/faultline)
+# faultline [![Build Status](https://travis-ci.org/faultline/faultline.svg?branch=master)](https://travis-ci.org/faultline/faultline) [![GitHub release](https://img.shields.io/github/release/faultline/faultline.svg)]()
 
 > Error tracking tool on AWS managed services.
 
 ![logo](https://faultline.github.io/faultline/faultline.png)
+
+[Migration Guide: from v0.x to v1.x](docs/migration_v0_to_v1.md)
 
 ## Table of Contents
 
@@ -129,16 +131,6 @@ https://github.com/faultline/faultline-webui
 ## Architecture
 
 "Architecture of faultline" document is [here](docs/architecture.md) :book: .
-
-## TODO
-
-- [ ] Refactor API response format
-- [x] Notification
-    - [x] Slack
-    - [x] GitHub Issue
-    - [x] GitLab Issue
-- [ ] API Gateway API Key (waiting CFn/Serverless "Usage plan" support. see [#2450](https://github.com/serverless/serverless/issues/2450) )
-- [x] Error data TTL
 
 ## Contribute
 

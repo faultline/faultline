@@ -34,38 +34,41 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "status": "success",
-  "meta": {
-    "project": "sample-project",
-    "message": "Undefined index: faultline",
-    "type": "notice",
-    "backtrace": [
-      {
-        "file": "/var/www/test/test.php",
-        "line": 15,
-        "function": "SomeClass->__construct()"
-      },
-      {
-        "file": "/var/www/test/SomeClass.class.php",
-        "line": 36,
-        "function": "SomeClass->callSomething()"
-      }
-    ],
-    "event": {
-    }
-  },
-  "timeline": [
-    {
+  "data": {
+    "error": {
       "project": "sample-project",
-      "count": 3,
-      "timestamp": "2016-12-05T11:55:00+00:00",
-      "key": "sample-project##Undefined index: faultline",
       "message": "Undefined index: faultline",
-      "type": "notice"
+      "type": "notice",
+      "backtrace": [
+        {
+          "file": "/var/www/test/test.php",
+          "line": 15,
+          "function": "SomeClass->__construct()"
+        },
+        {
+          "file": "/var/www/test/SomeClass.class.php",
+          "line": 36,
+          "function": "SomeClass->callSomething()"
+        }
+      ],
+      "event": {
+      }
+    },
+    "timeline": {
+      "errors": [
+        {
+          "project": "sample-project",
+          "count": 3,
+          "timestamp": "2016-12-05T11:55:00+00:00",
+          "key": "sample-project##Undefined index: faultline",
+          "message": "Undefined index: faultline",
+          "type": "notice"
+        }
+      ],
+      "totalCount": 1,
+      "scannedCount": 1
     }
-  ],
-  "count": 1,
-  "scannedCount": 1
+  }
 }
 ```
 
@@ -82,20 +85,21 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "status": "success",
-  "errors": [
-    {
-      "project": {
-        "name": "sample-project"
-      },
-      "count": 96,
-      "lastUpdated": "2016-12-07T00:00:00+09:00",
-      "message": "Undefined index: faultline",
-      "status": "resolved",
-      "type": "notice"
-    }
-  ],
-  "count": 1
+  "data": {
+    "errors": [
+      {
+        "project": {
+          "name": "sample-project"
+        },
+        "count": 96,
+        "lastUpdated": "2016-12-07T00:00:00+09:00",
+        "message": "Undefined index: faultline",
+        "status": "resolved",
+        "type": "notice"
+      }
+    ],
+    "scannedCount": 27
+  }
 }
 ```
 
@@ -182,8 +186,11 @@ HTTP/1.1 201 Created
 Content-Type: application/json
 
 {
-  "status": "success",
-  "errors": 27
+  "data": {
+    "errors": {
+      "postCount": 27
+    }
+  }
 }
 ```
 
@@ -208,8 +215,17 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "status": "success",
-  "meta": {
+  "data": {
+    "error": {
+      "project": {
+        "name": "sample-project"
+      },
+      "count": 96,
+      "lastUpdated": "2016-12-07T00:00:00+09:00",
+      "message": "Undefined index: faultline",
+      "status": "resolved",
+      "type": "notice"
+    }
   }
 }
 ```
@@ -244,47 +260,8 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "status": "success",
-  "meta": {
-    "project": "sample-project",
-    "message": "Undefined index: faultline",
-    "type": "notice",
-    "backtrace": [
-      {
-        "file": "/var/www/test/test.php",
-        "line": 15,
-        "function": "SomeClass->__construct()"
-      },
-      {
-        "file": "/var/www/test/SomeClass.class.php",
-        "line": 36,
-        "function": "SomeClass->callSomething()"
-      }
-    ],
-    "event": {
-    },
-    "timestamp": "2017-05-16T13:36:27+00:00",
-    "reversedUnixtime": "9007197759799204"
-  }
-}
-```
-
-### GET /projects/:project/errors/:message/occurrences
-List error occurrences.
-
-```
-GET /projects/{project}/errors/{message}/occurrences HTTP/1.1
-Host: api.example.com
-```
-
-```
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-{
-  "status": "success",
-  "occurrences": [
-    {
+  "data": {
+    "error": {
       "project": "sample-project",
       "message": "Undefined index: faultline",
       "type": "notice",
@@ -305,8 +282,49 @@ Content-Type: application/json
       "timestamp": "2017-05-16T13:36:27+00:00",
       "reversedUnixtime": "9007197759799204"
     }
-  ],
-  "count": 1
+  }
+}
+```
+
+### GET /projects/:project/errors/:message/occurrences
+List error occurrences.
+
+```
+GET /projects/{project}/errors/{message}/occurrences HTTP/1.1
+Host: api.example.com
+```
+
+```
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "data": {
+    "errors": [
+      {
+        "project": "sample-project",
+        "message": "Undefined index: faultline",
+        "type": "notice",
+        "backtrace": [
+          {
+            "file": "/var/www/test/test.php",
+            "line": 15,
+            "function": "SomeClass->__construct()"
+          },
+          {
+            "file": "/var/www/test/SomeClass.class.php",
+            "line": 36,
+            "function": "SomeClass->callSomething()"
+          }
+        ],
+        "event": {
+        },
+        "timestamp": "2017-05-16T13:36:27+00:00",
+        "reversedUnixtime": "9007197759799204"
+      }
+    ],
+    "totalCount": 10
+  }
 }
 ```
 
@@ -328,12 +346,13 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "status": "success",
-  "projects": [
-    {
-      "name": "sample-project"
-    }
-  ]
+  "data": {
+    "projects": [
+      {
+        "name": "sample-project"
+      }
+    ]
+  }
 }
 ```
 
@@ -368,8 +387,9 @@ HTTP/1.1 201 Created
 Content-Type: application/json
 
 {
-  "status": "success",
-  "encrypted": "VJrcSNSvM/KxZ3IIa/+aaEZMfYQgKrGqmGwzgAAASYwggEiBgkqhkiG9w0BBwagggETMIIBDwIBADCCAQgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMkrC8qGdnuIcfRlX9AgEQgIHaanVWXGDANlr/QkgYFIpSRy5QLmJohU4ltwGKVywOFA/uRZfKw3kAMCuH7H/QJJyVA0mxzqMnQT/WUf6nG2AckhPQ4fTmgQgpXzw7jF4ToUvXL49a"
+  "data": {
+    "encrypted": "VJrcSNSvM/KxZ3IIa/+aaEZMfYQgKrGqmGwzgAAASYwggEiBgkqhkiG9w0BBwagggETMIIBDwIBADCCAQgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMkrC8qGdnuIcfRlX9AgEQgIHaanVWXGDANlr/QkgYFIpSRy5QLmJohU4ltwGKVywOFA/uRZfKw3kAMCuH7H/QJJyVA0mxzqMnQT/WUf6nG2AckhPQ4fTmgQgpXzw7jF4ToUvXL49a"
+  }
 }
 ```
 

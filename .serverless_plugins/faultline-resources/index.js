@@ -79,7 +79,7 @@ class FaultlineResources {
                             ReadCapacityUnits: Number(env.FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS),
                             WriteCapacityUnits: Number(env.FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS)
                         },
-                        TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error`
+                        TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`
                     }
                 },
                 FaultlineTableByTimeunit: {
@@ -109,7 +109,7 @@ class FaultlineResources {
                             ReadCapacityUnits: Number(env.FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS),
                             WriteCapacityUnits: Number(env.FAULTLINE_DYNAMODB_WRITE_CAPACITY_UNITS)
                         },
-                        TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit`
+                        TableName: `${env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit${env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`
                     }
                 }
             };

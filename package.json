@@ -1,17 +1,24 @@
 {
   "name": "faultline",
-  "version": "0.15.0",
+  "version": "1.0.0",
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
     "deploy": "npm install && sls deploy -v",
     "destroy": "sls remove",
     "info": "sls info",
-    "test": "nyc --reporter=lcovonly mocha --recursive --require intelli-espower-loader; nyc report",
+    "test": "nyc --reporter=lcovonly mocha './src/**/__tests__/*.js' --require intelli-espower-loader",
+    "report": "nyc report",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > docs/api.md"
   },
-  "directories": {
-    "test": "test/"
+  "nyc": {
+    "include": [
+      "src/**/*.js"
+    ],
+    "exclude": [
+      "src/lib/mockUtility.js",
+      "src/**/__tests__/*.js"
+    ]
   },
   "repository": {
     "type": "git",
@@ -33,26 +40,29 @@
   },
   "homepage": "https://github.com/faultline/faultline#readme",
   "dependencies": {
-    "ajv": "^4.7.7",
+    "ajv": "^6.1.0",
+    "ajv-keywords": "^3.0.0",
     "axios": "^0.15.2",
-    "bluebird": "^3.4.0",
+    "bluebird": "^3.5.1",
     "github": "^7.0.0",
     "gitlab": "^1.7.1",
+    "http-errors": "^1.6.2",
     "js-sha256": "^0.5.0",
-    "js-yaml": "^3.6.1",
-    "json-schema-deref-sync": "^0.3.3",
+    "js-yaml": "^3.10.0",
+    "json-schema-deref-sync": "^0.3.4",
     "lodash": "^4.16.2",
-    "moment": "^2.15.0",
-    "moment-timezone": "^0.5.13",
+    "middy": "^0.8.5",
+    "moment": "^2.20.1",
+    "moment-timezone": "^0.5.14",
     "url-template": "^2.0.8"
   },
   "devDependencies": {
     "intelli-espower-loader": "^1.0.1",
-    "mocha": "^3.4.2",
-    "nyc": "^11.0.2",
+    "mocha": "^3.5.3",
+    "nyc": "^11.4.1",
     "octopublish": "^0.5.0",
     "power-assert": "^1.4.3",
-    "serverless": "^1.21.1",
+    "serverless": "^1.25.0",
     "serverless-prune-plugin": "^1.2.0"
   }
 }

@@ -16,10 +16,15 @@
           "title": "list_projects",
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "projects": {
-                "type": "array",
-                "items": { "$ref":"#/definitions/project" }
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "projects": {
+                    "type": "array",
+                    "items": { "$ref":"#/definitions/project" }
+                  }
+                }
               }
             }
           }
@@ -48,49 +53,60 @@
           "title": "get_error",
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "meta": {
+              "data": {
                 "type": "object",
-                "example": {
-                  "project": "sample-project",
-                  "message": "Undefined index: faultline",
-                  "type": "notice",
-                  "backtrace": [
-                    {
-                      "file": "/var/www/test/test.php",
-                      "line": 15,
-                      "function": "SomeClass->__construct()"
-                    },
-                    {
-                      "file": "/var/www/test/SomeClass.class.php",
-                      "line": 36,
-                      "function": "SomeClass->callSomething()"
+                "additionalProperties": false,
+                "properties": {
+                  "error": {
+                    "type": "object",
+                    "example": {
+                      "project": "sample-project",
+                      "message": "Undefined index: faultline",
+                      "type": "notice",
+                      "backtrace": [
+                        {
+                          "file": "/var/www/test/test.php",
+                          "line": 15,
+                          "function": "SomeClass->__construct()"
+                        },
+                        {
+                          "file": "/var/www/test/SomeClass.class.php",
+                          "line": 36,
+                          "function": "SomeClass->callSomething()"
+                        }
+                      ],
+                      "event": {}
                     }
-                  ],
-                  "event": {}
-                }
-              },
-              "timeline": {
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "example": {
-                    "project": "sample-project",
-                    "count": 3,
-                    "timestamp": "2016-12-05T11:55:00+00:00",
-                    "key": "sample-project##Undefined index: faultline",
-                    "message": "Undefined index: faultline",
-                    "type": "notice"
+                  },
+                  "timeline": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "errors": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "example": {
+                            "project": "sample-project",
+                            "count": 3,
+                            "timestamp": "2016-12-05T11:55:00+00:00",
+                            "key": "sample-project##Undefined index: faultline",
+                            "message": "Undefined index: faultline",
+                            "type": "notice"
+                          }
+                        }
+                      },
+                      "totalCount": {
+                        "type": "integer",
+                        "example": 1
+                      },
+                      "scannedCount": {
+                        "type": "integer",
+                        "example": 1
+                      }
+                    }
                   }
                 }
-              },
-              "count": {
-                "type": "integer",
-                "example": 1
-              },
-              "scannedCount": {
-                "type": "integer",
-                "example": 1
               }
             }
           }
@@ -104,14 +120,19 @@
           "title": "list_errors",
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "errors": {
-                "type": "array",
-                "items": { "$ref":"#/definitions/error" }
-              },
-              "count": {
-                "type": "integer",
-                "example": 1
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "errors": {
+                    "type": "array",
+                    "items": { "$ref":"#/definitions/error" }
+                  },
+                  "scannedCount": {
+                    "type": "integer",
+                    "example": 27
+                  }
+                }
               }
             }
           }
@@ -267,10 +288,21 @@
           },
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "errors": {
-                "type": "integer",
-                "example": 27
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "errors": {
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "postCount": {
+                        "type": "integer",
+                        "example": 27
+                      }
+                    }
+                  }
+                }
               }
             }
           }
@@ -294,10 +326,12 @@
           },
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "meta": {
+              "data": {
                 "type": "object",
-                "example": {}
+                "additionalProperties": false,
+                "properties": {
+                  "error": { "$ref":"#/definitions/error" }
+                }
               }
             }
           }
@@ -325,8 +359,13 @@
           "title": "get_occurrence",
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "meta": { "$ref":"#/definitions/occurrence" }
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "error": { "$ref":"#/definitions/occurrence" }
+                }
+              }
             }
           }
         },
@@ -339,14 +378,19 @@
           "title": "list_occurrences",
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "occurrences": {
-                "type": "array",
-                "items": { "$ref":"#/definitions/occurrence" }
-              },
-              "count": {
-                "type": "integer",
-                "example": 1
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "errors": {
+                    "type": "array",
+                    "items": { "$ref":"#/definitions/occurrence" }
+                  },
+                  "totalCount": {
+                    "type": "integer",
+                    "example": 10
+                  }
+                }
               }
             }
           }
@@ -370,10 +414,15 @@
           },
           "targetSchema": {
             "properties": {
-              "status": { "$ref":"#/definitions/status" },
-              "encrypted": {
-                "type": "string",
-                "example": "VJrcSNSvM/KxZ3IIa/+aaEZMfYQgKrGqmGwzgAAASYwggEiBgkqhkiG9w0BBwagggETMIIBDwIBADCCAQgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMkrC8qGdnuIcfRlX9AgEQgIHaanVWXGDANlr/QkgYFIpSRy5QLmJohU4ltwGKVywOFA/uRZfKw3kAMCuH7H/QJJyVA0mxzqMnQT/WUf6nG2AckhPQ4fTmgQgpXzw7jF4ToUvXL49a"
+              "data": {
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "encrypted": {
+                    "type": "string",
+                    "example": "VJrcSNSvM/KxZ3IIa/+aaEZMfYQgKrGqmGwzgAAASYwggEiBgkqhkiG9w0BBwagggETMIIBDwIBADCCAQgGCSqGSIb3DQEHATAeBglghkgBZQMEAS4wEQQMkrC8qGdnuIcfRlX9AgEQgIHaanVWXGDANlr/QkgYFIpSRy5QLmJohU4ltwGKVywOFA/uRZfKw3kAMCuH7H/QJJyVA0mxzqMnQT/WUf6nG2AckhPQ4fTmgQgpXzw7jF4ToUvXL49a"
+                  }
+                }
               }
             }
           }
@@ -391,10 +440,6 @@
       "type": "string",
       "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}[+][0-9]{2}:[0-9]{2}$",
       "example": "2016-12-07T00:00:00+09:00"
-    },
-    "status": {
-      "enum": ["success", "error"],
-      "example": "success"
     },
     "project": {
       "type": "object",
