@@ -20,5 +20,5 @@ before_script:
   - cp config.default.yml config.yml
 script:
   - npm run test
-after_script:
-  - npm run report
+after_success:
+  - npm run coverage
