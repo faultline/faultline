@@ -9,6 +9,7 @@
     "info": "sls info",
     "test": "nyc --reporter=lcovonly mocha './src/**/__tests__/*.js' --require intelli-espower-loader",
     "report": "nyc report",
+    "coverage": "nyc --reporter=text-lcov mocha './src/**/__tests__/*.js' | coveralls",
     "doc": "jdoc schema.json --markdown-template-path jdoc.template.md.erb > docs/api.md"
   },
   "nyc": {
@@ -57,6 +58,7 @@
     "url-template": "^2.0.8"
   },
   "devDependencies": {
+    "coveralls": "^3.0.0",
     "intelli-espower-loader": "^1.0.1",
     "mocha": "^3.5.3",
     "nyc": "^11.4.1",
