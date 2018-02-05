@@ -19,6 +19,9 @@ const chunkArray = (arr, chunkBytes = 128000) => {
     if (chunk.length > 0) {
         sets.push(chunk);
     }
+    if (sets.length > 0 && sets[0].toString() === [].toString()) {
+        sets.shift();
+    }
     return sets;
 };
 
