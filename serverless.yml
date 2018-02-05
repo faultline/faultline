@@ -59,13 +59,12 @@ provider:
         - "*"
 
 package:
-  include:
-    - serverless.yml
-    - src/**
   exclude:
-    - .git/**
-    - doc/**
-    - node_modules/serverless/**
+    - .github/**
+    - .nyc_output/**
+    - coverage/**
+    - docs/**
+    - src/**/__tests__/*.js
 
 plugins:
   - faultline-env-checker
