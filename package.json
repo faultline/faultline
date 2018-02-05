@@ -51,7 +51,6 @@
     "js-sha256": "^0.5.0",
     "js-yaml": "^3.10.0",
     "json-schema-deref-sync": "^0.3.4",
-    "lodash": "^4.16.2",
     "middy": "^0.8.5",
     "moment": "^2.20.1",
     "moment-timezone": "^0.5.14",
