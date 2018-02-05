@@ -41,11 +41,11 @@
   },
   "homepage": "https://github.com/faultline/faultline#readme",
   "dependencies": {
+    "@octokit/rest": "^14.0.8",
     "ajv": "^6.1.0",
     "ajv-keywords": "^3.0.0",
     "axios": "^0.15.2",
     "bluebird": "^3.5.1",
-    "github": "^7.0.0",
     "gitlab": "^1.7.1",
     "http-errors": "^1.6.2",
     "js-sha256": "^0.5.0",
