@@ -155,7 +155,7 @@ functions:
           rate: cron(0 0 * * ? *)
           enabled: false # ${env:FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS, file(./config.yml):errorDataRetentionInDays, '-1'}
   encrypt:
-    handler: src/handlers/util.encrypt
+    handler: src/handlers/encrypt.handler
     events:
       - http:
           path: encrypt
