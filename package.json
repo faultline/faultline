@@ -1,6 +1,6 @@
 {
   "name": "faultline",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
