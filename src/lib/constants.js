@@ -16,7 +16,6 @@ module.exports = {
     bucketName: process.env.FAULTLINE_S3_BUCKET_NAME,
     errorByMessageTable: `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}Error${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`,
     errorByTimeunitTable: `${process.env.FAULTLINE_DYNAMODB_TABLE_PREFIX}ErrorByTimeunit${process.env.FAULTLINE_DYNAMODB_TABLE_SUFFIX}`,
-    errorDataRetentionInDays: process.env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS,
     errorsDeleteFunctionName: [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'errorsDelete'].join('-'),
     callNotificationsFunctionName: [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'callNotifications'].join('-'),
     projectNameMaxBytes: 256,
