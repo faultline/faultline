@@ -9,7 +9,6 @@ const aws = new Aws();
 const {
     bucketName,
     errorByMessageTable,
-    errorDataRetentionInDays,
     errorsDeleteFunctionName
 } = require('../lib/constants');
 
@@ -17,6 +16,7 @@ class DeleteExpiredErrorsHander extends Handler {
     constructor(aws) {
         const lambda = aws.lambda;
         return (event, context, cb) => {
+            const errorDataRetentionInDays = process.env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS;
             if (Number(errorDataRetentionInDays) < 0) {
                 cb(null, 'Error data retention in days is unlimited');
                 return;
