@@ -93,4 +93,37 @@ describe('deleteExpiredErrors.handler', () => {
             });
         });
     });
+
+    it ('When process.env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS=-1, No delete errors', () => {
+        const event = {};
+        const context = {};
+        process.env.FAULTLINE_ERROR_DATA_RETENTION_IN_DAYS = '-1';
+
+        const docParams = {
+            TableName: mockAws.constants.errorByMessageTable,
+            Key: {
+                'project':'sample-project',
+                'message':'Undefined index: faultline'
+            },
+            UpdateExpression: 'SET #lastUpdated=:lastUpdated',
+            ExpressionAttributeNames:{
+                '#lastUpdated':'lastUpdated'
+            },
+            ExpressionAttributeValues:{
+                ':lastUpdated':moment('2016-11-02T00:01:00+00:00').format()
+            },
+            ReturnValues:'ALL_NEW'
+        };
+
+        return mockAws.storage.updateDoc(docParams).then(() => {
+            return new Promise((resolve) => {
+                const cb = (error, response) => {
+                    assert(error === null);
+                    assert(response === 'Error data retention in days is unlimited');
+                    resolve();
+                };
+                handler(event, context, cb);
+            });
+        });
+    });
 });
