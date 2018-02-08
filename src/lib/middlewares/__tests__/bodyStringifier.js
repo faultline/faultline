@@ -7,14 +7,14 @@ const bodyStringifier = require('../bodyStringifier');
 
 describe('bodyStringify', () => {
     it ('When handler.response.body is object, response.body is stringified.', () => {
-        const response = {
+        const beforeResponse = {
             body: {
                 foo: 'bar'
             }
         };
 
         const handler = middy((event, context, cb) => {
-            cb(null, response);
+            cb(null, beforeResponse);
         });
 
         handler.use(bodyStringifier())
@@ -31,13 +31,13 @@ describe('bodyStringify', () => {
         });
     });
 
-    it ('When handler.response.body is not object, response.body is same.', () => {
-        const response = {
+    it ('When handler.response.body is not object, response.body is not changed.', () => {
+        const beforeResponse = {
             body: 'response'
         };
 
         const handler = middy((event, context, cb) => {
-            cb(null, response);
+            cb(null, beforeResponse);
         });
 
         handler.use(bodyStringifier())
@@ -48,7 +48,30 @@ describe('bodyStringify', () => {
 
         return new Promise((resolve) => {
             handler(event, {}, (_, response) => {
-                assert(JSON.stringify(response) === JSON.stringify({ body: 'response' }));
+                assert(JSON.stringify(response) === JSON.stringify(beforeResponse));
+                resolve();
+            });
+        });
+    });
+
+    it ('When event has no httpMethod, response.body is not changed.', () => {
+        const beforeResponse = {
+            body: {
+                foo: 'bar'
+            }
+        };
+
+        const handler = middy((event, context, cb) => {
+            cb(null, beforeResponse);
+        });
+
+        handler.use(bodyStringifier())
+
+        const event = {};
+
+        return new Promise((resolve) => {
+            handler(event, {}, (_, response) => {
+                assert(JSON.stringify(response) === JSON.stringify(beforeResponse));
                 resolve();
             });
         });
