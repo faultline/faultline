@@ -16,7 +16,7 @@ class EncryptHandler extends Handler {
     constructor(aws) {
         const kms = aws.kms;
         return (event, context, cb) => {
-            if (!process.env.FAULTLINE_MASTER_API_KEY || !process.env.FAULTLINE_USE_KMS || !process.env.FAULTLINE_KMS_KEY_ALIAS) {
+            if (!process.env.FAULTLINE_MASTER_API_KEY || Number(process.env.FAULTLINE_USE_KMS) === 0 || !process.env.FAULTLINE_KMS_KEY_ALIAS) {
                 throw new createError.PreconditionFailed({ errors: [{ message: 'Precondition Failed: masterApiKey' }] });
             }
             const body = event.body;
