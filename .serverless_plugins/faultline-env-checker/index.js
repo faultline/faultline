@@ -21,7 +21,7 @@ class FaultlineEnvChecker {
             if (env[k] === null || env[k] === undefined) {
                 throw [k, 'is required'].join(' ');
             }
-            if (typeof env[k] == 'boolean') {
+            if (typeof env[k] === 'boolean') {
                 throw [k, 'should be 0 or 1'].join(' ');
             }
         });
