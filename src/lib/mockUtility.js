@@ -47,19 +47,22 @@ const mockResource = {
         secretAccessKey: 'DUMMY',
         region: process.env.FAULTLINE_REGION
     }),
-    lambda: new AWS.Lambda({
-        apiVersion: '2015-03-31',
-        endpoint: new AWS.Endpoint('http://localhost:4574'),
-        accessKeyId: 'DUMMY',
-        secretAccessKey: 'DUMMY',
-        region: process.env.FAULTLINE_REGION
-    }),
+    lambda: {
+        invoke: (params) => {
+            return {
+                promise: () => {
+                    return Promise.resolve({});
+                }
+            };
+        }
+    },
     kms: {}
 };
 
-const constants = require('./constants');
-
 const mockAws = new Aws(mockResource);
+const constants = require('./constants');
+mockAws.constants = constants;
+
 mockAws.createResources = () => {
     return mockAws.s3.createBucket({Bucket: constants.bucketName}).promise()
         .then(mockAws.dynamoDB.createTable({
