@@ -85,6 +85,7 @@ POST errors with GitHub repo config for creating issue.
 | userToken | GitHub API token ( **required** ) | `XXXXXXXxxxxXXXXXXxxxxxXXXXXXXXXX` |
 | owner | GitHub repo owner ( **required** ) | `k1LoW` |
 | repo | GitHub repo name ( **required** ) | `faultline` |
+| endpoint | GitHub Endpoint Url | `https://gitlab.com` if you use GH:E `https://[hostname]/api/v3` |
 | labels | GitHub Issue labels | `["bug", "wontfix"]` |
 | if_exist | Action If current issue exist | `reopen-and-commend`, `reopen`, `reopen-and-update`, `comment`, `none` |
 | notifyInterval | GitHub Issue open interval | `5` |
