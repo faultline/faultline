@@ -41,7 +41,7 @@
   },
   "homepage": "https://github.com/faultline/faultline#readme",
   "dependencies": {
-    "@octokit/rest": "^14.0.8",
+    "@octokit/rest": "^15.2.6",
     "ajv": "^6.1.0",
     "ajv-keywords": "^3.0.0",
     "axios": "^0.17.1",

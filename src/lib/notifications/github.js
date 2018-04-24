@@ -10,6 +10,10 @@ module.exports = (n, errorData) => {
     const octokitConfig = {
         timeout: 5000
     };
+    if (n.endpoint) {
+        octokitConfig.baseUrl = n.endpoint;
+    }
+
     const octokit = Rest(octokitConfig);
 
     octokit.authenticate({
