@@ -534,6 +534,7 @@
           "exclusiveMinimum": true
         },
         "threshold": {"type": "number"},
+        "endpoint": {"type": "string"},
         "userToken": {"type": "string"},
         "owner": {"type": "string"},
         "repo": {"type": "string"},

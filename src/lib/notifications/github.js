@@ -1,13 +1,20 @@
 'use strict';
 
 const console = require('console');
-const octokit = require('@octokit/rest')({
-    timeout: 5000
-});
 const messageBuilder = require('../messageBuilder');
+const Rest = require('@octokit/rest');
 
 module.exports = (n, errorData) => {
     const title = messageBuilder.title(n, errorData);
+
+    const octokitConfig = {
+        timeout: 5000
+    };
+    if (n.endpoint) {
+        octokitConfig.baseUrl = n.endpoint;
+    }
+
+    const octokit = Rest(octokitConfig);
 
     octokit.authenticate({
         type: 'token',
