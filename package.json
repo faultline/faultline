@@ -1,6 +1,6 @@
 {
   "name": "faultline",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
@@ -61,7 +61,7 @@
     "intelli-espower-loader": "^1.0.1",
     "mocha": "^5.0.0",
     "nyc": "^11.4.1",
-    "octopublish": "^0.5.0",
+    "octopublish": "^0.6.0",
     "power-assert": "^1.4.3",
     "serverless": "^1.24.1",
     "serverless-prune-plugin": "^1.2.0"
