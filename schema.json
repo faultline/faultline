@@ -200,6 +200,11 @@
                           "column": {
                             "type": "number",
                             "example": 23
+                          },
+                          "code": {
+                            "type": "object",
+                            "additionalProperties": true,
+                            "properties": {}
                           }
                         }
                       }
