@@ -145,7 +145,11 @@ Host: api.example.com
           "file": "/var/www/path/to/app/user.php",
           "function": "SomeClass->__construct()",
           "line": 15,
-          "column": 23
+          "column": 23,
+          "code": {
+            "1": "code",
+            "2": "code code"
+          }
         }
       ],
       "timestamp": "2016-12-07T00:00:00+09:00"
