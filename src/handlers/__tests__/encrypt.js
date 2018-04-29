@@ -2,9 +2,7 @@
 const { describe, it, beforeEach, afterEach } = require('mocha');
 const assert = require('power-assert');
 
-const {
-    mockAws
-} = require('../../lib/mockUtility');
+const { mockAws } = require('../../lib/mockUtility');
 
 const errorsPostHandler = require('./../errorsPost.js').handlerBuilder(mockAws);
 const handler = require('./../encrypt.js').handlerBuilder(mockAws);
