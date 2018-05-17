@@ -16,6 +16,7 @@
 - [API](#api)
 - [Web UI](#web-ui)
 - [Architecture](#architecture)
+- [Run test](#run-test)
 - [Contribute](#contribute)
 - [License](#license)
 
@@ -130,6 +131,20 @@ https://github.com/faultline/faultline-webui
 ## Architecture
 
 "Architecture of faultline" document is [here](docs/architecture.md) :book: .
+
+## Run test
+
+``` sh
+$ docker-compose up -d
+$ npm run test
+```
+
+### Docker for Mac
+
+``` sh
+$ TMPDIR=/private$TMPDIR docker-compose up -d
+$ npm run test
+```
 
 ## Contribute
 
