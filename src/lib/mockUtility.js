@@ -29,6 +29,7 @@ const mockResource = {
     s3: new AWS.S3({
         apiVersion: '2006-03-01',
         endpoint: new AWS.Endpoint('http://localhost:4572'),
+        s3ForcePathStyle: true,
         accessKeyId: 'DUMMY',
         secretAccessKey: 'DUMMY',
         region: process.env.FAULTLINE_REGION

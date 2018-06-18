@@ -4,9 +4,6 @@ node_js:
   - 6
 services:
   - docker
-addons:
-  hosts:
-    - faultline-test-bucket.localhost
 cache:
   directories:
     - "node_modules"
