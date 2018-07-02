@@ -1,6 +1,6 @@
 'use strict';
 
-const gitlab = require('gitlab');
+const Gitlab = require('gitlab/dist/es5').default;
 const messageBuilder = require('../messageBuilder');
 
 module.exports = (n, errorData) => {
@@ -10,7 +10,7 @@ module.exports = (n, errorData) => {
         endpoint = n.endpoint;
     }
 
-    const g = gitlab({
+    const g = new Gitlab({
         url: endpoint,
         token: n.personalAccessToken
     });
@@ -37,45 +37,58 @@ module.exports = (n, errorData) => {
         labels = n.labels.join(',');
     }
     const body = messageBuilder.body(n, errorData);
-    g.projects.all((projects) => {
-        let project = projects.find((project) => {
-            return (project.path_with_namespace == `${n.owner}/${n.repo}`);
-        });
-        g.projects.issues.list(project.id, {
-            search: title,
-            per_page: 1
-        }, (issues) => {
+
+    let project = null;
+
+    g.Projects.all({owned:true})
+        .then((projects) => {
+            project = projects.find((project) => {
+                return (project.path_with_namespace == `${n.owner}/${n.repo}`);
+            });
+            return g.Issues.all(project.id, {
+                search: title,
+                maxPages: 1
+            });
+        })
+        .then((issues) => {
             let issue = issues.find((issue) => {
                 return (issue.title == title);
             });
             if (issue) {
+                const promises = [];
                 if (isReopen()) {
                     if (isUpdate()) {
-                        g.issues.edit(project.id, issue.id, {
-                            state_event: 'reopen',
+                        promises.push(g.Issues.edit(project.id, issue.iid, {
+                            stateEvent: 'reopen',
                             title: title,
                             labels: labels,
                             body: body + messageBuilder.footer(n, errorData)
-                        });
+                        }));
                     } else {
-                        g.issues.edit(project.id, issue.id, {
-                            state_event: 'reopen'
-                        });
+                        promises.push(g.Issues.edit(project.id, issue.iid, {
+                            stateEvent: 'reopen'
+                        }));
                     }
                 }
                 if (isComment()) {
-                    g.notes.create(project.id, issue.id, {
+                    promises.push(g.IssueNotes.create(project.id, issue.iid, {
                         body: body + messageBuilder.commentFooter(n, errorData)
-                    });
+                    }));
                 }
+                return Promise.all(promises);
             } else {
                 // Create issue
-                g.issues.create(project.id, {
+                return g.Issues.create(project.id, {
                     title: title,
                     description: body + messageBuilder.footer(n, errorData),
                     labels: labels
                 });
             }
+        })
+        .then(() => {
+        })
+        .catch((err) => {
+            console.error(err);
         });
-    });
+
 };
