@@ -19,5 +19,6 @@ module.exports = {
     errorsDeleteFunctionName: [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'errorsDelete'].join('-'),
     callNotificationsFunctionName: [process.env.FAULTLINE_SERVICE_NAME, process.env.FAULTLINE_STAGE, 'callNotifications'].join('-'),
     projectNameMaxBytes: 256,
-    rootSchema: rootSchema
+    rootSchema: rootSchema,
+    version: process.env.FAULTLINE_VERSION
 };

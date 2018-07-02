@@ -20,6 +20,7 @@ provider:
     FAULTLINE_LOG_RETENTION_IN_DAYS: ${env:FAULTLINE_LOG_RETENTION_IN_DAYS, file(./config.yml):logRetentionInDays, '180'}
     FAULTLINE_USE_KMS: ${env:FAULTLINE_USE_KMS, file(./config.yml):useKms, '0'}
     FAULTLINE_KMS_KEY_ALIAS: ${env:FAULTLINE_KMS_KEY_ALIAS, file(./config.yml):kmsKeyAlias, 'faultline'}
+    FAULTLINE_VERSION: ${file(./package.json):version}
   runtime: nodejs6.10
   stage: ${self:provider.environment.FAULTLINE_STAGE}
   region: ${self:provider.environment.FAULTLINE_REGION}
@@ -160,4 +161,12 @@ functions:
       - http:
           path: encrypt
           method: post
+          integration: lambda-proxy
+  info:
+    handler: src/handlers/info.handler
+    events:
+      - http:
+          path: info
+          method: get
+          cors: true
           integration: lambda-proxy
