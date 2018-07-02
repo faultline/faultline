@@ -32,7 +32,8 @@
     "serverless",
     "notifications",
     "slack",
-    "github"
+    "github",
+    "gitlab"
   ],
   "author": "k1LoW <k1lowxb@gmail.com> (https://github.com/k1LoW)",
   "license": "MIT",
