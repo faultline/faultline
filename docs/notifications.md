@@ -42,6 +42,7 @@ POST errors with Slack notification config.
 | threshold | Slack notify threshold | `10` |
 | timezone | timezone for display | `Asia/Tokyo` |
 | linkTemplate | Link template for Slack notify title link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+| linkExpires | The number of seconds for which S3 "error" object link should be valid | `300` |
 
 #### Screenshot
 
@@ -91,7 +92,8 @@ POST errors with GitHub repo config for creating issue.
 | notifyInterval | GitHub Issue open interval | `5` |
 | threshold | GitHub Issue open threshold | `10` |
 | timezone | timezone for display | `Asia/Tokyo` |
-| linkTemplate | Link template for Slack notify title link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+| linkTemplate | Template for link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+| linkExpires | The number of seconds for which S3 "error" object link should be valid | `300` |
 
 #### Screenshot
 
@@ -141,7 +143,8 @@ POST errors with GitLab repo config for creating issue.
 | notifyInterval |GitLab Issue open interval | `5` |
 | threshold |GitLab Issue open threshold | `10` |
 | timezone | timezone for display | `Asia/Tokyo` |
-| linkTemplate | Link template for Slack notify title link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+| linkTemplate | Template for link | `https://faultline.example.com/v0/index.html#/projects/{project}/errors/{message}/occurrences/{reversedUnixtime}` |
+| linkExpires | The number of seconds for which S3 "error" object link should be valid | `300` |
 
 #### Screenshot
 

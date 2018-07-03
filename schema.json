@@ -525,6 +525,7 @@
         "iconUrl": {"type": "string"},
         "timezone": {"type": "string"},
         "linkTemplate": {"type": "string"},
+        "linkExpires": {"type": "number"},
         "icon_emoji": {"type": "string", "description": "deprecated"},
         "icon_url": {"type": "string", "description": "deprecated"}
       },
@@ -557,7 +558,8 @@
           "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
         },
         "timezone": {"type": "string"},
-        "linkTemplate": {"type": "string"}
+        "linkTemplate": {"type": "string"},
+        "linkExpires": {"type": "number"}
       },
       "required": ["type", "userToken", "owner", "repo"]
     },
@@ -588,7 +590,8 @@
           "enum": ["reopen", "comment", "reopen-and-comment", "reopen-and-update", "none"]
         },
         "timezone": {"type": "string"},
-        "linkTemplate": {"type": "string"}
+        "linkTemplate": {"type": "string"},
+        "linkExpires": {"type": "number"}
       },
       "required": ["type", "personalAccessToken", "owner", "repo"]
     },
