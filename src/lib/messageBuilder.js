@@ -1,28 +1,61 @@
 'use strict';
 
 const moment = require('moment-timezone');
+const Aws = require('./aws');
+const aws = new Aws();
 const template = require('url-template');
 const truncater = require('./truncater');
 const {
     reversedUnixtime
 } = require('./functions');
+const {
+    bucketName
+} = require('./constants');
 
 const messageBuilder = {
     title: (n, errorData) => {
         const title = `[${errorData.type}] ${errorData.message}`;
         return truncater.truncateTitle(title);
     },
-    body: (n, errorData) => {
-        let body = '';
-
+    link: (n, errorData) => {
+        let link = null;
+        const truncatedMessage = truncater.truncateMessage(errorData.message);
         if (n.linkTemplate) {
             const linkTemplate = template.parse(n.linkTemplate);
-            const truncatedMessage = truncater.truncateMessage(errorData.message);
-            const link = linkTemplate.expand({
+            link = linkTemplate.expand({
                 project: errorData.project,
                 message: truncatedMessage,
                 reversedUnixtime: reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
             });
+        } else {
+            const key = [
+            'projects',
+            errorData.project,
+            'errors',
+            truncatedMessage,
+            'occurrences',
+            reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
+        ].join('/') + '.json';
+            let linkExpires = -1;
+            if (n.linkExpires) {
+                linkExpires = n.linkExpires;
+            }
+            if (linkExpires > 0) {
+                const params = {
+                    Bucket: bucketName,
+                    Key: key,
+                    Expires: linkExpires
+                };
+                link = aws.storage.getSignedUrl(params);
+            }
+        }
+        return link;
+    },
+    body: (n, errorData) => {
+        let body = '';
+
+        const link = messageBuilder.link(n, errorData);
+        if (link) {
             body += '## link\n\n\n' + link + '\n\n';
         }
 

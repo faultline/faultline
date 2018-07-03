@@ -1,6 +1,7 @@
 'use strict';
 
 const console = require('console');
+const messageBuilder = require('../messageBuilder');
 const truncater = require('../truncater');
 const moment = require('moment-timezone');
 const Aws = require('../aws');
@@ -15,30 +16,7 @@ const {
 } = require('../constants');
 
 module.exports = (n, errorData) => {
-    let titleLink = null;
-    const truncatedMessage = truncater.truncateMessage(errorData.message);
-    if (n.linkTemplate) {
-        const linkTemplate = template.parse(n.linkTemplate);
-        titleLink = linkTemplate.expand({
-            project: errorData.project,
-            message: truncatedMessage,
-            reversedUnixtime: reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
-        });
-    } else {
-        const key = [
-            'projects',
-            errorData.project,
-            'errors',
-            truncatedMessage,
-            'occurrences',
-            reversedUnixtime(moment(errorData.timestamp, moment.ISO_8601).unix())
-        ].join('/') + '.json';
-        const params = {
-            Bucket: bucketName,
-            Key: key
-        };
-        titleLink = aws.storage.getSignedUrl(params);
-    }
+    const titleLink = messageBuilder.link(n, errorData);
 
     const timestamp = (n.timezone)
           ? moment(errorData.timestamp, moment.ISO_8601).tz(n.timezone).format()
