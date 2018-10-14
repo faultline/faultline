@@ -18,3 +18,5 @@ clientApiKey: (EDITME)
 useKms: 0
 # AWS KMS Key alias
 kmsKeyAlias: faultline
+# Deployment bucket name (Please create it at first)
+deploymentBucket: ''
