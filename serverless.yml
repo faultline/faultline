@@ -9,6 +9,7 @@ provider:
     FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
     FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'us-east-1'}
     FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
+    FAULTLINE_DEPLOYMENT_BUCKET: ${file(./config.yml):deploymentBucket, ''}
     FAULTLINE_DYNAMODB_TABLE_PREFIX: ${env:FAULTLINE_DYNAMODB_TABLE_PREFIX, file(./config.yml):dynamodbTablePrefix, 'faultline'}
     FAULTLINE_DYNAMODB_TABLE_SUFFIX: ${env:FAULTLINE_DYNAMODB_TABLE_SUFFIX, file(./config.yml):dynamodbTableSuffix, "-${self:provider.environment.FAULTLINE_STAGE}"}
     FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS: ${env:FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS, file(./config.yml):dynamodbReadCapacityUnits, '1'}
@@ -24,6 +25,7 @@ provider:
   runtime: nodejs8.10
   stage: ${self:provider.environment.FAULTLINE_STAGE}
   region: ${self:provider.environment.FAULTLINE_REGION}
+  deploymentBucket: ${self:provider.environment.FAULTLINE_DEPLOYMENT_BUCKET}
   timeout: 10
   cfLogs: true
   iamRoleStatements:
