@@ -58,4 +58,12 @@ describe('checkApiKey', () => {
         delete process.env.FAULTLINE_MASTER_API_KEY;
         assert(checkApiKey({ allowClientKey: true }).checkApiKey(event) === false);
     });
+
+    it ('if process.env.FAULTLINE_CLIENT_API_KEY contains a comma, checkApiKey assumes it is multiple keys and checks', () => {
+        process.env.FAULTLINE_CLIENT_API_KEY = 'CLIENT_API_KEY, OTHER_CLIENT_API_KEY';
+        event['headers']['X-Api-Key'] = 'CLIENT_API_KEY';
+        assert(checkApiKey({ allowClientKey: true }).checkApiKey(event) === true);
+        event['headers']['X-Api-Key'] = 'OTHER_CLIENT_API_KEY';
+        assert(checkApiKey({ allowClientKey: true }).checkApiKey(event) === true);
+    });
 });

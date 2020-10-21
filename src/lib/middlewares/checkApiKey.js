@@ -19,7 +19,11 @@ const middleware = (config = { allowClientKey: false }) => {
             }
             let checkKeys = [process.env.FAULTLINE_MASTER_API_KEY];
             if (config.allowClientKey) {
-                checkKeys.push(process.env.FAULTLINE_CLIENT_API_KEY);
+                if (process.env.FAULTLINE_CLIENT_API_KEY) {
+                    process.env.FAULTLINE_CLIENT_API_KEY.split(',').forEach((key) => {
+                        checkKeys.push(key.trim());
+                    });
+                }
             }
             if (checkKeys.indexOf(event.headers[apiKeyHeader]) < 0) {
                 return false;
