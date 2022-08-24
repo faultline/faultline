@@ -6,7 +6,6 @@
 | Stage | `FAULTLINE_STAGE` | `stage` | dev |
 | AWS deploy region | `FAULTLINE_REGION` | `region` | us-east-1 |
 | S3 bucket name | `FAULTLINE_S3_BUCKET_NAME` | `s3BucketName` |  |
-| Serverless Framework Deployment bucket | `FAULTLINE_DEPLOYMENT_BUCKET` | `deploymentBucket` |  |
 | Dynamodb table prefix | `FAULTLINE_DYNAMODB_TABLE_PREFIX` | `dynamodbTablePrefix` | faultline |
 | Dynamodb table suffix | `FAULTLINE_DYNAMODB_TABLE_SUFFIX` | `dynamodbTableSuffix` | `-{env:FAULTLINE_STAGE}` |
 | Dynamodb Read Capacity Units | `FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS` | `dynamodbReadCapacityUnits` | 1 |

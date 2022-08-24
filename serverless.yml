@@ -1,6 +1,8 @@
 service: ${self:provider.environment.FAULTLINE_SERVICE_NAME}
 
-frameworkVersion: ">=1.24.1 <2.0.0"
+frameworkVersion: ">=3.0.0"
+
+useDotenv: true
 
 provider:
   name: aws
@@ -9,7 +11,6 @@ provider:
     FAULTLINE_SERVICE_NAME: ${env:FAULTLINE_SERVICE_NAME, file(./config.yml):serviceName, 'faultline'}
     FAULTLINE_REGION: ${env:FAULTLINE_REGION, file(./config.yml):region, 'us-east-1'}
     FAULTLINE_S3_BUCKET_NAME: ${env:FAULTLINE_S3_BUCKET_NAME, file(./config.yml):s3BucketName}
-    FAULTLINE_DEPLOYMENT_BUCKET: ${file(./config.yml):deploymentBucket, ''}
     FAULTLINE_DYNAMODB_TABLE_PREFIX: ${env:FAULTLINE_DYNAMODB_TABLE_PREFIX, file(./config.yml):dynamodbTablePrefix, 'faultline'}
     FAULTLINE_DYNAMODB_TABLE_SUFFIX: ${env:FAULTLINE_DYNAMODB_TABLE_SUFFIX, file(./config.yml):dynamodbTableSuffix, "-${self:provider.environment.FAULTLINE_STAGE}"}
     FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS: ${env:FAULTLINE_DYNAMODB_READ_CAPACITY_UNITS, file(./config.yml):dynamodbReadCapacityUnits, '1'}
@@ -22,52 +23,53 @@ provider:
     FAULTLINE_USE_KMS: ${env:FAULTLINE_USE_KMS, file(./config.yml):useKms, '0'}
     FAULTLINE_KMS_KEY_ALIAS: ${env:FAULTLINE_KMS_KEY_ALIAS, file(./config.yml):kmsKeyAlias, 'faultline'}
     FAULTLINE_VERSION: ${file(./package.json):version}
-  runtime: nodejs12.x
+  runtime: nodejs16.x
   stage: ${self:provider.environment.FAULTLINE_STAGE}
   region: ${self:provider.environment.FAULTLINE_REGION}
-  deploymentBucket: ${self:provider.environment.FAULTLINE_DEPLOYMENT_BUCKET}
   timeout: 10
-  cfLogs: true
-  iamRoleStatements:
-    - Effect: Allow
-      Resource:
-        - { "Fn::Join" : ["", ["arn:aws:dynamodb:", "${self:provider.environment.FAULTLINE_REGION}", ":*:*" ] ] }
-      Action:
-        - "dynamodb:*"
-    - Effect: Allow
-      Action:
-        - "s3:ListBucket"
-        - "s3:GetObject"
-        - "s3:PutObject"
-        - "s3:DeleteObject"
-      Resource:
-        - { "Fn::Join" : ["", ["arn:aws:s3:::", "${self:provider.environment.FAULTLINE_S3_BUCKET_NAME}"] ] }
-        - Fn::Join:
-          - ""
-          - - "arn:aws:s3:::"
-            - ${self:provider.environment.FAULTLINE_S3_BUCKET_NAME}
-            - "/*"
-    - Effect: Allow
-      Action:
-        - "lambda:InvokeFunction"
-        - "lambda:InvokeAsync"
-      Resource:
-        - "arn:aws:lambda:${self:provider.environment.FAULTLINE_REGION}:*:function:${self:provider.environment.FAULTLINE_SERVICE_NAME}-${self:provider.stage}-callNotifications"
-    - Effect: Allow
-      Action:
-        - "kms:Encrypt"
-        - "kms:Decrypt"
-        - "kms:ListAliases"
-      Resource:
-        - "*"
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Resource:
+            - { "Fn::Join" : ["", ["arn:aws:dynamodb:", "${self:provider.environment.FAULTLINE_REGION}", ":*:*" ] ] }
+          Action:
+            - "dynamodb:*"
+        - Effect: Allow
+          Action:
+            - "s3:ListBucket"
+            - "s3:GetObject"
+            - "s3:PutObject"
+            - "s3:DeleteObject"
+          Resource:
+            - { "Fn::Join" : ["", ["arn:aws:s3:::", "${self:provider.environment.FAULTLINE_S3_BUCKET_NAME}"] ] }
+            - Fn::Join:
+              - ""
+              - - "arn:aws:s3:::"
+                - ${self:provider.environment.FAULTLINE_S3_BUCKET_NAME}
+                - "/*"
+        - Effect: Allow
+          Action:
+            - "lambda:InvokeFunction"
+            - "lambda:InvokeAsync"
+          Resource:
+            - "arn:aws:lambda:${self:provider.environment.FAULTLINE_REGION}:*:function:${self:provider.environment.FAULTLINE_SERVICE_NAME}-${self:provider.stage}-callNotifications"
+        - Effect: Allow
+          Action:
+            - "kms:Encrypt"
+            - "kms:Decrypt"
+            - "kms:ListAliases"
+          Resource:
+            - "*"
 
 package:
-  exclude:
-    - .github/**
-    - .nyc_output/**
-    - coverage/**
-    - docs/**
-    - src/**/__tests__/*.js
+  patterns:
+    - '!.env*'
+    - '!.github/**'
+    - '!.nyc_output/**'
+    - '!coverage/**'
+    - '!docs/**'
+    - '!src/**/__tests__/*.js'
 
 plugins:
   - faultline-env-checker

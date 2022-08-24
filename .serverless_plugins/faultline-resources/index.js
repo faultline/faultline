@@ -9,7 +9,6 @@ class FaultlineResources {
         this.serverless = serverless;
         this.options = options || {};
         this.environment = this.serverless.service.provider.environment;
-        this.serverless.variables.loadVariableSyntax();
 
         this.hooks = {
             'package:initialize': () => BbPromise.bind(this)
