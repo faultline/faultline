@@ -27,6 +27,9 @@ provider:
   stage: ${self:provider.environment.FAULTLINE_STAGE}
   region: ${self:provider.environment.FAULTLINE_REGION}
   timeout: 10
+## Uncomment this section, if you want to specify deployment bucket.
+#  deploymentBucket:
+#    name: ${env:FAULTLINE_DEPLOYMENT_BUCKET, file(./config.yml):deploymentBucket}
   iam:
     role:
       statements:
