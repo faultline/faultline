@@ -1,19 +1,18 @@
-version: '2.1'
+version: '3'
 
 services:
   localstack:
-    image: localstack/localstack:0.8.6
+    image: localstack/localstack:1.0
     ports:
-      - "4567-4583:4567-4583"
-      - "8080:8080"
+      - "4566:4566"
+      - "4510-4559:4510-4559"
     environment:
       - SERVICES=${SERVICES- }
       - DEBUG=${DEBUG- }
       - DATA_DIR=${DATA_DIR- }
-      - PORT_WEB_UI=${PORT_WEB_UI- }
       - LAMBDA_EXECUTOR=${LAMBDA_EXECUTOR- }
       - KINESIS_ERROR_PROBABILITY=${KINESIS_ERROR_PROBABILITY- }
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
-      - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
+      - "${TMPDIR:-/var/lib/localstack}:/var/lib/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"

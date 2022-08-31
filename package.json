@@ -4,7 +4,7 @@
   "description": "faultline: Error traking tool on AWS managed services.",
   "main": "index.js",
   "scripts": {
-    "deploy": "npm install && sls deploy -v",
+    "deploy": "npm install && sls deploy",
     "destroy": "sls remove",
     "info": "sls info",
     "test": "nyc --reporter=lcovonly mocha './src/**/__tests__/*.js' --require intelli-espower-loader",
@@ -45,9 +45,9 @@
     "@octokit/rest": "^15.18.3",
     "ajv": "^6.10.2",
     "ajv-keywords": "^3.4.1",
-    "axios": "^0.18.1",
+    "axios": "^0.27.2",
     "bluebird": "^3.7.2",
-    "gitlab": "^3.11.4",
+    "gitlab": "^14.2.2",
     "http-errors": "^1.7.3",
     "js-sha256": "^0.9.0",
     "js-yaml": "^3.13.1",
@@ -60,10 +60,10 @@
   "devDependencies": {
     "coveralls": "^3.0.9",
     "intelli-espower-loader": "^1.0.1",
-    "mocha": "^8.2.0",
+    "mocha": "^10.0.0",
     "nyc": "^14.1.1",
     "power-assert": "^1.6.1",
-    "serverless": "^1.83.0",
-    "serverless-prune-plugin": "^1.4.1"
+    "serverless": "^3.22.0",
+    "serverless-prune-plugin": "^2.0.1"
   }
 }

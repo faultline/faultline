@@ -3,6 +3,7 @@ const { describe, it, beforeEach, afterEach } = require('mocha');
 const assert = require('power-assert');
 const Ajv = require('ajv');
 const deref = require('json-schema-deref-sync');
+const { mockAws } = require('../../lib/mockUtility');
 const {
     rootSchema
 } = require('../../lib/constants');
@@ -13,7 +14,6 @@ const targetSchema = deref(rootSchema).properties.error.links.find((l) => {
     return l.rel == 'create';
 }).targetSchema;
 
-const { mockAws } = require('../../lib/mockUtility');
 const handler = require('./../errorsPost.js').handlerBuilder(mockAws);
 
 describe('errorsPost.handler', () => {

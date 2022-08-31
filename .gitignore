@@ -3,3 +3,4 @@ node_modules
 coverage
 .serverless/
 config.yml
+.env*
